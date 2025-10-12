@@ -1,0 +1,3 @@
+- [x] Modify src/components/custome/Autocomplete/index.jsx to handle options as array of objects with label and value, and make it a searchable select like select2
+- [x] Update AutocompleteDemo.jsx if needed
+- [ ] Test the updated component
