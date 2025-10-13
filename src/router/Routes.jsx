@@ -6,9 +6,9 @@ import SignUp from "@/pages/Auth/Signup";
 import { Database } from "@/pages/Database/Database";
 import About from "@/pages/About/About";
 import Dispatches from "@/pages/Dispatches/Dispatches";
+import Vaults from "@/pages/Vaults/Vaults";
 
 // Dummy pages for testing
-const Vaults = () => <div className="p-6 text-white text-2xl">Vaults Page</div>;
 const Contact = () => (
   <div className="p-6 text-white text-2xl">Contact Page</div>
 );

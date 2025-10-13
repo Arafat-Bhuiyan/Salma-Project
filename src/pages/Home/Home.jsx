@@ -1,5 +1,5 @@
 import bgImg1 from "@/assets/images/bgImg.png";
-import bgImg3 from "@/assets/images/bgImg3.png";
+import bgImg4 from "@/assets/images/bgImg4.png";
 
 export function Home() {
   return (
@@ -45,7 +45,7 @@ export function Home() {
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[498px] z-0 bg-cover"
           style={{
-            backgroundImage: `url(${bgImg3})`,
+            backgroundImage: `url(${bgImg4})`,
           }}
         />
 
