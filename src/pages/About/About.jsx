@@ -1,6 +1,7 @@
 import { useState } from "react";
 import aboutBg from "@/assets/images/aboutPageBg.png";
 import officeTeamMeeting from "@/assets/images/office-team-meeting.png";
+import { AboutCoreValues } from "@/components/AboutCoreValues";
 
 export default function About() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -122,54 +123,7 @@ export default function About() {
         </div>
 
         {/* Section 3: Core Values */}
-        <div className="">
-            <div className="w-[1440px] h-[535px] relative bg-[#1A0E1E]/70 shadow-[0px_-2px_132.39999389648438px_1px_rgba(18,18,18,1.00)] overflow-hidden">
-          <div className="w-72 h-64 left-[-77px] top-[-72px] absolute bg-gradient-to-l from-zinc-300/10 to-neutral-400/10 rounded-full blur-[9.80px]" />
-          <div className="w-52 h-48 left-[-45px] top-[-47px] absolute bg-gradient-to-l from-zinc-300/20 to-neutral-600/20 rounded-full blur-md" />
-          <div className="w-14 h-5 left-0 top-[516.26px] absolute origin-top-left rotate-[-29.47deg] bg-pink-500/40" />
-          <div className="w-96 h-60 left-[100px] top-[174px] absolute bg-zinc-800 shadow-[0px_0px_20px_0px_rgba(255,57,176,1.00)] overflow-hidden">
-            <div className="left-[107px] top-[35px] absolute justify-start text-white text-3xl font-medium font-['Unbounded'] leading-loose">
-              Innovation
-            </div>
-            <div className="w-96 left-[19px] top-[100px] absolute text-center justify-start text-white text-base font-normal font-['Unbounded'] leading-normal">
-              We constantly seek new and better ways to help creators, embracing
-              technology and fresh ideas to stay ahead.
-            </div>
-          </div>
-          <div className="w-96 h-60 left-[521px] top-[174px] absolute bg-zinc-800 shadow-[0px_0px_20px_0px_rgba(255,57,176,1.00)] overflow-hidden">
-            <div className="left-[54px] top-[35px] absolute justify-start text-white text-3xl font-medium font-['Unbounded'] leading-loose">
-              Empowerment
-            </div>
-            <div className="w-96 left-[20px] top-[100px] absolute text-center justify-start text-white text-base font-normal font-['Unbounded'] leading-normal">
-              We empower our users by providing them with the tools and
-              community support they need to succeed.
-            </div>
-          </div>
-          <div className="w-96 h-60 left-[943px] top-[174px] absolute bg-zinc-800 shadow-[0px_0px_20px_0px_rgba(255,57,176,1.00)] overflow-hidden">
-            <div className="left-[83px] top-[33px] absolute justify-start text-white text-3xl font-medium font-['Unbounded'] leading-loose">
-              Community
-            </div>
-            <div className="w-96 left-[19px] top-[100px] absolute text-center justify-start text-white text-base font-normal font-['Unbounded'] leading-normal">
-              We foster a collaborative and supportive environment where every
-              voice is heard and every contribution is valued.
-            </div>
-          </div>
-          <div className="left-[486px] top-[73px] absolute justify-start text-stone-300 text-5xl font-medium font-['Unbounded'] leading-loose">
-            Our Core Values
-          </div>
-          <div className="left-[679px] top-[488px] absolute inline-flex justify-center items-center gap-2.5">
-            <div className="w-6 h-6 bg-fuchsia-400 rounded-full" />
-            <div className="w-5 h-5 bg-zinc-300 rounded-full" />
-            <div className="w-3.5 h-3.5 bg-zinc-300 rounded-full" />
-          </div>
-          <div className="w-12 h-12 px-4 py-3 left-[1377px] top-[243px] absolute bg-zinc-300/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] inline-flex justify-center items-center gap-2.5">
-            <div className="w-4 h-6 bg-fuchsia-400" />
-          </div>
-          <div className="w-12 h-12 px-4 py-3 left-[63px] top-[293px] absolute origin-top-left rotate-180 bg-zinc-300/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] inline-flex justify-center items-center gap-2.5">
-            <div className="w-4 h-6 bg-fuchsia-400" />
-          </div>
-        </div>
-        </div>
+        <AboutCoreValues />
       </div>
     </div>
   );
