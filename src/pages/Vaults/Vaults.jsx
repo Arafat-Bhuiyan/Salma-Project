@@ -153,17 +153,20 @@ export default function Vaults() {
             <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-5">
               Featured Vaults
             </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
               {featuredVaults.map((vault) => (
-                <div key={vault.id}>
-                  <div className="relative h-64 overflow-hidden shadow-[0px_0px_20px_0px_rgba(92,66,181,1.00)]">
+                <div
+                  key={vault.id}
+                  className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)]"
+                >
+                  <div className="relative h-64 overflow-hidden ">
                     <img
                       src={vault.image}
                       alt={vault.title}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                   </div>
-                  <div className="bg-[#5C42B5] p-6">
+                  <div className="bg-[#2C1B2C] p-6">
                     <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
                       {vault.title}
                     </h3>
@@ -198,7 +201,7 @@ export default function Vaults() {
               {latestVaults.map((vault) => (
                 <div
                   key={vault.id}
-                  className="border border-[#5C42B5] flex flex-col h-[420px]"
+                  className="border border-[#2C1B2C] flex flex-col h-[420px]"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img
@@ -208,7 +211,7 @@ export default function Vaults() {
                     />
                   </div>
 
-                  <div className="bg-[#5C42B5] p-5 flex flex-col flex-grow justify-between">
+                  <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
                     <div>
                       <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
                         {vault.title}
