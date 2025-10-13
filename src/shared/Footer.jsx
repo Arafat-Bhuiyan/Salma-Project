@@ -3,14 +3,14 @@ import bgImg from "../assets/images/bgImg3.jpg";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-white text-black py-8 px-20 md:px-12 border shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
+    <footer className="relative w-full bg-gradient-to-b from-zinc-500 to-neutral-600 text-black py-8 px-20 md:px-12 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
       {/* Background Image with Opacity */}
-      <div
+      {/* <div
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0"
         style={{
           backgroundImage: `url(${bgImg})`,
         }}
-      ></div>
+      ></div> */}
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto">
@@ -38,18 +38,18 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/content"
+                  href="/database"
                   className="hover:text-[#EB4DAC] transition-colors"
                 >
-                  Content
+                  Database
                 </a>
               </li>
               <li>
                 <a
-                  href="/blog"
+                  href="/vaults"
                   className="hover:text-[#EB4DAC] transition-colors"
                 >
-                  Blog
+                  Vaults
                 </a>
               </li>
               <li>
@@ -81,6 +81,14 @@ export default function Footer() {
                   className="hover:text-[#EB4DAC] transition-colors"
                 >
                   Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  className="hover:text-[#EB4DAC] transition-colors"
+                >
+                  Contact
                 </a>
               </li>
             </ul>

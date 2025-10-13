@@ -5,12 +5,10 @@ import { createBrowserRouter } from "react-router-dom";
 import SignUp from "@/pages/Auth/Signup";
 import { Database } from "@/pages/Database/Database";
 import About from "@/pages/About/About";
+import Dispatches from "@/pages/Dispatches/Dispatches";
 
 // Dummy pages for testing
 const Vaults = () => <div className="p-6 text-white text-2xl">Vaults Page</div>;
-const Dispatches = () => (
-  <div className="p-6 text-white text-2xl">Dispatches Page</div>
-);
 const Contact = () => (
   <div className="p-6 text-white text-2xl">Contact Page</div>
 );

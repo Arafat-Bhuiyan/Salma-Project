@@ -1,39 +1,8 @@
-import { useState } from "react";
 import aboutBg from "@/assets/images/aboutPageBg.png";
 import officeTeamMeeting from "@/assets/images/office-team-meeting.png";
 import { AboutCoreValues } from "@/components/AboutCoreValues";
 
 export default function About() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const coreValues = [
-    {
-      title: "Innovation",
-      description:
-        "We constantly seek new and better ways to help creators, embracing technology and fresh ideas to stay ahead.",
-    },
-    {
-      title: "Empowerment",
-      description:
-        "We empower our users by providing them with the tools and community support they need to succeed.",
-    },
-    {
-      title: "Community",
-      description:
-        "We foster a collaborative and supportive environment where every voice is heard and every contribution is valued.",
-    },
-  ];
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % coreValues.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + coreValues.length) % coreValues.length
-    );
-  };
-
   return (
     <div className="relative w-full min-h-screen">
       {/* Single Background for entire page */}
