@@ -1,12 +1,12 @@
 import vaultsHeaderImg from "@/assets/images/vaults_header.png";
-import vaultsBg1 from "@/assets/images/vaults_bg1.png";
-import vaultsBg2 from "@/assets/images/vaults_bg2.png";
+import vaultsBg from "@/assets/images/aboutPageBg.png";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import featuredImg2 from "@/assets/images/featuredImg2.jpg";
 import featuredImg3 from "@/assets/images/featuredImg3.jpg";
 import featuredImg4 from "@/assets/images/featuredImg4.jpg";
+import { useNavigate } from "react-router-dom";
 
 export default function Vaults() {
   const [topics, setTopics] = useState([
@@ -21,6 +21,8 @@ export default function Vaults() {
     { name: "Music", active: false },
   ]);
 
+  const navigate = useNavigate();
+
   const handleTopicClick = (selectedName) => {
     const updatedTopics = topics.map((topic) =>
       topic.name === selectedName
@@ -28,6 +30,10 @@ export default function Vaults() {
         : { ...topic, active: false }
     );
     setTopics(updatedTopics);
+  };
+
+  const handleGotoDetails = () => {
+    navigate("/vault-detail");
   };
 
   const featuredVaults = [
@@ -97,19 +103,14 @@ export default function Vaults() {
 
       {/* === Layered Backgrounds for Content === */}
       <div className="relative z-10">
-        <div className="absolute inset-0 -z-10">
-          {/* Top Background */}
-          <div
-            className="w-full h-[80vh]"
-            style={{ backgroundImage: `url(${vaultsBg1})` }}
-          ></div>
-
-          {/* Bottom Background */}
-          <div
-            className="w-full h-full"
-            style={{ backgroundImage: `url(${vaultsBg2})` }}
-          ></div>
-        </div>
+        <div
+          className="absolute inset-0 -z-10 bg-no-repeat bg-cover bg-center"
+          style={{
+            backgroundImage: `
+              url(${vaultsBg})
+            `,
+          }}
+        ></div>
 
         {/* === Page Content === */}
         <div className="px-4 md:px-8 lg:px-16">
@@ -183,7 +184,10 @@ export default function Vaults() {
                         </span>
                       ))}
                     </div>
-                    <button className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
+                    <button
+                      onClick={handleGotoDetails}
+                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                    >
                       Read More
                     </button>
                   </div>
@@ -230,7 +234,10 @@ export default function Vaults() {
                         ))}
                       </div>
                     </div>
-                    <button className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
+                    <button
+                      onClick={handleGotoDetails}
+                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                    >
                       Read More
                     </button>
                   </div>

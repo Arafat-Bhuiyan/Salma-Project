@@ -8,7 +8,7 @@ export function Home() {
       <section className="relative w-full h-[759px] overflow-hidden flex items-center justify-center text-center">
         {/* Top Background */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[759px] z-0 bg-cover"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[759px] z-0 bg-cover"
           style={{
             backgroundImage: `url(${bgImg1})`,
           }}
@@ -43,7 +43,7 @@ export function Home() {
       <section className="relative w-full h-[498px] overflow-hidden flex items-center justify-center text-center">
         {/* Bottom Background */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[498px] z-0 bg-cover"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[498px] z-0 bg-cover"
           style={{
             backgroundImage: `url(${bgImg4})`,
           }}

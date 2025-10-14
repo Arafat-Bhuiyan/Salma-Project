@@ -7,17 +7,19 @@ export default function About() {
     <div className="relative w-full min-h-screen">
       {/* Single Background for entire page */}
       <div
-        className="absolute top-0 left-0 w-full h-full z-0"
+        className="absolute inset-0 -z-10 bg-no-repeat bg-cover bg-center"
         style={{
-          backgroundImage: `url(${aboutBg})`,
+          backgroundImage: `
+            url(${aboutBg})
+          `,
         }}
-      />
+      ></div>
 
       {/* All Content */}
       <div className="relative z-10 w-full py-28">
         {/* Section 1: Our Story */}
         <div className="">
-          <div className="relative flex items-center justify-center px-24 py-10 bg-[#1A0E1E]/70 overflow-hidden">
+          <div className="relative flex items-center justify-center px-24 py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
             {/* Main Container */}
             <div className="relative max-w-7xl w-full grid md:grid-cols-2 gap-12 items-center">
               {/* Left Side */}

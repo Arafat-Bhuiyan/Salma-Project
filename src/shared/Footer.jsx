@@ -3,7 +3,7 @@ import bgImg from "../assets/images/bgImg3.jpg";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-gradient-to-b from-[#7E7E7E]/80 to-[#4E4E4E]/90 text-black py-8 px-20 md:px-12 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
+    <footer className="relative w-full bg-gradient-to-b from-[#7E7E7E]/80 to-[#4E4E4E]/90 text-black py-8 px-20 md:px-20 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
       {/* Background Image with Opacity */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0"
@@ -13,7 +13,7 @@ export default function Footer() {
       ></div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 mx-32 mt-8">
         {/* Main Footer Content */}
         <div className="flex justify-between mb-11">
           {/* Logo and Description */}

@@ -7,6 +7,7 @@ import { Database } from "@/pages/Database/Database";
 import About from "@/pages/About/About";
 import Dispatches from "@/pages/Dispatches/Dispatches";
 import Vaults from "@/pages/Vaults/Vaults";
+import { VaultDetail } from "@/pages/Vaults/VaultDetail";
 
 // Dummy pages for testing
 const Contact = () => (
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "database", element: <Database /> },
       { path: "vaults", element: <Vaults /> },
+      { path: "vault-detail", element: <VaultDetail /> },
       { path: "dispatches", element: <Dispatches /> },
       { path: "about", element: <About /> },
       { path: "contact", element: <Contact /> },
