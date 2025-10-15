@@ -186,7 +186,7 @@ export default function Vaults() {
                     </div>
                     <button
                       onClick={handleGotoDetails}
-                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
                     >
                       Read More
                     </button>
@@ -236,7 +236,7 @@ export default function Vaults() {
                     </div>
                     <button
                       onClick={handleGotoDetails}
-                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
                     >
                       Read More
                     </button>
