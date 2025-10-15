@@ -8,6 +8,8 @@ import About from "@/pages/About/About";
 import Dispatches from "@/pages/Dispatches/Dispatches";
 import Vaults from "@/pages/Vaults/Vaults";
 import { VaultDetail } from "@/pages/Vaults/VaultDetail";
+import PrivacyPolicy from "@/pages/Terms&Privacy/Privacy";
+import TermsConditions from "@/pages/Terms&Privacy/Terms";
 
 // Dummy pages for testing
 const Contact = () => (
@@ -31,6 +33,8 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
+      { path: "privacy", element: <PrivacyPolicy /> },
+      { path: "terms", element: <TermsConditions /> },
     ],
   },
 ]);
