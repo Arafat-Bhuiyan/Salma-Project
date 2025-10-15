@@ -10,11 +10,7 @@ import Vaults from "@/pages/Vaults/Vaults";
 import { VaultDetail } from "@/pages/Vaults/VaultDetail";
 import PrivacyPolicy from "@/pages/Terms&Privacy/Privacy";
 import TermsConditions from "@/pages/Terms&Privacy/Terms";
-
-// Dummy pages for testing
-const Contact = () => (
-  <div className="p-6 text-white text-2xl">Contact Page</div>
-);
+import Contact from "@/pages/Contact/Contact";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +31,7 @@ const router = createBrowserRouter([
       { path: "signup", element: <SignUp /> },
       { path: "privacy", element: <PrivacyPolicy /> },
       { path: "terms", element: <TermsConditions /> },
+      { path: "contact", element: <Contact /> },
     ],
   },
 ]);
