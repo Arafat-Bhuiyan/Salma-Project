@@ -31,7 +31,7 @@ export const Navbar = () => {
           </NavLink>
 
           <NavLink
-            to="/database"
+            to="/content"
             className={({ isActive }) =>
               `w-24 h-6 text-center text-base font-unbounded leading-normal ${
                 isActive

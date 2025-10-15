@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import rightArrow from "@/assets/images/right.svg";
-import leftArrow from "@/assets/images/left.svg";
+import rightArrow from "@/assets/icons/right.svg";
+import leftArrow from "@/assets/icons/left.svg";
 
 const valuesData = [
   {

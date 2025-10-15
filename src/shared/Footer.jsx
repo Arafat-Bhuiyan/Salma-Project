@@ -38,7 +38,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/database"
+                  href="/content"
                   className="hover:text-[#EB4DAC] transition-colors"
                 >
                   Database
