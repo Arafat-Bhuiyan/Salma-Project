@@ -10,6 +10,7 @@ import { VaultDetail } from "@/pages/Vaults/VaultDetail";
 import PrivacyPolicy from "@/pages/Terms&Privacy/Privacy";
 import TermsConditions from "@/pages/Terms&Privacy/Terms";
 import Contact from "@/pages/Contact/Contact";
+import ContentDetails from "@/pages/Content/ContentDetails";
 import ContentLibrary from "@/pages/Content/ContentLibrary";
 
 const router = createBrowserRouter([
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: "privacy", element: <PrivacyPolicy /> },
       { path: "terms", element: <TermsConditions /> },
       { path: "contact", element: <Contact /> },
+      {path: "content-details", element: <ContentDetails />}
     ],
   },
 ]);
