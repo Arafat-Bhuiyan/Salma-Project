@@ -3,7 +3,6 @@ import { Home } from "@/pages/Home/Home";
 import Login from "@/pages/Auth/Login";
 import { createBrowserRouter } from "react-router-dom";
 import SignUp from "@/pages/Auth/Signup";
-import { Database } from "@/pages/Database/Database";
 import About from "@/pages/About/About";
 import Dispatches from "@/pages/Dispatches/Dispatches";
 import Vaults from "@/pages/Vaults/Vaults";
@@ -11,6 +10,7 @@ import { VaultDetail } from "@/pages/Vaults/VaultDetail";
 import PrivacyPolicy from "@/pages/Terms&Privacy/Privacy";
 import TermsConditions from "@/pages/Terms&Privacy/Terms";
 import Contact from "@/pages/Contact/Contact";
+import ContentLibrary from "@/pages/Content/ContentLibrary";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <Home /> },
-      { path: "database", element: <Database /> },
+      { path: "content", element: <ContentLibrary /> },
       { path: "vaults", element: <Vaults /> },
       { path: "vault-detail", element: <VaultDetail /> },
       { path: "dispatches", element: <Dispatches /> },
