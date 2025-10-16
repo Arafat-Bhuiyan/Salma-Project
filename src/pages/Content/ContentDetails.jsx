@@ -1,13 +1,18 @@
 import bgImg from "../../assets/images/detailsbg.png";
-import bgImg2 from "../../assets/images/bgImg2.png";
+import pdf from "../../assets/icons/pdf-icon.png";
 import featuredImg from "../../assets/images/featuredImg1.jpg";
 import React, { useState } from "react";
-import { FileText, Download } from "lucide-react";
+import { LuShare2 } from "react-icons/lu";
+import { MdOutlineOpenInNew } from "react-icons/md";
+
+import { FileText, Download, ArrowLeft } from "lucide-react";
 // Simulated data - this would come from your backend/API
+import { BiLike } from "react-icons/bi";
 const mockContent = {
   type: "pdf", // or "video"
   title: "Cybersecurity Handbook",
   subtitle: "INDUSTRY SOLUTIONWEARS NETWORKS SECURITY",
+  tags: ["Security", "Cybersecurity", "Handbook", "Safety"],
   description:
     "Comprehensive handbook covering essential cybersecurity practices for the digital age.",
   fileUrl: "https://example.com/cybersecurity-handbook.pdf",
@@ -17,6 +22,7 @@ const mockContent = {
       id: 1,
       title: "Digital Art Revolution",
       image: "featuredImg.jpg",
+      tags: ["Art", "Digital"],
     },
   ],
 };
@@ -34,64 +40,78 @@ export default function ContentDetails() {
 
   return (
     <div
-      className="min-h-screen bg-gray-900 text-white"
+      className="min-h-screen bg-gray-900 text-white font-unbounded"
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "top bottom",
-
       }}
     >
       {/* Hero Section with Background */}
       <div className="relative min-h-screen bg-cover bg-center">
-        {/* Decorative Elements */}
-        <div className="absolute top-10 right-10 w-20 h-20 bg-pink-500 opacity-20 blur-3xl rounded-full"></div>
-        <div className="absolute bottom-20 left-10 w-32 h-32 bg-purple-500 opacity-20 blur-3xl rounded-full"></div>
-
-        <div className="container mx-auto px-4 py-8">
+        <div className="w-10/12 mx-auto py-8 lg:pt-20">
           {/* Header */}
-          <div className="flex items-center justify-between mb-12">
-            <div className="text-pink-400 text-sm">← BACK TO HOME</div>
-            <div className="flex gap-4">
-              <button className="bg-pink-500 hover:bg-pink-600 px-6 py-2 rounded text-sm font-semibold transition">
-                Get Started
-              </button>
-              <button
-                onClick={() =>
-                  setContentType(contentType === "pdf" ? "video" : "pdf")
-                }
-                className="bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded text-sm font-semibold transition"
-              >
-                Toggle Type (Demo)
-              </button>
+          <div>
+            <div className="flex items-center justify-between mb-12">
+              <div className="text-[#FF3B9A] text-sm flex items-center gap-2 cursor-pointer">
+                {" "}
+                <ArrowLeft /> Back to Blog
+              </div>
+              <div className="flex gap-4">
+          
+                <button
+                  onClick={() =>
+                    setContentType(contentType === "pdf" ? "video" : "pdf")
+                  }
+                  className="bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded text-sm font-semibold transition"
+                >
+                  Toggle Type (Demo)
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Title Section */}
-          <div className="max-w-4xl mb-8">
-            <div className="inline-block bg-pink-500 px-4 py-1 rounded text-xs font-semibold mb-4">
-              {contentType.toUpperCase()}
+            {/* Title Section */}
+            <div className="max-w-4xl mb-8">
+              <div className="inline-block mr-4 bg-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
+                All content
+              </div>
+              <div className="inline-block border border-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
+                {contentType.toUpperCase()}
+              </div>
+              <h1 className="text-5xl text-[#F4F4F3] mb-4">{content.title}</h1>
+              <div>
+                {content.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-block text-[#C6C6C6] pr-3 py-1 rounded-full mr-2 mb-2"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+              <div className="gap-4 flex">
+                <div className="items-center gap-2 text-sm text-[#C8C8C8] mt-4 cursor-pointer border inline-flex p-2 px-4 border-[#FF80EB]">
+                  <BiLike className="text-xl" /> Like
+                </div>
+                <div className="items-center gap-2 text-sm text-white mt-4 cursor-pointer inline-flex p-2 px-4 bg-[#FF80EB]">
+                  <LuShare2 className="text-xl" /> Share
+                </div>
+              </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
-              {content.title}
-            </h1>
-            <p className="text-gray-400 text-sm tracking-wider mb-6">
-              {content.subtitle}
-            </p>
           </div>
 
           {/* Featured Image */}
-          <div className="max-w-5xl mb-12">
+          <div className="mb-12 h-1/4 mt-20 xl:mt-40">
             <img
               src={featuredImg}
               alt="Featured"
-              className="w-full h-64 object-cover rounded-lg shadow-2xl"
+              className="w-full h-[500px] object-cover shadow-2xl"
             />
           </div>
 
           {/* Description */}
-          <div className="max-w-3xl">
+          <div className="">
             <p className="text-gray-300 text-lg leading-relaxed">
               {content.description}
             </p>
@@ -100,42 +120,36 @@ export default function ContentDetails() {
       </div>
 
       {/* Content Section with Different Background */}
-      <div className="relative py-20 bg-cover bg-center">
-        <div className="container mx-auto px-4">
+      <div className="relative pb-20 bg-cover bg-center">
+        <div className=" mx-auto w-11/12 xl:w-9/12">
           {/* Conditional Content Display */}
-          <div className="max-w-4xl mx-auto">
+          <div className="mx-auto">
             {contentType === "pdf" ? (
               /* PDF Content */
-              <div className="bg-gray-800 rounded-lg p-12 text-center shadow-2xl border border-gray-700">
-                <div className="mb-6">
-                  <FileText
-                    className="w-24 h-24 mx-auto text-pink-400"
-                    strokeWidth={1.5}
-                  />
+              <div className="bg-[#1F1F1F] p-12 text-center shadow-2xl">
+                <div className="mb-20">
+                  <img src={pdf} className="mx-auto" alt="" />
                 </div>
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl mb-10">
                   This content is available as a downloadable PDF document.
                 </h2>
-                <p className="text-gray-400 mb-8">
-                  Download the complete handbook to access all the information
-                  offline.
-                </p>
+
                 <div className="flex gap-4 justify-center">
                   <button
                     onClick={handleDownload}
-                    className="bg-pink-500 hover:bg-pink-600 px-8 py-3 rounded-lg font-semibold transition flex items-center gap-2"
+                    className="bg-[#FF3B9A] hover:bg-pink-600 px-8 py-3 rounded-md transition flex items-center gap-2"
                   >
                     <Download className="w-5 h-5" />
                     Download PDF
                   </button>
-                  <button className="bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-lg font-semibold transition">
-                    Preview Browser
+                  <button className="bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-md transition flex items-center gap-2">
+                    <MdOutlineOpenInNew className="text-xl" /> Open in Browser
                   </button>
                 </div>
               </div>
-            ) : (
+            ) : contentType === "video" ? (
               /* Video Content */
-              <div className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl border border-gray-700">
+              <div className="bg-gray-800 overflow-hidden shadow-2xl border border-gray-700">
                 <div className="aspect-video bg-black relative">
                   <iframe
                     className="w-full h-full"
@@ -150,27 +164,22 @@ export default function ContentDetails() {
                     {/* Red YouTube-style play button would go here if needed */}
                   </div>
                 </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-gray-400">
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 bg-pink-500 rounded-full"></span>
-                      Watch on
-                    </span>
-                    <span>YouTube</span>
-                  </div>
-                </div>
+              </div>
+            ) : (
+              <div className="bg-gray-800 overflow-hidden shadow-2xl border border-gray-700">
+                <div className="aspect-video bg-black relative"></div>
               </div>
             )}
           </div>
 
           {/* Related Content Section */}
           <div className="mt-24">
-            <h2 className="text-3xl font-bold mb-8">Related Content</h2>
+            <h2 className="text-3xl mb-8">Related Content</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {content.relatedContent.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition cursor-pointer border border-gray-700"
+                  className="bg-[#2C1B2C] overflow-hidden cursor-pointer"
                 >
                   <img
                     src={featuredImg}
@@ -179,11 +188,21 @@ export default function ContentDetails() {
                   />
                   <div className="p-6">
                     <h3 className="font-semibold mb-2 text-lg">{item.title}</h3>
-                    <p className="text-gray-400 text-sm mb-4">
+                    <p className="text-[#C6C6C6] text-sm mb-4">
                       A comprehensive guide to transforming creative industries.
                     </p>
-                    <button className="text-pink-400 hover:text-pink-300 text-sm font-semibold">
-                      Read →
+                    <div>
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-block text-[#C6C6C6] text-xs pr-3 py-1 rounded-full mr-2 mb-2"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <button className="border-2 border-[#FF80EB] px-12 py-1 mt-4 transition">
+                      View
                     </button>
                   </div>
                 </div>
@@ -192,14 +211,14 @@ export default function ContentDetails() {
           </div>
 
           {/* Explore More */}
-          <div className="mt-16 text-center">
-            <h3 className="text-2xl font-bold mb-6">Explore More</h3>
+          <div className="my-16 text-center">
+            <h3 className="text-3xl mb-6">Explore More</h3>
             <div className="flex gap-4 justify-center">
-              <button className="bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-lg font-semibold transition">
-                More Topics
+              <button className="border-2 border-[#FF80EB] px-8 py-3 transition">
+                More Blogs
               </button>
-              <button className="bg-pink-500 hover:bg-pink-600 px-8 py-3 rounded-lg font-semibold transition">
-                Subscribe Now
+              <button className="text-white cursor-pointer inline-flex px-8 py-3 bg-[#FF80EB]">
+                More Content
               </button>
             </div>
           </div>
