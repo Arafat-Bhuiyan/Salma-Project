@@ -3,6 +3,10 @@ import officeTeamMeeting from "@/assets/images/office-team-meeting.png";
 import { AboutCoreValues } from "@/components/AboutCoreValues";
 
 export default function About() {
+  // 🟣 Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <div className="relative w-full min-h-screen">
       {/* Single Background for entire page */}
@@ -86,7 +90,10 @@ export default function About() {
                 </div>
               </div>
 
-              <button className="border-2 border-[#FF80EB] text-white w-[475px] h-[70px] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none transition-colors text-3xl font-medium font-unbounded leading-loose flex items-center justify-center">
+              <button
+                onClick={scrollToTop}
+                className="border-2 border-[#FF80EB] text-white w-[475px] h-[70px] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none transition-colors text-3xl font-medium font-unbounded leading-loose flex items-center justify-center"
+              >
                 About us
               </button>
             </div>

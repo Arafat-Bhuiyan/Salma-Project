@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import google from "../assets/icons/google.svg";
 import apple from "../assets/icons/apple.svg";
 
@@ -7,6 +7,7 @@ export default function SignupForm() {
   const [profileName, setProfileName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,6 +17,13 @@ export default function SignupForm() {
     setProfileName("");
     setEmail("");
     setPassword("");
+  };
+
+  const terms = () => {
+    navigate("/terms");
+  };
+  const privacy = () => {
+    navigate("/privacy");
   };
 
   return (
@@ -115,11 +123,11 @@ export default function SignupForm() {
                 className="text-[#666666] text-base font-unbounded"
               >
                 By creating an account, you agree to the{" "}
-                <span className="text-[#FF80EB] underline cursor-pointer">
+                <span onClick={terms} className="text-[#FF80EB] underline cursor-pointer">
                   Terms of Use
                 </span>{" "}
                 and{" "}
-                <span className="text-[#FF80EB] underline cursor-pointer">
+                <span onClick={privacy} className="text-[#FF80EB] underline cursor-pointer">
                   Privacy Policy
                 </span>
                 .

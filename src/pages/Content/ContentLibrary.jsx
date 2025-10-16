@@ -13,7 +13,6 @@ import rightIcon from "@/assets/icons/right.svg";
 import leftIcon from "@/assets/icons/left.svg";
 import noContentImg from "@/assets/images/no-content.png";
 import { useState } from "react";
-import { Scroll } from "lucide-react";
 
 export default function ContentLibrary() {
   const [email, setEmail] = useState("");
@@ -110,7 +109,8 @@ export default function ContentLibrary() {
       image: featuredImg1,
       title: "The Future of Curation",
       subtitle: "NEW APPROACHES IN DIGITAL ORGANIZATION",
-      description: "New approaches to organizing and sharing digital knowledge.",
+      description:
+        "New approaches to organizing and sharing digital knowledge.",
       tags: ["Technology", "Philosophy"],
       fileUrl: "https://example.com/future-of-curation.pdf",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
@@ -190,7 +190,7 @@ export default function ContentLibrary() {
     selectedContentType === "all"
       ? latestVaults
       : latestVaults.filter(
-          (vault) => vault.contentType === selectedContentType
+          (vault) => vault.type === selectedContentType
         );
 
   const noContentFound = contentFilteredVaults.length === 0;

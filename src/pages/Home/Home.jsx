@@ -1,20 +1,17 @@
-import bgImg1 from "@/assets/images/bgImg.png";
-import bgImg4 from "@/assets/images/bgImg4.png";
+import bgImg from "@/assets/images/homeBg.png";
+import { Link } from "react-router-dom";
 
 export function Home() {
   return (
-    <div className="relative w-full">
+    <div
+      className="relative w-full min-h-screen bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url(${bgImg})`,
+        backgroundPosition: "center -350px",
+      }}
+    >
       {/* Hero Section */}
-      <section className="relative w-full h-[759px] overflow-hidden flex items-center justify-center text-center">
-        {/* Top Background */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[759px] z-0 bg-cover"
-          style={{
-            backgroundImage: `url(${bgImg1})`,
-          }}
-        />
-
-        {/* Hero Content */}
+      <section className="relative w-full h-[759px] flex items-center justify-center text-center">
         <div className="relative z-10 flex flex-col items-center justify-center px-4">
           <h1 className="text-6xl font-bold font-unbounded leading-[70px] [text-shadow:_0px_2px_10px_rgb(0_0_0_/_0.25)] mb-8">
             <span className="text-[#FF39B0]">Discover Amazing</span>
@@ -29,27 +26,24 @@ export function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="w-60 h-14 px-8 py-3 bg-[#FF39B0] hover:bg-[#EE87E5] active:bg-[#C12E83] text-white text-lg font-medium font-unbounded">
+            <Link
+              to="/vaults"
+              className="w-60 h-14 px-8 py-3 bg-[#FF39B0] hover:bg-[#EE87E5] active:bg-[#C12E83] text-white text-lg font-medium font-unbounded"
+            >
               Read Blogs
-            </button>
-            <button className="w-60 h-14 px-8 py-3 bg-transparent border-2 border-[#FF39B0] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none text-white text-lg font-medium font-unbounded">
+            </Link>
+            <Link
+              to="/content"
+              className="w-60 h-14 px-8 py-3 bg-transparent border-2 border-[#FF39B0] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none text-white text-lg font-medium font-unbounded"
+            >
               View Content
-            </button>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="relative w-full h-[498px] overflow-hidden flex items-center justify-center text-center">
-        {/* Bottom Background */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[498px] z-0 bg-cover"
-          style={{
-            backgroundImage: `url(${bgImg4})`,
-          }}
-        />
-
-        {/* CTA Content */}
+      <section className="relative w-full h-[498px] flex items-center justify-center text-center">
         <div className="relative z-10 flex flex-col items-center justify-center px-4">
           <h2 className="text-white text-4xl font-semibold font-unbounded leading-10 mb-5">
             Be part of the commons
@@ -60,9 +54,12 @@ export function Home() {
             community.
           </p>
 
-          <button className="w-80 h-14 px-8 py-3 bg-[#F6FF1F] text-black text-lg font-medium font-unbounded">
-              Get Started
-            </button>
+          <Link
+            to="/signup"
+            className="w-80 h-14 px-8 py-3 bg-[#F6FF1F] text-black text-lg font-medium font-unbounded"
+          >
+            Get Started
+          </Link>
         </div>
       </section>
     </div>
