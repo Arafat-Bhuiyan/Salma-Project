@@ -11,12 +11,15 @@ import pdfIcon from "@/assets/icons/pdf.svg";
 import textIcon from "@/assets/icons/text.svg";
 import rightIcon from "@/assets/icons/right.svg";
 import leftIcon from "@/assets/icons/left.svg";
+import { useState } from "react";
 
 export default function ContentLibrary() {
+  const [email, setEmail] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
   const navigate = useNavigate();
 
-  const handleGotoDetails = () => {
-    navigate("/vault-detail");
+  const handleGotoDetails = (id) => {
+    navigate(`/content-details/${id}`);
   };
 
   const tags = [
@@ -27,20 +30,15 @@ export default function ContentLibrary() {
     "Development",
     "Digital",
     "Experience",
-    "Future",
     "Generation",
     "Handbook",
     "Design Technology",
-    "Design",
     "Programming",
     "Security",
-    "Cyberpunk",
-    "Cyberpunk",
     "Media",
     "Interactive",
     "Innovation",
   ];
-
   const latestVaults = [
     {
       id: 1,
@@ -49,6 +47,7 @@ export default function ContentLibrary() {
       description:
         "How technology is helping preserve artistic and historical materials.",
       tags: ["Technology", "Science"],
+      contentType: "pdf",
     },
     {
       id: 2,
@@ -57,6 +56,7 @@ export default function ContentLibrary() {
       description:
         "Exploring how artists reinterpret archival materials for modern times.",
       tags: ["Art", "History"],
+      contentType: "photo",
     },
     {
       id: 3,
@@ -65,6 +65,7 @@ export default function ContentLibrary() {
       description:
         "A showcase of creative works and their impact through the decades.",
       tags: ["Design", "Philosophy"],
+      contentType: "video",
     },
     {
       id: 4,
@@ -73,6 +74,7 @@ export default function ContentLibrary() {
       description:
         "New approaches to organizing and sharing digital knowledge.",
       tags: ["Technology", "Philosophy"],
+      contentType: "photo",
     },
     {
       id: 5,
@@ -81,6 +83,7 @@ export default function ContentLibrary() {
       description:
         "Exploring how cognitive science can shape modern digital experiences.",
       tags: ["Design", "Psychology"],
+      contentType: "video",
     },
     {
       id: 6,
@@ -88,13 +91,51 @@ export default function ContentLibrary() {
       title: "AI and the Art of Creativity",
       description:
         "How artificial intelligence is transforming creative expression and collaboration.",
-      tags: ["AI", "Creativity"],
+      tags: ["AI", "Development"],
+      contentType: "pdf",
     },
   ];
 
+  const handleTagClick = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleClearAll = () => {
+    setSelectedTags([]);
+  };
+
+  const handleRemoveTag = (tag) => {
+    setSelectedTags(selectedTags.filter((t) => t !== tag));
+  };
+
+  const filteredVaults =
+    selectedTags.length === 0
+      ? latestVaults
+      : latestVaults.filter((vault) =>
+          vault.tags.some((t) => selectedTags.includes(t))
+        );
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+
+    if (!email) {
+      alert("Please enter your email before subscribing!");
+      return;
+    }
+
+    console.log("Subscribed with email:", email);
+    alert(`Thanks for subscribing, ${email}!`);
+
+    setEmail(""); // clear input
+  };
+
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
-      {/* === Header Section (Full Width Image) === */}
+      {/* === Header Section === */}
       <div className="w-full">
         <img
           src={contentHeader.src || contentHeader}
@@ -103,21 +144,17 @@ export default function ContentLibrary() {
         />
       </div>
 
-      {/* === Layered Backgrounds for Content === */}
       <div className="relative z-10">
         <div
           className="absolute inset-0 -z-10"
           style={{
-            backgroundImage: `
-              url(${contentBg})
-            `,
+            backgroundImage: `url(${contentBg})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "top bottom",
           }}
         ></div>
 
-        {/* === Page Content === */}
         <div className="px-4 md:px-8 lg:px-16">
           {/* Search & Filter Section */}
           <div className="pt-20 flex flex-col items-center justify-center">
@@ -129,57 +166,90 @@ export default function ContentLibrary() {
               collection
             </p>
 
+            {/* Category Buttons */}
             <div className="w-full flex items-center justify-center gap-5">
               <div className="w-32 h-12 px-2 flex items-center justify-center bg-[#C12E83] text-[#F4F4F3] text-base font-medium font-unbounded">
                 All Content
               </div>
-
               <div className="w-28 h-12 flex items-center justify-center gap-2 bg-[#C6C6C6] text-[#727272] text-base font-medium font-unbounded">
-                <img src={videoIcon} alt="" className="w-5 h-5" />
-                Video
+                <img src={videoIcon} alt="" className="w-5 h-5" /> Video
               </div>
-
               <div className="w-28 h-12 flex items-center justify-center gap-2 bg-[#C6C6C6] text-[#727272] text-base font-medium font-unbounded">
-                <img src={pdfIcon} alt="" className="w-5 h-5" />
-                PDFs
+                <img src={pdfIcon} alt="" className="w-5 h-5" /> PDFs
               </div>
-
               <div className="w-32 h-12 flex items-center justify-center gap-2 bg-[#C6C6C6] text-[#727272] text-base font-medium font-unbounded">
-                <img src={photosIcon} alt="" className="w-5 h-5" />
-                Photos
+                <img src={photosIcon} alt="" className="w-5 h-5" /> Photos
               </div>
-
               <div className="w-28 h-12 flex items-center justify-center gap-2 bg-[#C6C6C6] text-[#727272] text-base font-medium font-unbounded">
-                <img src={textIcon} alt="" className="w-5 h-5" />
-                Text
+                <img src={textIcon} alt="" className="w-5 h-5" /> Text
               </div>
             </div>
 
-            <div className="bg-[#1A0E1E]/70 px-16 pb-10 pt-6 mt-14 flex flex-col justify-center items-start gap-4 max-w-7xl">
-              <div className="text-[#F4F4F3] text-lg font-normal font-unbounded">
-                Filters
+            {/* Filters */}
+            <div className="bg-[#1A0E1E]/70 px-16 pb-10 pt-6 mt-14 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
+              <div className="flex items-center justify-start gap-3 w-full">
+                <div className="text-[#F4F4F3] text-lg font-normal font-unbounded">
+                  Filters
+                </div>
+
+                {selectedTags.length > 0 && (
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={handleClearAll}
+                      className="bg-[#C12E83] text-white px-3 py-1 text-sm font-unbounded flex items-center gap-2"
+                    >
+                      ✕ Clear All
+                    </button>
+                    <span className="text-[#F6FF1F] text-sm font-unbounded outline outline-1 outline-offset-[-1px] outline-[#F6FF1F] px-[11px] py-1">
+                      {selectedTags.length} filter
+                      {selectedTags.length > 1 ? "s" : ""} active
+                    </span>
+                  </div>
+                )}
               </div>
 
+              {/* Tag List */}
               <div className="flex flex-wrap gap-3">
-                {tags.map((tag, index) => (
-                  <div
-                    key={index}
-                    className="bg-black/0 outline outline-1 outline-offset-[-1px] outline-[#E5E7EB] px-3.5 py-1.5"
-                  >
-                    <div className="text-[#C6C6C6] text-xs font-normal font-unbounded">
+                {tags.map((tag, index) => {
+                  const isSelected = selectedTags.includes(tag);
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => handleTagClick(tag)}
+                      className={`cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] ${
+                        isSelected
+                          ? "bg-yellow-300 text-black"
+                          : "bg-transparent text-[#C6C6C6]"
+                      } text-xs font-unbounded`}
+                    >
                       {tag}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+
+              {/* Selected Tags (below filter area) */}
+              {selectedTags.length > 0 && (
+                <div className="flex flex-wrap gap-3 pt-4">
+                  {selectedTags.map((tag) => (
+                    <div
+                      key={tag}
+                      className="bg-[#C12E83] text-white px-3 py-1 text-xs font-unbounded flex items-center gap-2"
+                    >
+                      {tag}
+                      <button onClick={() => handleRemoveTag(tag)}>✕</button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
+          {/* Vault Cards */}
           <div className="flex items-start justify-center gap-6 pt-32">
-            {/* Latest Vaults */}
             <div className="pb-12">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {latestVaults.map((vault) => (
+                {filteredVaults.map((vault) => (
                   <div
                     key={vault.id}
                     className="w-80 border border-[#2C1B2C] flex flex-col h-[420px]"
@@ -212,7 +282,7 @@ export default function ContentLibrary() {
                         </div>
                       </div>
                       <button
-                        onClick={handleGotoDetails}
+                        onClick={() => handleGotoDetails(vault.id)}
                         className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
                       >
                         View
@@ -222,62 +292,77 @@ export default function ContentLibrary() {
                 ))}
               </div>
             </div>
-            {/* Right - Weeks Highlights */}
-            <div className="w-64 h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-offset-[-1px] outline-[#FF80EB]">
-              <div className="flex flex-col items-center justify-center">
-                <h1 className="text-[#F4F4F3] text-lg font-normal font-unbounded py-8">
-                  Week's highlights
-                </h1>
 
-                <img className="w-28 h-16 relative" src={featuredImg1} />
-                <div className="text-[#F4F4F3] text-xs font-medium font-unbounded leading-7 pt-3">
-                  Digital Art Revolution
-                </div>
+            {/* Hide Highlights when filtering */}
+            {selectedTags.length === 0 && (
+              <div className="w-64 h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB]">
+                <div className="flex flex-col items-center justify-center">
+                  <h1 className="text-[#F4F4F3] text-lg font-normal font-unbounded py-8">
+                    Week's highlights
+                  </h1>
 
-                <div className="px-5 py-1 outline outline-1 outline-offset-[-1px] outline-[#FF80EB] inline-flex justify-center items-center gap-2.5 mt-2">
-                  <div className="text-center text-white text-sm font-normal font-unbounded">
-                    View
+                  <img className="w-28 h-16 relative" src={featuredImg1} />
+                  <div className="text-[#F4F4F3] text-xs font-medium font-unbounded leading-7 pt-3">
+                    Digital Art Revolution
+                  </div>
+
+                  <div
+                    onClick={() => handleGotoDetails(vault.id)}
+                    className="px-5 py-1 outline outline-1 outline-[#FF80EB] inline-flex justify-center items-center gap-2.5 mt-2"
+                  >
+                    <div className="text-center text-white text-sm font-normal font-unbounded">
+                      View
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* Right Arrow */}
-              <div className="absolute top-28 right-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                <img src={rightIcon} alt="" className="w-[5px] h-2.5" />
-              </div>
-              {/* Left Arrow */}
-              <div className="absolute top-28 left-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                <img src={leftIcon} alt="" className="w-[5px] h-2.5" />
-              </div>
+                <div className="absolute top-28 right-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
+                  <img src={rightIcon} alt="" className="w-[5px] h-2.5" />
+                </div>
+                <div className="absolute top-28 left-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
+                  <img src={leftIcon} alt="" className="w-[5px] h-2.5" />
+                </div>
 
-              {/* Dots */}
-              <div className="left-[105px] top-[250px] absolute inline-flex justify-center items-center gap-2.5">
-                <div className="w-3.5 h-3.5 bg-[#FF80EB] rounded-full" />
-                <div className="w-2.5 h-2.5 bg-[#D9D9D9] rounded-full" />
-                <div className="w-[5px] h-[5px] bg-[#D9D9D9] rounded-full" />
+                <div className="left-[105px] top-[250px] absolute inline-flex justify-center items-center gap-2.5">
+                  <div className="w-3.5 h-3.5 bg-[#FF80EB] rounded-full" />
+                  <div className="w-2.5 h-2.5 bg-[#D9D9D9] rounded-full" />
+                  <div className="w-[5px] h-[5px] bg-[#D9D9D9] rounded-full" />
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
-          <div className="flex flex-col items-center justify-center">
-            <div className="px-8 py-3.5 text-center outline outline-2 outline-offset-[-1px] outline-[#EB4DAC] text-white text-sm font-unbounded mb-64 mt-8">
-              Load More Content
-            </div>
-            <div className=" text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
-              Want More? Sign Up for Updates
-            </div>
-            <div className=" text-[#C6C6C6] text-base font-normal font-unbounded leading-normal py-5">
-              Get notified about new content and exclusive releases
-            </div>
+          {/* Hide below section when filtering */}
+          {selectedTags.length === 0 && (
+            <div className="flex flex-col items-center justify-center">
+              <div className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded mb-64 mt-8">
+                Load More Content
+              </div>
 
-            <div className="flex items-center justify-center pt-5 pb-44 gap-5">
-              <div className="w-72 h-12 justify-center text-gray-400 text-base font-normal font-['Unbounded'] leading-normal">
-                Enter your email
+              {/* Subscribe section */}
+              <div className="text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
+                Want More? Sign Up for Updates
               </div>
-              <div className="w-28 h-6 bg-yellow-300 border-gray-200 text-center justify-start text-black text-base font-medium font-['Unbounded']">
-                Subscribe
+              <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal py-5">
+                Get notified about new content and exclusive releases
+              </div>
+
+              <div className="flex items-center justify-center pt-5 pb-44 gap-5">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
+                />
+                <button
+                  onClick={handleSubscribe}
+                  className="px-10 py-3 bg-[#F6FF1F] text-black text-base font-medium font-unbounded transition"
+                >
+                  Subscribe
+                </button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
