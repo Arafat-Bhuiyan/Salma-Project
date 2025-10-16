@@ -4,7 +4,7 @@ import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import featuredImg2 from "@/assets/images/featuredImg2.jpg";
 import featuredImg3 from "@/assets/images/featuredImg3.jpg";
 import featuredImg4 from "@/assets/images/featuredImg4.jpg";
-import { useNavigate } from "react-router-dom";
+import { ScrollRestoration, useNavigate } from "react-router-dom";
 import videoIcon from "@/assets/icons/video.svg";
 import photosIcon from "@/assets/icons/photos.svg";
 import pdfIcon from "@/assets/icons/pdf.svg";
@@ -12,6 +12,7 @@ import textIcon from "@/assets/icons/text.svg";
 import rightIcon from "@/assets/icons/right.svg";
 import leftIcon from "@/assets/icons/left.svg";
 import { useState } from "react";
+import { Scroll } from "lucide-react";
 
 export default function ContentLibrary() {
   const [email, setEmail] = useState("");
@@ -42,57 +43,121 @@ export default function ContentLibrary() {
   const latestVaults = [
     {
       id: 1,
+      type: "pdf",
       image: featuredImg3,
       title: "Digital Preservation Tools",
+      subtitle: "TECHNOLOGY IN CULTURAL HERITAGE",
       description:
         "How technology is helping preserve artistic and historical materials.",
       tags: ["Technology", "Science"],
-      contentType: "pdf",
+      fileUrl: "https://example.com/digital-preservation-tools.pdf",
+      relatedContent: [
+        {
+          id: 101,
+          title: "Preserving the Past Digitally",
+          image: featuredImg1,
+          tags: ["History", "Digital"],
+        },
+      ],
     },
     {
       id: 2,
+      type: "photo",
       image: featuredImg4,
       title: "Art in the Archives",
+      subtitle: "CREATIVITY MEETS HISTORY",
       description:
         "Exploring how artists reinterpret archival materials for modern times.",
       tags: ["Art", "History"],
-      contentType: "photo",
+      fileUrl: "https://example.com/art-in-the-archives.pdf",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      relatedContent: [
+        {
+          id: 102,
+          title: "Reimagining the Archives",
+          image: featuredImg3,
+          tags: ["Art", "Culture"],
+        },
+      ],
     },
     {
       id: 3,
+      type: "video",
       image: featuredImg2,
       title: "Design Vault: Timeless Creations",
+      subtitle: "A SHOWCASE OF DECADES OF DESIGN",
       description:
         "A showcase of creative works and their impact through the decades.",
       tags: ["Design", "Philosophy"],
-      contentType: "video",
+      fileUrl: "https://example.com/design-vault.pdf",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      relatedContent: [
+        {
+          id: 103,
+          title: "Design that Lasts",
+          image: featuredImg4,
+          tags: ["Design", "Inspiration"],
+        },
+      ],
     },
     {
       id: 4,
+      type: "photo",
       image: featuredImg1,
       title: "The Future of Curation",
-      description:
-        "New approaches to organizing and sharing digital knowledge.",
+      subtitle: "NEW APPROACHES IN DIGITAL ORGANIZATION",
+      description: "New approaches to organizing and sharing digital knowledge.",
       tags: ["Technology", "Philosophy"],
-      contentType: "photo",
+      fileUrl: "https://example.com/future-of-curation.pdf",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      relatedContent: [
+        {
+          id: 104,
+          title: "Smart Collections",
+          image: featuredImg2,
+          tags: ["AI", "Knowledge"],
+        },
+      ],
     },
     {
       id: 5,
+      type: "video",
       image: featuredImg2,
       title: "Designing for the Human Mind",
+      subtitle: "COGNITIVE DESIGN PRINCIPLES IN ACTION",
       description:
         "Exploring how cognitive science can shape modern digital experiences.",
       tags: ["Design", "Psychology"],
-      contentType: "video",
+      fileUrl: "https://example.com/designing-for-the-human-mind.pdf",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      relatedContent: [
+        {
+          id: 105,
+          title: "Human-Centered Design",
+          image: featuredImg3,
+          tags: ["UX", "Behavior"],
+        },
+      ],
     },
     {
       id: 6,
+      type: "pdf",
       image: featuredImg3,
       title: "AI and the Art of Creativity",
+      subtitle: "WHERE MACHINE INTELLIGENCE MEETS IMAGINATION",
       description:
         "How artificial intelligence is transforming creative expression and collaboration.",
       tags: ["AI", "Development"],
-      contentType: "pdf",
+      fileUrl: "https://example.com/ai-art-creativity.pdf",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      relatedContent: [
+        {
+          id: 106,
+          title: "The Future of AI Art",
+          image: featuredImg4,
+          tags: ["AI", "Creativity"],
+        },
+      ],
     },
   ];
 
@@ -135,6 +200,7 @@ export default function ContentLibrary() {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
+      <ScrollRestoration />
       {/* === Header Section === */}
       <div className="w-full">
         <img

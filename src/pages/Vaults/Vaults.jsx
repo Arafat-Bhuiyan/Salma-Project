@@ -1,12 +1,12 @@
 import vaultsHeaderImg from "@/assets/images/vaults_header.png";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
-import { Search } from "lucide-react";
+import { Scroll, Search } from "lucide-react";
 import { useState } from "react";
 import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import featuredImg2 from "@/assets/images/featuredImg2.jpg";
 import featuredImg3 from "@/assets/images/featuredImg3.jpg";
 import featuredImg4 from "@/assets/images/featuredImg4.jpg";
-import { useNavigate } from "react-router-dom";
+import { ScrollRestoration, useNavigate } from "react-router-dom";
 
 export default function Vaults() {
   const [topics, setTopics] = useState([
@@ -92,6 +92,7 @@ export default function Vaults() {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
+      <ScrollRestoration />
       {/* === Header Section (Full Width Image) === */}
       <div className="w-full">
         <img
