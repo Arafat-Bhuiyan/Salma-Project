@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import rightArrow from "@/assets/images/right.svg";
-import leftArrow from "@/assets/images/left.svg";
+import rightArrow from "@/assets/icons/right.svg";
+import leftArrow from "@/assets/icons/left.svg";
 
 const valuesData = [
   {
@@ -108,7 +108,7 @@ export const AboutCoreValues = () => {
       {/* Right Arrow */}
       <div
         onClick={handleNext}
-        className="w-12 h-12 px-4 py-3 left-[1377px] top-[275px] absolute flex justify-center items-center bg-[#D9D9D9]/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] cursor-pointer hover:bg-fuchsia-400/20 transition-all"
+        className="w-12 h-12 px-4 py-3 right-3 top-[275px] absolute flex justify-center items-center bg-[#D9D9D9]/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] cursor-pointer hover:bg-fuchsia-400/20 transition-all"
       >
         <img src={rightArrow} alt="Next" className="w-4 h-6" />
       </div>

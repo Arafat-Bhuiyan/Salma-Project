@@ -6,8 +6,8 @@ import featuredImg4 from "@/assets/images/featuredImg4.jpg";
 import detailImage from "@/assets/images/detailImage.png";
 import authorProfile from "@/assets/images/author-profile.png";
 import { useNavigate } from "react-router-dom";
-import like from "@/assets/images/like.svg";
-import share from "@/assets/images/share.svg";
+import like from "@/assets/icons/like.svg";
+import share from "@/assets/icons/share.svg";
 
 export function VaultDetail() {
   const navigate = useNavigate();
