@@ -1,12 +1,9 @@
 import aboutBg from "@/assets/images/aboutPageBg.png";
 import officeTeamMeeting from "@/assets/images/office-team-meeting.png";
 import { AboutCoreValues } from "@/components/AboutCoreValues";
+import { Link } from "react-router-dom";
 
 export default function About() {
-  // 🟣 Scroll to top function
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
   return (
     <div className="relative w-full min-h-screen">
       {/* Single Background for entire page */}
@@ -93,25 +90,28 @@ export default function About() {
           <div className="relative flex items-center justify-center px-24 py-10 bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] overflow-hidden">
             {/* Main Container */}
             <div className="text-center max-w-6xl py-28 px-80 flex flex-col gap-12 justify-center items-center">
-              <div
-                data-aos="fade-up"
-                data-aos-duration="1000"
-                className=" bg-[#FF80EB] w-[475px] h-[70px] flex items-center justify-center"
-              >
-                <div className="justify-start text-[#231D2A] text-3xl font-medium font-unbounded leading-loose">
-                  Our Mission and Vision
+              <Link to="/our-mission">
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="1000"
+                  className=" bg-[#FF80EB] active:bg-[#C12E83] w-[475px] h-[70px] flex items-center justify-center"
+                >
+                  <div className="justify-start text-[#231D2A] text-3xl font-medium font-unbounded leading-loose">
+                    Our Mission and Vision
+                  </div>
                 </div>
-              </div>
+              </Link>
 
-              <button
-                onClick={scrollToTop}
-                data-aos="fade-up"
-                data-aos-delay="200"
-                data-aos-duration="1200"
-                className="border-2 border-[#FF80EB] text-white w-[475px] h-[70px] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none transition-colors text-3xl font-medium font-unbounded leading-loose flex items-center justify-center"
-              >
-                About us
-              </button>
+              <Link to="/about-us-details">
+                <button
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                  data-aos-duration="1200"
+                  className="border-2 border-[#FF80EB] text-white w-[475px] h-[70px] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none transition-colors text-3xl font-medium font-unbounded leading-loose flex items-center justify-center"
+                >
+                  About us
+                </button>
+              </Link>
             </div>
           </div>
         </div>
