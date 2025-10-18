@@ -5,6 +5,15 @@ import "./index.css";
 import router from "./router/Routes.jsx";
 import { Provider } from "react-redux";
 import { store } from "./Redux/store";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+// Initialize AOS globally
+AOS.init({
+  duration: 1000,
+  once: true,
+  offset: 100,
+});
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

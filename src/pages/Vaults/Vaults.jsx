@@ -159,6 +159,9 @@ export default function Vaults() {
               {featuredVaults.map((vault) => (
                 <div
                   key={vault.id}
+                  data-aos="fade-up"
+                  data-aos-duration="1500"
+                  data-aos-delay="200"
                   className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)]"
                 >
                   <div className="relative h-64 overflow-hidden ">
@@ -202,7 +205,12 @@ export default function Vaults() {
             <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
               Latest Vaults
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div
+              data-aos="fade-up"
+              data-aos-duration="2000"
+              data-aos-delay="300"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
               {latestVaults.map((vault) => (
                 <div
                   key={vault.id}

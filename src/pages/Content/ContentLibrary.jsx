@@ -189,9 +189,7 @@ export default function ContentLibrary() {
   const contentFilteredVaults =
     selectedContentType === "all"
       ? latestVaults
-      : latestVaults.filter(
-          (vault) => vault.type === selectedContentType
-        );
+      : latestVaults.filter((vault) => vault.type === selectedContentType);
 
   const noContentFound = contentFilteredVaults.length === 0;
 
@@ -253,10 +251,19 @@ export default function ContentLibrary() {
           {/* === CONTENT TYPE FILTER MODE === */}
           {filterMode === "content" && (
             <div className="py-16 flex flex-col items-center justify-center">
-              <h1 className="text-[#F4F4F3] text-6xl font-normal font-unbounded leading-[60px]">
+              <h1
+                data-aos="fade-up"
+                data-aos-duration="1200"
+                className="text-[#F4F4F3] text-6xl font-normal font-unbounded leading-[60px]"
+              >
                 Explore Content Library
               </h1>
-              <p className="text-[#C6C6C6] text-xl font-normal font-unbounded leading-7 pt-2 pb-12">
+              <p
+                data-aos="fade-up"
+                data-aos-delay="200"
+                data-aos-duration="1400"
+                className="text-[#C6C6C6] text-xl font-normal font-unbounded leading-7 pt-2 pb-12"
+              >
                 Discover videos, PDFs, photos, and more in our futuristic
                 digital collection
               </p>
@@ -298,6 +305,9 @@ export default function ContentLibrary() {
                   {contentFilteredVaults.map((vault) => (
                     <div
                       key={vault.id}
+                      data-aos="fade-up"
+                      data-aos-duration="2000"
+                      data-aos-delay="200"
                       className="w-80 border border-[#2C1B2C] flex flex-col h-[420px]"
                     >
                       <div className="relative h-48 overflow-hidden">
@@ -365,10 +375,19 @@ export default function ContentLibrary() {
             <>
               {/* Search & Filter Section */}
               <div className="pt-20 flex flex-col items-center justify-center">
-                <h1 className="text-[#F4F4F3] text-6xl font-normal font-unbounded leading-[60px]">
+                <h1
+                  data-aos="fade-up"
+                  data-aos-duration="1200"
+                  className="text-[#F4F4F3] text-6xl font-normal font-unbounded leading-[60px]"
+                >
                   Explore Content Library
                 </h1>
-                <p className="text-[#C6C6C6] text-xl font-normal font-unbounded leading-7 pt-2 pb-12">
+                <p
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                  data-aos-duration="1400"
+                  className="text-[#C6C6C6] text-xl font-normal font-unbounded leading-7 pt-2 pb-12"
+                >
                   Discover videos, PDFs, photos, and more in our futuristic
                   digital collection
                 </p>
@@ -442,6 +461,9 @@ export default function ContentLibrary() {
                     {filteredVaults.map((vault) => (
                       <div
                         key={vault.id}
+                        data-aos="fade-up"
+                        data-aos-duration="2000"
+                        data-aos-delay="200"
                         className="w-80 border border-[#2C1B2C] flex flex-col h-[420px]"
                       >
                         <div className="relative h-48 overflow-hidden">

@@ -12,6 +12,7 @@ import TermsConditions from "@/pages/Terms&Privacy/Terms";
 import Contact from "@/pages/Contact/Contact";
 import ContentDetails from "@/pages/Content/ContentDetails";
 import ContentLibrary from "@/pages/Content/ContentLibrary";
+import AboutUsDetails from "@/pages/About/AboutUsDetails";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "vault-detail", element: <VaultDetail /> },
       { path: "dispatches", element: <Dispatches /> },
       { path: "about", element: <About /> },
+      { path: "about-us-details", element: <AboutUsDetails /> },
       { path: "contact", element: <Contact /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },

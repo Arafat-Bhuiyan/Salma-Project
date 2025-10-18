@@ -147,12 +147,17 @@ export default function Dispatches() {
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {featuredPosts.map((post) => (
-              <div key={post.id}>
+              <div
+                key={post.id}
+                data-aos="fade-up"
+                data-aos-duration="1500"
+                data-aos-delay="200"
+              >
                 <div className="relative h-64 overflow-hidden shadow-[0px_0px_20px_0px_rgba(92,66,181,1.00)]">
                   <img
                     src={post.image || "/placeholder.svg"}
                     alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="bg-[#5C42B5] p-6">
@@ -186,7 +191,12 @@ export default function Dispatches() {
           <h2 className="text-white text-2xl font-bold font-poppins leading-loose mb-6">
             Latest Posts
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            data-aos="fade-up"
+            data-aos-duration="2000"
+            data-aos-delay="300"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {latestPosts.map((post) => (
               <div
                 key={post.id}
@@ -197,7 +207,7 @@ export default function Dispatches() {
                   <img
                     src={post.image || "/placeholder.svg"}
                     alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
 
