@@ -68,7 +68,7 @@ export function Home() {
           </p>
 
           <Link
-            to="/signup"
+            to="/contact"
             className="w-80 h-14 px-8 py-3 bg-[#F6FF1F] text-black text-lg font-medium font-unbounded"
           >
             Get Started

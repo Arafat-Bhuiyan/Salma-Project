@@ -1,5 +1,6 @@
 import { useState } from "react";
 import bgImg from "@/assets/images/bgImg.png";
+import { ScrollRestoration } from "react-router-dom";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -47,6 +48,7 @@ const Contact = () => {
         backgroundPosition: "center",
       }}
     >
+      <ScrollRestoration />
       {/* Content */}
       <div className="">
         <h1 className="text-[#FF39B0] text-5xl font-semibold font-unbounded pt-20 pb-20">

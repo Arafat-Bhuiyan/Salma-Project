@@ -9,7 +9,7 @@ export const Navbar = () => {
     navigate("/login");
   };
   return (
-    <div className="bg-[#1A0E1E]">
+    <div className="fixed top-0 left-0 w-full bg-[#1A0E1E] z-50">
       <div className="py-2 w-10/12 mx-auto">
         <div className="flex justify-between items-center">
           <div>

@@ -118,12 +118,12 @@ export default function Vaults() {
           {/* Search & Filter Section */}
           <div className="pt-10">
             <div className="">
-              <div className="w-full bg-[#C6C6C6] flex justify-start items-center gap-2.5 px-10 py-3">
+              <div className="w-full bg-white rounded-xl flex justify-start items-center gap-2.5 px-10 py-3">
                 <Search size={16} color="#727272" />
                 <input
                   type="text"
                   placeholder="Search vaults..."
-                  className="text-[#727272] placeholder:text-[#727272] text-base font-normal font-unbounded leading-normal w-full bg-[#C6C6C6] pl-1 focus:outline-none focus:ring-0"
+                  className="text-[#727272] placeholder:text-[#727272] text-base font-normal font-unbounded leading-normal w-full bg-white pl-1 focus:outline-none focus:ring-0"
                 />
               </div>
             </div>
@@ -140,7 +140,7 @@ export default function Vaults() {
                     className={`px-4 py-2 rounded-md text-xs font-medium font-unbounded leading-none transition-colors duration-200 ${
                       topic.active
                         ? "bg-[#C0FF4C] text-black"
-                        : "bg-[#C6C6C6] text-[#727272]"
+                        : "bg-white text-[#727272]"
                     }`}
                   >
                     {topic.name}
