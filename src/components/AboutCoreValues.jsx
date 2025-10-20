@@ -1,59 +1,43 @@
 import React, { useState } from "react";
 import rightArrow from "@/assets/icons/right.svg";
 import leftArrow from "@/assets/icons/left.svg";
+import partner1 from "@/assets/images/partner-1.png";
+import partner2 from "@/assets/images/partner-2.png";
+import partner3 from "@/assets/images/partner-3.png";
+import partner4 from "@/assets/images/partner-4.png";
+import partner5 from "@/assets/images/partner-5.png";
 
 const valuesData = [
   {
-    title: "Innovation",
-    description:
-      "We constantly seek new and better ways to help creators, embracing technology and fresh ideas to stay ahead.",
+    img: partner1,
   },
   {
-    title: "Empowerment",
-    description:
-      "We empower our users by providing them with the tools and community support they need to succeed.",
+    img: partner2,
   },
   {
-    title: "Community",
-    description:
-      "We foster a collaborative and supportive environment where every voice is heard and every contribution is valued.",
+    img: partner3,
   },
   {
-    title: "Transparency",
-    description:
-      "We believe honesty builds trust, and we ensure that our processes and communication are open and clear.",
+    img: partner4,
   },
   {
-    title: "Creativity",
-    description:
-      "We celebrate imagination and encourage creators to express their unique ideas without limitations.",
+    img: partner5,
   },
   {
-    title: "Sustainability",
-    description:
-      "We are committed to building a platform that supports long-term growth and a positive impact on society.",
+    img: partner3,
   },
   {
-    title: "Collaboration",
-    description:
-      "We value teamwork and believe great things happen when diverse minds come together with a shared purpose.",
+    img: partner4,
   },
   {
-    title: "Integrity",
-    description:
-      "We uphold strong moral principles and always strive to do the right thing for our users and community.",
-  },
-  {
-    title: "Growth",
-    description:
-      "We constantly learn, adapt, and innovate to help our users and our platform evolve together.",
+    img: partner5,
   },
 ];
 
 export const AboutCoreValues = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const cardsPerPage = 3;
+  const cardsPerPage = 5;
   const totalDots = Math.ceil(valuesData.length / cardsPerPage);
 
   const handleNext = () => {
@@ -70,37 +54,33 @@ export const AboutCoreValues = () => {
     );
   };
 
-  const handleDotClick = (index) => {
-    setCurrentIndex(index * cardsPerPage);
-  };
+  // const handleDotClick = (index) => {
+  //   setCurrentIndex(index * cardsPerPage);
+  // };
 
   const visibleCards = valuesData.slice(
     currentIndex,
     currentIndex + cardsPerPage
   );
 
-  const activeDot = Math.floor(currentIndex / cardsPerPage);
+  // const activeDot = Math.floor(currentIndex / cardsPerPage);
 
   return (
-    <div className="w-full h-[535px] relative bg-[#1A0E1E]/70 shadow-[0px_-2px_132.4px_1px_rgba(18,18,18,1)] overflow-hidden">
+    <div className="w-full h-[480px] relative bg-[#1A0E1E]/70 shadow-[0px_-2px_132.4px_1px_rgba(18,18,18,1)] overflow-hidden">
       {/* Title */}
       <div className="text-[#C6C6C6] text-5xl font-medium font-unbounded leading-loose flex items-center justify-center py-14">
-        Our Core Values
+        Our Partners
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-3 px-24 gap-6 transition-all duration-500 ease-in-out">
+      <div className="grid grid-cols-5 gap-2 transition-all duration-500 ease-in-out">
         {visibleCards.map((card, index) => (
-          <div
-            key={index}
-            className="bg-[#2C1B2C] shadow-[0px_0px_20px_0px_rgba(255,57,176,1)] text-white text-center px-5 py-9"
-          >
-            <div className="text-3xl font-medium font-unbounded leading-loose">
-              {card.title}
-            </div>
-            <div className="text-base font-normal font-unbounded leading-normal">
-              {card.description}
-            </div>
+          <div key={index} className="flex items-center justify-center">
+            <img
+              className="w-48 h-14 object-contain"
+              src={card.img}
+              alt={`Partner ${index}`}
+            />
           </div>
         ))}
       </div>
@@ -108,7 +88,7 @@ export const AboutCoreValues = () => {
       {/* Right Arrow */}
       <div
         onClick={handleNext}
-        className="w-12 h-12 px-4 py-3 right-3 top-[275px] absolute flex justify-center items-center bg-[#D9D9D9]/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] cursor-pointer hover:bg-fuchsia-400/20 transition-all"
+        className="w-12 h-12 px-4 py-3 right-3 top-[215px] absolute flex justify-center items-center bg-[#D9D9D9]/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] cursor-pointer hover:bg-fuchsia-400/20 transition-all"
       >
         <img src={rightArrow} alt="Next" className="w-4 h-6" />
       </div>
@@ -116,13 +96,13 @@ export const AboutCoreValues = () => {
       {/* Left Arrow */}
       <div
         onClick={handlePrev}
-        className="w-12 h-12 px-4 py-3 left-[16px] top-[276px] absolute origin-top-left bg-[#D9D9D9]/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] flex justify-center items-center cursor-pointer hover:bg-fuchsia-400/20 transition-all"
+        className="w-12 h-12 px-4 py-3 left-[16px] top-[216px] absolute origin-top-left bg-[#D9D9D9]/10 rounded-3xl outline outline-1 outline-offset-[-1px] outline-fuchsia-400 backdrop-blur-[6px] flex justify-center items-center cursor-pointer hover:bg-fuchsia-400/20 transition-all"
       >
         <img src={leftArrow} alt="Prev" className="w-4 h-6" />
       </div>
 
       {/* Carousel Dots */}
-      <div className="flex justify-center items-center gap-2.5 pt-14">
+      {/* <div className="flex justify-center items-center gap-2.5 pt-14">
         {Array.from({ length: totalDots }).map((_, dotIndex) => (
           <div
             key={dotIndex}
@@ -134,7 +114,7 @@ export const AboutCoreValues = () => {
             }`}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
