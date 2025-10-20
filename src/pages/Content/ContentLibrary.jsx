@@ -11,6 +11,7 @@ import pdfIcon from "@/assets/icons/pdf.svg";
 import textIcon from "@/assets/icons/text.svg";
 import rightIcon from "@/assets/icons/right.svg";
 import leftIcon from "@/assets/icons/left.svg";
+import views from "@/assets/icons/views.svg";
 import noContentImg from "@/assets/images/no-content.png";
 import { useState } from "react";
 
@@ -504,71 +505,81 @@ export default function ContentLibrary() {
                     ))}
                   </div>
                 </div>
-
-                {/* Week's Highlights */}
-                {selectedTags.length === 0 && (
-                  <div className="w-64 h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB]">
-                    <div className="flex flex-col items-center justify-center">
-                      <h1 className="text-[#F4F4F3] text-lg font-normal font-unbounded py-8">
-                        Week's highlights
-                      </h1>
-                      <img className="w-28 h-16 relative" src={featuredImg1} />
-                      <div className="text-[#F4F4F3] text-xs font-medium font-unbounded leading-7 pt-3">
-                        Digital Art Revolution
-                      </div>
-                      <div
-                        onClick={() => handleGotoDetails(1)}
-                        className="px-5 py-1 outline outline-1 outline-[#FF80EB] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
-                      >
-                        <div className="text-center text-white text-sm font-normal font-unbounded">
-                          View
-                        </div>
-                      </div>
-                    </div>
-                    <div className="absolute top-28 right-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                      <img src={rightIcon} alt="" className="w-[5px] h-2.5" />
-                    </div>
-                    <div className="absolute top-28 left-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                      <img src={leftIcon} alt="" className="w-[5px] h-2.5" />
-                    </div>
-                    <div className="left-[105px] top-[250px] absolute inline-flex justify-center items-center gap-2.5">
-                      <div className="w-3.5 h-3.5 bg-[#FF80EB] rounded-full" />
-                      <div className="w-2.5 h-2.5 bg-[#D9D9D9] rounded-full" />
-                      <div className="w-[5px] h-[5px] bg-[#D9D9D9] rounded-full" />
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Load More & Subscribe */}
               {selectedTags.length === 0 && (
-                <div className="flex flex-col items-center justify-center">
-                  <div className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded mb-64 mt-8 cursor-pointer">
+                <div className="flex flex-col items-center justify-between gap-20 mt-8">
+                  <div className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer">
                     Load More Content
                   </div>
 
-                  {/* Subscribe section */}
-                  <div className="text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
-                    Want More? Sign Up for Updates
-                  </div>
-                  <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal py-5">
-                    Get notified about new content and exclusive releases
+                  {/* Week's Highlights */}
+                  <div className="w-full max-w-7xl h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB]">
+                    <div className="flex items-start justify-center py-9 px-20 gap-9">
+                      <div className="flex flex-col items-start justify-start">
+                        <h1 className="text-[#F4F4F3] text-4xl font-semibold font-unbounded pb-8">
+                          Week's highlights
+                        </h1>
+                        <p className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-7">
+                          Digital Art Revolution
+                        </p>
+                        <p className=" text-[#FF39B0] text-base font-normal font-unbounded leading-none pt-5">
+                          Video
+                        </p>
+                        <div className="flex gap-2.5 py-5">
+                          <img src={views} alt="" />
+                          <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
+                            12650
+                          </p>
+                        </div>
+                        <div
+                          onClick={() => handleGotoDetails(1)}
+                          className="w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
+                        >
+                          <div className="text-center text-white text-2xl font-normal font-unbounded">
+                            View
+                          </div>
+                        </div>
+                      </div>
+                      <img
+                        className="w-[474px] h-64 relative shadow-[0px_0px_49.20000076293945px_0px_rgba(0,0,0,0.25)]"
+                        src={featuredImg1}
+                      />
+                    </div>
+
+                    <div className="absolute top-32 right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
+                      <img src={rightIcon} alt="" className="w-[5px] h-2.5" />
+                    </div>
+                    <div className="absolute top-32 left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
+                      <img src={leftIcon} alt="" className="w-[5px] h-2.5" />
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-center pt-5 pb-44 gap-5">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
-                      className="w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
-                    />
-                    <button
-                      onClick={handleSubscribe}
-                      className="px-10 py-3 bg-[#F6FF1F] text-black text-base font-medium font-unbounded transition"
-                    >
-                      Subscribe
-                    </button>
+                  <div>
+                    {/* Subscribe section */}
+                    <div className="text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
+                      Want More? Sign Up for Updates
+                    </div>
+                    <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal py-5">
+                      Get notified about new content and exclusive releases
+                    </div>
+
+                    <div className="flex items-center justify-center pt-5 pb-44 gap-5">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        className="w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
+                      />
+                      <button
+                        onClick={handleSubscribe}
+                        className="px-10 py-3 bg-[#F6FF1F] text-black text-base font-medium font-unbounded transition"
+                      >
+                        Subscribe
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
