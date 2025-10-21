@@ -215,12 +215,10 @@ export default function ContentLibrary() {
 
       <div className="relative z-10">
         <div
-          className="absolute inset-0 -z-10"
+          className="absolute inset-0 -z-10 bg-cover bg-no-repeat 
+  bg-[center_0px] 3xl:bg-[center_-400px]"
           style={{
             backgroundImage: `url(${contentBg})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "top bottom",
           }}
         ></div>
 
