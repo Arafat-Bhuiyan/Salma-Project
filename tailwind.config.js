@@ -106,6 +106,21 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    screens: {
+      // Mobile
+      "mobile-mini": "320px", // 320px ~ 480px
+      "mobile-max": "480px",
+
+      // Small tablet
+      "sm-tablet": "481px", // 481px ~ 639px
+      "sm-tablet-max": "639px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px", // default large desktop
+      "3xl": "1920px", // 👈 custom breakpoint for Full HD
+    },
   },
   plugins: [require("tailwindcss-animate")],
 };

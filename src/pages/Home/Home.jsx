@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 export function Home() {
   return (
     <div
-      className="relative w-full min-h-screen bg-cover bg-center bg-no-repeat"
+      className="relative w-full min-h-screen bg-cover bg-no-repeat 
+      bg-[center_0px] sm:bg-[center_0px] lg:bg-[center_-0px] 2xl:bg-[center_-63px] 3xl:bg-[center_-300px]" 
       style={{
         backgroundImage: `url(${bgImg})`,
-        backgroundPosition: "center -350px",
       }}
     >
       {/* Hero Section */}
