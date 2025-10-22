@@ -117,12 +117,12 @@ export default function LoginForm() {
               </button>
             </div>
 
-            <a
-              href="#"
+            {/* <Link
+              to="/forget-password"
               className="text-[#FF80EB] text-base font-medium font-poppins underline hover:text-fuchsia-300 transition-colors"
             >
               Forget your password
-            </a>
+            </Link> */}
           </div>
 
           {/* Submit Button */}

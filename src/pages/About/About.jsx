@@ -1,6 +1,6 @@
 import aboutBg from "@/assets/images/aboutPageBg.png";
 import officeTeamMeeting from "@/assets/images/office-team-meeting.png";
-import { AboutCoreValues } from "@/components/AboutCoreValues";
+import { AboutOurPartners } from "@/components/AboutOurPartners";
 import { Link } from "react-router-dom";
 
 export default function About() {
@@ -117,7 +117,7 @@ export default function About() {
         </div>
 
         {/* Section 3: Core Values */}
-        <AboutCoreValues />
+        <AboutOurPartners />
       </div>
     </div>
   );

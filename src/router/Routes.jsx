@@ -14,6 +14,10 @@ import ContentDetails from "@/pages/Content/ContentDetails";
 import ContentLibrary from "@/pages/Content/ContentLibrary";
 import AboutUsDetails from "@/pages/About/AboutUsDetails";
 import OurMission from "@/pages/About/OurMission";
+// import ForgetPassword from "@/pages/Auth/ForgetPassword";
+// import VerifyOtp from "@/pages/Auth/VerifyOTP";
+// import ResetPassword from "@/pages/Auth/ResetPassword";
+// import Welcome from "@/pages/Auth/Welcome";
 
 const router = createBrowserRouter([
   {
@@ -32,12 +36,29 @@ const router = createBrowserRouter([
       { path: "about-us-details", element: <AboutUsDetails /> },
       { path: "our-mission", element: <OurMission /> },
       { path: "contact", element: <Contact /> },
-      { path: "login", element: <Login /> },
-      { path: "signup", element: <SignUp /> },
       { path: "privacy", element: <PrivacyPolicy /> },
       { path: "terms", element: <TermsConditions /> },
       { path: "contact", element: <Contact /> },
-      {path: "content-details/:id", element: <ContentDetails />}
+      { path: "content-details/:id", element: <ContentDetails /> },
+      // auth routes
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <SignUp /> },
+      // {
+      //   path: "forget-password",
+      //   element: <ForgetPassword />,
+      // },
+      // {
+      //   path: "verify-otp",
+      //   element: <VerifyOtp />,
+      // },
+      // {
+      //   path: "reset-password",
+      //   element: <ResetPassword />,
+      // },
+      // {
+      //   path: "welcome",
+      //   element: <Welcome />,
+      // },
     ],
   },
 ]);
