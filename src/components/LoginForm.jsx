@@ -1,19 +1,52 @@
-"use client";
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "@/Redux/Api/authApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/Redux/features/authSlice";
+import { toast } from "react-toastify";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", { email, password });
-    // ✅ Clear input fields after submit
-    setEmail("");
-    setPassword("");
+
+    try {
+      const res = await login({ email, password }).unwrap();
+      console.log("Login response:", res);
+
+      // ✅ Backend response check
+      if (res?.success) {
+        // Save tokens & user to Redux
+        dispatch(
+          setCredentials({
+            access: res.data.access,
+            refresh: res.data.refresh,
+            user: res.data.user,
+          })
+        );
+
+        // ✅ Success toast
+        toast.success(res.message || "Login successful");
+
+        // ✅ Redirect after login
+        navigate("/");
+      } else {
+        toast.error(res?.message || "Invalid credentials");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      toast.error("Something went wrong while logging in");
+    } finally {
+      setEmail("");
+      setPassword("");
+    }
   };
 
   return (
@@ -54,7 +87,7 @@ export default function LoginForm() {
 
           {/* Password Field */}
           <div className="flex flex-col gap-2">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 relative">
               <label
                 htmlFor="password"
                 className="text-white text-base font-normal font-poppins"
@@ -62,14 +95,28 @@ export default function LoginForm() {
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-14 px-4 bg-transparent rounded-xl border-2 border-white text-white font-poppins focus:outline-none focus:border-[#FF80EB] transition-colors"
+                className="h-14 px-4 pr-12 bg-transparent rounded-xl border-2 border-white text-white font-poppins focus:outline-none focus:border-[#FF80EB] transition-colors"
                 required
               />
+
+              {/* Eye Icon */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 text-gray-400 hover:text-[#FF80EB] transition-colors"
+              >
+                {showPassword ? (
+                  <EyeOff color="#666666CC" />
+                ) : (
+                  <Eye color="#666666CC" />
+                )}
+              </button>
             </div>
+
             <a
               href="#"
               className="text-[#FF80EB] text-base font-medium font-poppins underline hover:text-fuchsia-300 transition-colors"

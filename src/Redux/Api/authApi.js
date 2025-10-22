@@ -2,9 +2,18 @@ import { api } from "./api";
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    // === LOGIN ===
     login: builder.mutation({
       query: (data) => ({
-        url: "/login/",
+        url: "/auth/login/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    // === SIGNUP ===
+    signup: builder.mutation({
+      query: (data) => ({
+        url: "/auth/signup/",
         method: "POST",
         body: data,
       }),
@@ -58,6 +67,7 @@ export const authApi = api.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useSignupMutation,
   useGetPrivacyPolicyQuery,
   useCreatePrivacyPolicyMutation,
   useUpdatePrivacyPolicyMutation,

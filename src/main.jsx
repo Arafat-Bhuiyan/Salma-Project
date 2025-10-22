@@ -4,9 +4,10 @@ import { RouterProvider } from "react-router-dom";
 import "./index.css";
 import router from "./router/Routes.jsx";
 import { Provider } from "react-redux";
-import { store } from "./Redux/Stores/store";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { store } from "./Redux/Stores/store";
+import { ToastContainer } from "react-toastify";
 
 // Initialize AOS globally
 AOS.init({
@@ -18,6 +19,7 @@ AOS.init({
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
+      <ToastContainer />
       <RouterProvider router={router} />
     </Provider>
   </StrictMode>

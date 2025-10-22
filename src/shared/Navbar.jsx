@@ -1,12 +1,25 @@
 import React, { use } from "react";
 import logo from "../assets/images/logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "@/Redux/features/authSlice";
+import { toast } from "react-toastify";
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Redux state থেকে auth check
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handleLogin = () => {
     navigate("/login");
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("Logged out successfully");
+    navigate("/");
   };
   return (
     <div className="fixed top-0 left-0 w-full bg-[#1A0E1E] z-50">
@@ -97,12 +110,22 @@ export const Navbar = () => {
             </NavLink>
           </div>
 
-          <button
-            onClick={handleLogin}
-            className="w-24 h-6 px-8 py-2.5 bg-[#FF80EB] border-stone-100 inline-flex justify-center items-center gap-2.5 text-center text-white text-sm font-medium font-unbounded active:bg-[#C12E83] transition-colors duration-200"
-          >
-            Login
-          </button>
+          {/* Conditional Button */}
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="w-24 h-6 px-8 py-2.5 bg-[#FF80EB] border-stone-100 inline-flex justify-center items-center gap-2.5 text-center text-white text-sm font-medium font-unbounded active:bg-[#C12E83] transition-colors duration-200"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="w-24 h-6 px-8 py-2.5 bg-[#FF80EB] border-stone-100 inline-flex justify-center items-center gap-2.5 text-center text-white text-sm font-medium font-unbounded active:bg-[#C12E83] transition-colors duration-200"
+            >
+              Login
+            </button>
+          )}
         </div>
       </div>
     </div>

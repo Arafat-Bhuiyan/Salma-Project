@@ -2,21 +2,66 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import google from "../assets/icons/google.svg";
 import apple from "../assets/icons/apple.svg";
+import { useSignupMutation } from "@/Redux/Api/authApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/Redux/features/authSlice";
+import { toast } from "react-toastify";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignupForm() {
   const [profileName, setProfileName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  // ✅ RTK Query mutation hook
+  const [signup, { isLoading }] = useSignupMutation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Signup attempt:", { profileName, email, password });
 
-    // Clear fields after submit
-    setProfileName("");
-    setEmail("");
-    setPassword("");
+    // Step 1️ Prepare payload according to backend fields
+    const signupData = {
+      full_name: profileName,
+      email,
+      password,
+      date_of_birth: "2000-01-01", // dummy or replace with DOB input later
+    };
+
+    try {
+      // Step 2️ Call RTK Query API
+      const res = await signup(signupData).unwrap();
+      console.log("Signup response:", res);
+
+      // Step 3️ Save token in Redux + localStorage if available
+      if (res?.access && res?.refresh) {
+        dispatch(setCredentials(res));
+        localStorage.setItem("auth", JSON.stringify(res));
+      }
+
+      // Step 4️ Success toast + redirect
+      toast.success("Signup successful!");
+      navigate("/"); // redirect to home/dashboard
+
+      // Step 5️ Clear fields
+      setProfileName("");
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      console.error("Signup error:", err);
+
+      // Step 6️ Error handling
+      if (err?.data?.email) {
+        toast.error(err.data.email[0]);
+      } else if (err?.data?.password) {
+        toast.error(err.data.password[0]);
+      } else {
+        toast.error("Signup failed. Please try again!");
+      }
+    }
   };
 
   const terms = () => {
@@ -93,17 +138,34 @@ export default function SignupForm() {
             >
               Create a password
             </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="h-14 px-6 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
-              pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
-              title="Use 8 or more characters with a mix of letters, numbers & symbols"
-              required
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-14 w-full px-6 pr-12 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
+                pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+                title="Use 8 or more characters with a mix of letters, numbers & symbols"
+                required
+              />
+
+              {/* Eye / EyeOff icon */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff color="#666666CC" />
+                ) : (
+                  <Eye color="#666666CC" />
+                )}
+              </button>
+            </div>
+
             <p className="text-white text-sm font-normal font-unbounded mt-1">
               Use 8 or more characters with a mix of letters, numbers & symbols
             </p>
@@ -123,11 +185,17 @@ export default function SignupForm() {
                 className="text-[#666666] text-base font-unbounded"
               >
                 By creating an account, you agree to the{" "}
-                <span onClick={terms} className="text-[#FF80EB] underline cursor-pointer">
+                <span
+                  onClick={terms}
+                  className="text-[#FF80EB] underline cursor-pointer"
+                >
                   Terms of Use
                 </span>{" "}
                 and{" "}
-                <span onClick={privacy} className="text-[#FF80EB] underline cursor-pointer">
+                <span
+                  onClick={privacy}
+                  className="text-[#FF80EB] underline cursor-pointer"
+                >
                   Privacy Policy
                 </span>
                 .
