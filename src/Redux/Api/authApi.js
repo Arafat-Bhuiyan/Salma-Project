@@ -23,6 +23,16 @@ export const authApi = api.injectEndpoints({
       query: () => "/partners/",
       providesTags: ["partners"],
     }),
+    // === CONTENTS ===
+    getContents: builder.query({
+      query: () => "/contents/",
+      providesTags: ["contents"],
+    }),
+    // === TAGS ===
+    getTags: builder.query({
+      query: () => "/tags/",
+      providesTags: ["tags"],
+    }),
 
     getPrivacyPolicy: builder.query({
       query: () => "/adminapi/privacy/",
@@ -80,4 +90,6 @@ export const {
   useCreateTermsMutation,
   useUpdateTermsMutation,
   useGetPartnersQuery,
+  useGetContentsQuery,
+  useGetTagsQuery,
 } = authApi;

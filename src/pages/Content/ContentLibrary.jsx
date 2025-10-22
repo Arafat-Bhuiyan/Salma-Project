@@ -1,9 +1,6 @@
 import contentHeader from "@/assets/images/content-header.png";
 import contentBg from "@/assets/images/content-bg.png";
 import featuredImg1 from "@/assets/images/featuredImg1.jpg";
-import featuredImg2 from "@/assets/images/featuredImg2.jpg";
-import featuredImg3 from "@/assets/images/featuredImg3.jpg";
-import featuredImg4 from "@/assets/images/featuredImg4.jpg";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
 import videoIcon from "@/assets/icons/video.svg";
 import photosIcon from "@/assets/icons/photos.svg";
@@ -14,6 +11,7 @@ import leftIcon from "@/assets/icons/left.svg";
 import views from "@/assets/icons/views.svg";
 import noContentImg from "@/assets/images/no-content.png";
 import { useState } from "react";
+import { useGetContentsQuery, useGetTagsQuery } from "@/Redux/Api/authApi";
 
 export default function ContentLibrary() {
   const [email, setEmail] = useState("");
@@ -21,150 +19,20 @@ export default function ContentLibrary() {
   const [filterMode, setFilterMode] = useState("tag"); // "tag" | "content"
   const [selectedContentType, setSelectedContentType] = useState("all");
   const navigate = useNavigate();
+  const { data, isLoading, isError } = useGetContentsQuery();
+  const contents = data?.data?.results || [];
+  const [visibleCount, setVisibleCount] = useState(9);
+  const {
+    data: tagsData,
+    isLoading: tagsLoading,
+    isError: tagsError,
+  } = useGetTagsQuery();
 
   const handleGotoDetails = (id) => {
     navigate(`/content-details/${id}`);
   };
 
-  const tags = [
-    "Cyberpunk",
-    "AI",
-    "Future",
-    "Design",
-    "Development",
-    "Digital",
-    "Experience",
-    "Generation",
-    "Handbook",
-    "Design Technology",
-    "Programming",
-    "Security",
-    "Media",
-    "Interactive",
-    "Innovation",
-  ];
-
-  const latestVaults = [
-    {
-      id: 1,
-      type: "pdf",
-      image: featuredImg3,
-      title: "Digital Preservation Tools",
-      subtitle: "TECHNOLOGY IN CULTURAL HERITAGE",
-      description:
-        "How technology is helping preserve artistic and historical materials.",
-      tags: ["Technology", "Science"],
-      fileUrl: "https://example.com/digital-preservation-tools.pdf",
-      relatedContent: [
-        {
-          id: 101,
-          title: "Preserving the Past Digitally",
-          image: featuredImg1,
-          tags: ["History", "Digital"],
-        },
-      ],
-    },
-    {
-      id: 2,
-      type: "photo",
-      image: featuredImg4,
-      title: "Art in the Archives",
-      subtitle: "CREATIVITY MEETS HISTORY",
-      description:
-        "Exploring how artists reinterpret archival materials for modern times.",
-      tags: ["Art", "History"],
-      fileUrl: "https://example.com/art-in-the-archives.pdf",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      relatedContent: [
-        {
-          id: 102,
-          title: "Reimagining the Archives",
-          image: featuredImg3,
-          tags: ["Art", "Culture"],
-        },
-      ],
-    },
-    {
-      id: 3,
-      type: "video",
-      image: featuredImg2,
-      title: "Design Vault: Timeless Creations",
-      subtitle: "A SHOWCASE OF DECADES OF DESIGN",
-      description:
-        "A showcase of creative works and their impact through the decades.",
-      tags: ["Design", "Philosophy"],
-      fileUrl: "https://example.com/design-vault.pdf",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      relatedContent: [
-        {
-          id: 103,
-          title: "Design that Lasts",
-          image: featuredImg4,
-          tags: ["Design", "Inspiration"],
-        },
-      ],
-    },
-    {
-      id: 4,
-      type: "photo",
-      image: featuredImg1,
-      title: "The Future of Curation",
-      subtitle: "NEW APPROACHES IN DIGITAL ORGANIZATION",
-      description:
-        "New approaches to organizing and sharing digital knowledge.",
-      tags: ["Technology", "Philosophy"],
-      fileUrl: "https://example.com/future-of-curation.pdf",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      relatedContent: [
-        {
-          id: 104,
-          title: "Smart Collections",
-          image: featuredImg2,
-          tags: ["AI", "Knowledge"],
-        },
-      ],
-    },
-    {
-      id: 5,
-      type: "video",
-      image: featuredImg2,
-      title: "Designing for the Human Mind",
-      subtitle: "COGNITIVE DESIGN PRINCIPLES IN ACTION",
-      description:
-        "Exploring how cognitive science can shape modern digital experiences.",
-      tags: ["Design", "Psychology"],
-      fileUrl: "https://example.com/designing-for-the-human-mind.pdf",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      relatedContent: [
-        {
-          id: 105,
-          title: "Human-Centered Design",
-          image: featuredImg3,
-          tags: ["UX", "Behavior"],
-        },
-      ],
-    },
-    {
-      id: 6,
-      type: "pdf",
-      image: featuredImg3,
-      title: "AI and the Art of Creativity",
-      subtitle: "WHERE MACHINE INTELLIGENCE MEETS IMAGINATION",
-      description:
-        "How artificial intelligence is transforming creative expression and collaboration.",
-      tags: ["AI", "Development"],
-      fileUrl: "https://example.com/ai-art-creativity.pdf",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      relatedContent: [
-        {
-          id: 106,
-          title: "The Future of AI Art",
-          image: featuredImg4,
-          tags: ["AI", "Creativity"],
-        },
-      ],
-    },
-  ];
+  const tags = tagsData?.data?.map((tag) => tag.name) || [];
 
   // === TAG FILTER LOGIC ===
   const handleTagClick = (tag) => {
@@ -181,16 +49,19 @@ export default function ContentLibrary() {
 
   const filteredVaults =
     selectedTags.length === 0
-      ? latestVaults
-      : latestVaults.filter((vault) =>
-          vault.tags.some((t) => selectedTags.includes(t))
+      ? contents
+      : contents.filter((vault) =>
+          vault.tags_names?.some((t) => selectedTags.includes(t))
         );
 
-  // === CONTENT TYPE FILTER LOGIC ===
   const contentFilteredVaults =
     selectedContentType === "all"
-      ? latestVaults
-      : latestVaults.filter((vault) => vault.type === selectedContentType);
+      ? contents
+      : contents.filter(
+          (vault) =>
+            vault.content_type?.toLowerCase() ===
+            selectedContentType.toLowerCase()
+        );
 
   const noContentFound = contentFilteredVaults.length === 0;
 
@@ -200,6 +71,37 @@ export default function ContentLibrary() {
     alert(`Thanks for subscribing, ${email}!`);
     setEmail("");
   };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen text-white text-2xl">
+        Loading contents...
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-400 text-xl">
+        Failed to load contents
+      </div>
+    );
+  }
+
+  if (tagsLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen text-white text-2xl">
+        Loading tags...
+      </div>
+    );
+  }
+
+  if (tagsError) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-400 text-xl">
+        Failed to load tags
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
@@ -301,7 +203,7 @@ export default function ContentLibrary() {
               {/* Cards */}
               {!noContentFound ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-16">
-                  {contentFilteredVaults.map((vault) => (
+                  {contentFilteredVaults.slice(0, visibleCount).map((vault) => (
                     <div
                       key={vault.id}
                       data-aos="fade-up"
@@ -311,7 +213,7 @@ export default function ContentLibrary() {
                     >
                       <div className="relative h-48 overflow-hidden">
                         <img
-                          src={vault.image}
+                          src={vault.upload_files?.[0]?.url || noContentImg}
                           alt={vault.title}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                         />
@@ -325,7 +227,7 @@ export default function ContentLibrary() {
                             {vault.description}
                           </p>
                           <div className="flex flex-wrap gap-2 mb-4">
-                            {vault.tags.map((tag) => (
+                            {vault.tags_names.map((tag) => (
                               <span
                                 key={tag}
                                 className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
@@ -416,19 +318,19 @@ export default function ContentLibrary() {
 
                   {/* Tag List */}
                   <div className="flex flex-wrap gap-3">
-                    {tags.map((tag, index) => {
-                      const isSelected = selectedTags.includes(tag);
+                    {tagsData?.data?.map((tag) => {
+                      const isSelected = selectedTags.includes(tag.name);
                       return (
                         <div
-                          key={index}
-                          onClick={() => handleTagClick(tag)}
+                          key={tag.id}
+                          onClick={() => handleTagClick(tag.name)}
                           className={`cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] ${
                             isSelected
                               ? "bg-yellow-300 text-black"
                               : "bg-transparent text-[#C6C6C6]"
                           } text-xs font-unbounded`}
                         >
-                          {tag}
+                          {tag.name} ({tag.content_count})
                         </div>
                       );
                     })}
@@ -457,7 +359,7 @@ export default function ContentLibrary() {
               <div className="flex items-start justify-center gap-6 pt-32">
                 <div className="pb-12">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredVaults.map((vault) => (
+                    {filteredVaults.slice(0, visibleCount).map((vault) => (
                       <div
                         key={vault.id}
                         data-aos="fade-up"
@@ -467,7 +369,7 @@ export default function ContentLibrary() {
                       >
                         <div className="relative h-48 overflow-hidden">
                           <img
-                            src={vault.image}
+                            src={vault.upload_files?.[0]?.url || noContentImg}
                             alt={vault.title}
                             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                           />
@@ -482,7 +384,7 @@ export default function ContentLibrary() {
                               {vault.description}
                             </p>
                             <div className="flex flex-wrap gap-2 mb-4">
-                              {vault.tags.map((tag) => (
+                              {vault.tags_names.map((tag) => (
                                 <span
                                   key={tag}
                                   className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
@@ -508,9 +410,17 @@ export default function ContentLibrary() {
               {/* Load More & Subscribe */}
               {selectedTags.length === 0 && (
                 <div className="flex flex-col items-center justify-between gap-20 mt-8">
-                  <div className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer">
-                    Load More Content
-                  </div>
+                  {visibleCount <
+                    (filterMode === "content"
+                      ? contentFilteredVaults.length
+                      : filteredVaults.length) && (
+                    <div
+                      onClick={() => setVisibleCount(visibleCount + 9)}
+                      className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"
+                    >
+                      Load More Content
+                    </div>
+                  )}
 
                   {/* Week's Highlights */}
                   <div className="w-full max-w-7xl h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB]">
