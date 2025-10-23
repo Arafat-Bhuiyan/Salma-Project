@@ -25,8 +25,13 @@ export const authApi = api.injectEndpoints({
     }),
     // === CONTENTS ===
     getContents: builder.query({
-      query: () => "/contents/",
+      query: () => "/database/contents/",
       providesTags: ["contents"],
+    }),
+    // === SINGLE CONTENT ===
+    getContentById: builder.query({
+      query: (id) => `/database/contents/${id}/`,
+      providesTags: ["content"],
     }),
     // === TAGS ===
     getTags: builder.query({
@@ -91,5 +96,6 @@ export const {
   useUpdateTermsMutation,
   useGetPartnersQuery,
   useGetContentsQuery,
+  useGetContentByIdQuery,
   useGetTagsQuery,
 } = authApi;

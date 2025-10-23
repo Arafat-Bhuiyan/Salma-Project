@@ -20,7 +20,9 @@ export default function ContentLibrary() {
   const [selectedContentType, setSelectedContentType] = useState("all");
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetContentsQuery();
-  const contents = data?.data?.results || [];
+  const contents = data || [];
+  console.log("contents data:", data);
+
   const [visibleCount, setVisibleCount] = useState(9);
   const {
     data: tagsData,
@@ -57,11 +59,22 @@ export default function ContentLibrary() {
   const contentFilteredVaults =
     selectedContentType === "all"
       ? contents
-      : contents.filter(
-          (vault) =>
-            vault.content_type?.toLowerCase() ===
-            selectedContentType.toLowerCase()
-        );
+      : contents.filter((vault) => {
+          const type = vault.content_type?.toLowerCase();
+
+          if (!type) return false;
+
+          switch (selectedContentType) {
+            case "video":
+              return type === "video";
+            case "pdf":
+              return type === "pdf";
+            case "photo":
+              return type === "image";
+            default:
+              return true;
+          }
+        });
 
   const noContentFound = contentFilteredVaults.length === 0;
 
@@ -176,7 +189,6 @@ export default function ContentLibrary() {
                   { label: "Video", type: "video", icon: videoIcon },
                   { label: "PDFs", type: "pdf", icon: pdfIcon },
                   { label: "Photos", type: "photo", icon: photosIcon },
-                  { label: "Text", type: "text", icon: textIcon },
                 ].map((item) => {
                   const isActive = selectedContentType === item.type;
                   return (
@@ -408,89 +420,91 @@ export default function ContentLibrary() {
               </div>
 
               {/* Load More & Subscribe */}
-              {selectedTags.length === 0 && (
-                <div className="flex flex-col items-center justify-between gap-20 mt-8">
-                  {visibleCount <
-                    (filterMode === "content"
-                      ? contentFilteredVaults.length
-                      : filteredVaults.length) && (
-                    <div
-                      onClick={() => setVisibleCount(visibleCount + 9)}
-                      className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"
-                    >
-                      Load More Content
-                    </div>
-                  )}
+              <div className="flex flex-col items-center justify-between gap-20 pt-8 pb-5">
+                {visibleCount <
+                  (filterMode === "content"
+                    ? contentFilteredVaults.length
+                    : filteredVaults.length) && (
+                  <div
+                    onClick={() => setVisibleCount(visibleCount + 9)}
+                    className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"
+                  >
+                    Load More Content
+                  </div>
+                )}
 
-                  {/* Week's Highlights */}
-                  <div className="w-full max-w-7xl h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB]">
-                    <div className="flex items-start justify-center py-9 px-20 gap-9">
-                      <div className="flex flex-col items-start justify-start">
-                        <h1 className="text-[#F4F4F3] text-4xl font-semibold font-unbounded pb-8">
-                          Week's highlights
-                        </h1>
-                        <p className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-7">
-                          Digital Art Revolution
-                        </p>
-                        <p className=" text-[#FF39B0] text-base font-normal font-unbounded leading-none pt-5">
-                          Video
-                        </p>
-                        <div className="flex gap-2.5 py-5">
-                          <img src={views} alt="" />
-                          <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
-                            12650
+                {/* Week's Highlights + Subscribe Section */}
+                {selectedTags.length === 0 && (
+                  <>
+                    <div className="w-full max-w-7xl h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB]">
+                      <div className="flex items-start justify-center py-9 px-20 gap-9">
+                        <div className="flex flex-col items-start justify-start">
+                          <h1 className="text-[#F4F4F3] text-4xl font-semibold font-unbounded pb-8">
+                            Week's highlights
+                          </h1>
+                          <p className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-7">
+                            Digital Art Revolution
                           </p>
-                        </div>
-                        <div
-                          onClick={() => handleGotoDetails(1)}
-                          className="w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
-                        >
-                          <div className="text-center text-white text-2xl font-normal font-unbounded">
-                            View
+                          <p className=" text-[#FF39B0] text-base font-normal font-unbounded leading-none pt-5">
+                            Video
+                          </p>
+                          <div className="flex gap-2.5 py-5">
+                            <img src={views} alt="" />
+                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
+                              12650
+                            </p>
+                          </div>
+                          <div
+                            onClick={() => handleGotoDetails(1)}
+                            className="w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
+                          >
+                            <div className="text-center text-white text-2xl font-normal font-unbounded">
+                              View
+                            </div>
                           </div>
                         </div>
+                        <img
+                          className="w-[474px] h-64 relative shadow-[0px_0px_49.20000076293945px_0px_rgba(0,0,0,0.25)]"
+                          src={featuredImg1}
+                        />
                       </div>
-                      <img
-                        className="w-[474px] h-64 relative shadow-[0px_0px_49.20000076293945px_0px_rgba(0,0,0,0.25)]"
-                        src={featuredImg1}
-                      />
+
+                      <div className="absolute top-32 right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
+                        <img src={rightIcon} alt="" className="w-[5px] h-2.5" />
+                      </div>
+                      <div className="absolute top-32 left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
+                        <img src={leftIcon} alt="" className="w-[5px] h-2.5" />
+                      </div>
                     </div>
 
-                    <div className="absolute top-32 right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                      <img src={rightIcon} alt="" className="w-[5px] h-2.5" />
-                    </div>
-                    <div className="absolute top-32 left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                      <img src={leftIcon} alt="" className="w-[5px] h-2.5" />
-                    </div>
-                  </div>
+                    <div>
+                      {/* Subscribe section */}
+                      <div className="text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
+                        Want More? Sign Up for Updates
+                      </div>
+                      <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal py-5">
+                        Get notified about new content and exclusive releases
+                      </div>
 
-                  <div>
-                    {/* Subscribe section */}
-                    <div className="text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
-                      Want More? Sign Up for Updates
+                      <div className="flex items-center justify-center pt-5 pb-44 gap-5">
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="Enter your email"
+                          className="w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
+                        />
+                        <button
+                          onClick={handleSubscribe}
+                          className="px-10 py-3 bg-[#F6FF1F] text-black text-base font-medium font-unbounded transition"
+                        >
+                          Subscribe
+                        </button>
+                      </div>
                     </div>
-                    <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal py-5">
-                      Get notified about new content and exclusive releases
-                    </div>
-
-                    <div className="flex items-center justify-center pt-5 pb-44 gap-5">
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
-                        className="w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
-                      />
-                      <button
-                        onClick={handleSubscribe}
-                        className="px-10 py-3 bg-[#F6FF1F] text-black text-base font-medium font-unbounded transition"
-                      >
-                        Subscribe
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
+                  </>
+                )}
+              </div>
             </>
           )}
         </div>
