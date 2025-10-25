@@ -22,7 +22,7 @@ export default function LoginForm() {
       console.log("Login response:", res);
 
       // ✅ Backend response check
-      if (res?.success) {
+      if (res?.success || res?.data?.access) {
         // Save tokens & user to Redux
         dispatch(
           setCredentials({

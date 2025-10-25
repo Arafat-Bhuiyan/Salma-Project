@@ -1,6 +1,8 @@
 import { useState } from "react";
 import bgImg from "@/assets/images/bgImg.png";
 import { ScrollRestoration } from "react-router-dom";
+import { useSendContactMessageMutation } from "@/Redux/Api/authApi";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,7 @@ const Contact = () => {
     subject: "",
     message: "",
   });
+  const [sendContactMessage, { isLoading }] = useSendContactMessageMutation();
 
   // Handle input change
   const handleChange = (e) => {
@@ -17,26 +20,35 @@ const Contact = () => {
   };
 
   // Handle form submit
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    console.log("Form submitted:", formData);
+    try {
+      // prepare the data structure as backend expects
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        body: formData.message, // message → body
+      };
 
-    // Future API integration placeholder
-    // Example:
-    // await fetch("https://your-api-endpoint.com/contact", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(formData),
-    // });
+      // API call
+      await sendContactMessage(payload).unwrap();
 
-    // Clear form fields after submission
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+      // Optional success feedback
+      toast.success("Message sent successfully!");
+
+      // Clear form
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error("Error sending message:", err);
+      toast.error("Failed to send message. Try again.");
+    }
   };
 
   return (
@@ -113,7 +125,7 @@ const Contact = () => {
               type="submit"
               className="text-white text-lg font-medium font-unbounded px-16 py-2.5 outline outline-2 outline-offset-[-1px] outline-[#C12E83] hover:bg-[#FF80EB] hover:outline-none active:bg-[#C12E83] active:outline-none"
             >
-              Submit
+              {isLoading ? "Sending..." : "Submit"}
             </button>
           </div>
         </form>

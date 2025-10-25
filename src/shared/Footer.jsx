@@ -31,31 +31,31 @@ export default function Footer() {
           <div className="text-black font-unbounded leading-normal flex flex-col justify-start items-start">
             <h3 className="text-base font-medium mb-5">Navigation</h3>
             <ul className="space-y-3 text-xs font-normal">
-              <li>
-                <a href="/" className="hover:text-[#EB4DAC] transition-colors">
+              <li  className="!list-none" >
+                <a  href="/" className="hover:text-[#EB4DAC] !text-black transition-colors">
                   Home
                 </a>
               </li>
-              <li>
+             <li  className="!list-none" >
                 <a
                   href="/content"
-                  className="hover:text-[#EB4DAC] transition-colors"
+                  className="hover:text-[#EB4DAC] !text-black transition-colors"
                 >
                   Database
                 </a>
               </li>
-              <li>
+             <li  className="!list-none" >
                 <a
                   href="/vaults"
-                  className="hover:text-[#EB4DAC] transition-colors"
+                  className="hover:text-[#EB4DAC] !text-black transition-colors"
                 >
                   Vaults
                 </a>
               </li>
-              <li>
+             <li  className="!list-none" >
                 <a
                   href="/about"
-                  className="hover:text-[#EB4DAC] transition-colors"
+                  className="hover:text-[#EB4DAC] !text-black transition-colors"
                 >
                   About
                 </a>
@@ -67,26 +67,26 @@ export default function Footer() {
           <div className="text-black font-unbounded leading-normal flex flex-col justify-start items-start">
             <h3 className="text-base font-medium mb-5">Legal</h3>
             <ul className="space-y-3 text-xs font-normal">
-              <li>
+             <li  className="!list-none" >
                 <a
                   href="/terms"
-                  className="hover:text-[#EB4DAC] transition-colors"
+                  className="hover:text-[#EB4DAC] !text-black transition-colors"
                 >
                   Terms & Conditions
                 </a>
               </li>
-              <li>
+             <li  className="!list-none" >
                 <a
                   href="/privacy"
-                  className="hover:text-[#EB4DAC] transition-colors"
+                  className="hover:text-[#EB4DAC] !text-black transition-colors"
                 >
                   Privacy Policy
                 </a>
               </li>
-              <li>
+             <li  className="!list-none" >
                 <a
                   href="/contact"
-                  className="hover:text-[#EB4DAC] transition-colors"
+                  className="hover:text-[#EB4DAC] !text-black transition-colors"
                 >
                   Contact
                 </a>

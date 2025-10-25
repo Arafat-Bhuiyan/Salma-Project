@@ -4,16 +4,17 @@ const baseQuery = fetchBaseQuery({
   baseUrl: "http://10.10.13.16:8000/api",
   prepareHeaders: (headers, { getState }) => {
     // Try to get token from Redux state
-    const token = getState().auth?.access || null;
+    const token = getState().auth?.access || localStorage.getItem("access");
     // If token not in state, retrieve from local storage
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
-    } else {
-      const authData = JSON.parse(localStorage.getItem("auth")); // Parse the `auth` object from local storage
-      if (authData?.access) {
-        headers.set("authorization", `Bearer ${authData.access}`); // Set Authorization header
-      }
-    }
+    } 
+    // else {
+    //   const authData = JSON.parse(localStorage.getItem("auth")); // Parse the `auth` object from local storage
+    //   if (authData?.access) {
+    //     headers.set("authorization", `Bearer ${authData.access}`); // Set Authorization header
+    //   }
+    // }
     return headers;
   },
 });
@@ -21,6 +22,6 @@ const baseQuery = fetchBaseQuery({
 export const api = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQuery,
-  tagTypes: ["users", "auth"],
+  tagTypes: ["users", "auth", "contents", "aboutUs", "coreValues"],
   endpoints: () => ({}),
 });

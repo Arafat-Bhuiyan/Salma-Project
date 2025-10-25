@@ -6,6 +6,7 @@ import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import featuredImg2 from "@/assets/images/featuredImg2.jpg";
 import featuredImg3 from "@/assets/images/featuredImg3.jpg";
 import featuredImg4 from "@/assets/images/featuredImg4.jpg";
+import { useNavigate } from "react-router-dom";
 
 export default function Dispatches() {
   const [topics, setTopics] = useState([
@@ -27,6 +28,12 @@ export default function Dispatches() {
         : { ...topic, active: false }
     );
     setTopics(updatedTopics);
+  };
+
+  const navigate = useNavigate();
+  
+  const handleGotoDetails = () => {
+    navigate("/vault-detail");
   };
 
   const featuredPosts = [
@@ -177,7 +184,7 @@ export default function Dispatches() {
                       </span>
                     ))}
                   </div>
-                  <button className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
+                  <button onClick={handleGotoDetails} className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
                     Read More
                   </button>
                 </div>
@@ -233,7 +240,7 @@ export default function Dispatches() {
                   </div>
 
                   {/* Button (always bottom aligned) */}
-                  <button className="w-32 h-8 text-center  outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
+                  <button onClick={handleGotoDetails} className="w-32 h-8 text-center  outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
                     Read More
                   </button>
                 </div>

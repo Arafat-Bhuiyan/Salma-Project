@@ -8,16 +8,43 @@ import { Download, ArrowLeft } from "lucide-react";
 // Simulated data - this would come from your backend/API
 import { BiLike } from "react-icons/bi";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
-import { useGetContentByIdQuery } from "@/Redux/Api/authApi";
+import {
+  useGetContentByIdQuery,
+  useLikeContentMutation,
+} from "@/Redux/Api/authApi";
+import { toast } from "react-toastify";
 
 export default function ContentDetails() {
   const { id } = useParams();
   const { data, isLoading, isError } = useGetContentByIdQuery(id);
   const content = data || {};
+  const [likeCount, setLikeCount] = useState(content.views_count || 0); // 🆕 initial count
+  const [hasLiked, setHasLiked] = useState(false); // 🆕 track user like
+  const [likeContent, { isLoading: liking }] = useLikeContentMutation(); // 🆕 RTK Mutation
 
   console.log("ID:", id, "Full Data:", content);
-  console.log("Image URL - 1 :", content.upload_files?.[0]?.url);
-  console.log("Image URL - 2 :", content.upload_files?.[1]?.url);
+
+  const handleLike = async () => {
+    try {
+      const response = await likeContent({ content: id, like: true }).unwrap();
+
+      if (response.success) {
+        // if new like created
+        if (response.data.created === true) {
+          setLikeCount((prev) => prev + 1);
+          setHasLiked(true);
+          toast.success("You liked this content!");
+        } else {
+          toast("Already liked!");
+        }
+      } else {
+        toast.error("Failed to like content.");
+      }
+    } catch (error) {
+      console.error("Like error:", error);
+      toast.error("Something went wrong!");
+    }
+  };
 
   if (isLoading)
     return (
@@ -116,10 +143,13 @@ export default function ContentDetails() {
                   ))}
                 </div>
                 <div className="gap-4 flex">
-                  <div className="items-center gap-2 text-sm text-[#C8C8C8] mt-4 cursor-pointer border inline-flex p-2 px-4 border-[#FF80EB]">
+                  <div
+                    onClick={handleLike}
+                    className="items-center gap-2 text-sm text-[#C8C8C8] mt-4 cursor-pointer border inline-flex p-2 px-4 border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none hover:text-white active:bg-[#C12E83] active:text-white active:border-none"
+                  >
                     <BiLike className="text-xl" /> Like
                   </div>
-                  <div className="items-center gap-2 text-sm text-white mt-4 cursor-pointer inline-flex p-2 px-4 bg-[#FF80EB]">
+                  <div className="items-center gap-2 text-sm text-white mt-4 cursor-pointer inline-flex p-2 px-4 bg-[#FF80EB] active:bg-[#C12E83]">
                     <LuShare2 className="text-xl" /> Share
                   </div>
                 </div>
@@ -189,9 +219,7 @@ export default function ContentDetails() {
               /* Image Content */
               <div>
                 <img
-                  src={
-                    content.upload_files?.[1]?.url 
-                  }
+                  src={content.upload_files?.[1]?.url}
                   alt={content.title || "Uploaded Image"}
                   className="max-w-full h-auto mx-auto rounded-lg object-contain shadow-lg"
                 />

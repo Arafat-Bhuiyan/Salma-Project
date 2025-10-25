@@ -1,31 +1,14 @@
-import { useEffect, useState } from "react";
 import aboutBg from "@/assets/images/aboutPageBg.png";
 import { ScrollRestoration } from "react-router-dom";
+import { useGetAboutUsQuery } from "@/Redux/Api/authApi";
+import { TextView } from "@/components/TextView";
 
 export default function AboutUsDetails() {
-  // 🔹 State for admin data
-  const [adminData, setAdminData] = useState(null);
+  // ✅ Fetch "About Us" data from the API
+  const { data: aboutUsData, isLoading, isError } = useGetAboutUsQuery();
 
-  useEffect(() => {
-    // 🔹 Fake API call simulation (replace with your actual API later)
-    const fetchAdminData = async () => {
-      try {
-        // উদাহরণ API endpoint (পরে তুমি নিজের API বসাবে)
-        // const response = await fetch("https://your-api.com/admin-details");
-        // const data = await response.json();
-
-        // আপাতত API না থাকলে নিচের লাইন comment রাখো:
-        // setAdminData(data);
-
-        // Demo purpose: simulate no API (so adminData stays null)
-        console.log("Waiting for API data...");
-      } catch (error) {
-        console.error("Error fetching admin data:", error);
-      }
-    };
-
-    fetchAdminData();
-  }, []);
+  // ✅ Extract the first result from the API response
+  const aboutInfo = aboutUsData?.data?.results?.[0];
   return (
     <div className="relative w-full min-h-screen">
       <ScrollRestoration />
@@ -73,67 +56,25 @@ export default function AboutUsDetails() {
                 <h2 className="text-[#FF80EB] text-xl md:text-2xl font-unbounded font-medium leading-loose text-center">
                   Our Story
                 </h2>
-                <div className="max-w-5xl space-y-4 text-white text-base font-unbounded leading-loose text-center">
-                  <p>
-                    In 2022, we, two young entrepreneurs, started this journey
-                    with a common goal: to make content creation in the digital
-                    world easier and more effective. Our aim was to create a
-                    platform that not only uses technology but also leverages
-                    the power of creativity to help users turn their ideas into
-                    reality. ContentFlow is not just a website; it is a
-                    community where creative people can come together and work.
+                {isLoading && (
+                  <p className="text-center text-gray-400">Loading...</p>
+                )}
+                {isError && (
+                  <p className="text-center text-red-500">
+                    Failed to load content.
                   </p>
-                  <p>
-                    We believe that every story should be told and every idea
-                    should be expressed correctly. ContentFlow is the platform
-                    that gives you the opportunity to express your thoughts in
-                    your own language, in your own way. Our journey has just
-                    begun, and we are continuously working on new features and
-                    tools to help your creativity flourish.
-                  </p>
-                </div>
+                )}
+                {aboutInfo ? (
+                  <TextView htmlContent={aboutInfo.description} />
+                ) : (
+                  !isLoading && (
+                    <p className="text-center text-gray-500">
+                      No "About Us" information found.
+                    </p>
+                  )
+                )}
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Section 2: From Admin Details*/}
-      <div className="pb-10">
-        <div className="relative flex items-center justify-center px-24 py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
-          <div
-            className="relative max-w-7xl w-full flex flex-col gap-12 items-center justify-center"
-            data-aos="fade-up"
-            data-aos-duration="1200"
-            data-aos-delay="300"
-          >
-            {/* 🔹 যদি API data থাকে */}
-            {adminData ? (
-              <>
-                <h2 className="text-[#FF80EB] text-2xl font-unbounded font-medium leading-loose text-center">
-                  {adminData.title}
-                </h2>
-                <p className="max-w-5xl text-white text-base font-unbounded leading-loose text-center">
-                  {adminData.description}
-                </p>
-              </>
-            ) : (
-              /* 🔹 Static fallback content (API না থাকলে দেখাবে) */
-              <>
-                <h2 className="text-[#FF80EB] text-2xl font-unbounded font-medium leading-loose text-center">
-                  Message from the Founder
-                </h2>
-                <div className="max-w-5xl text-white text-base font-unbounded leading-loose text-center space-y-4">
-                  <p>
-                    “At ContentFlow, our mission is to empower every creator
-                    with tools that make storytelling effortless. We believe
-                    technology and creativity should work together, not
-                    compete.”
-                  </p>
-                  <p>— Founder & CEO, ContentFlow</p>
-                </div>
-              </>
-            )}
           </div>
         </div>
       </div>

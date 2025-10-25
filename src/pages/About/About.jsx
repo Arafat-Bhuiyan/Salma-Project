@@ -1,9 +1,29 @@
 import aboutBg from "@/assets/images/aboutPageBg.png";
 import officeTeamMeeting from "@/assets/images/office-team-meeting.png";
 import { AboutOurPartners } from "@/components/AboutOurPartners";
+import { useGetAboutUsQuery } from "@/Redux/Api/authApi";
 import { Link } from "react-router-dom";
 
 export default function About() {
+  // ✅ Fetch "About Us" data from the API
+  const { data: aboutUsData, isLoading, isError } = useGetAboutUsQuery();
+  // ✅ Extract the first result from the API response
+  const aboutInfo = aboutUsData?.data?.results?.[0];
+
+  // Function to get plain text from HTML and truncate it
+  const getTruncatedText = (htmlContent, wordLimit) => {
+    if (!htmlContent) return "";
+    // Create a temporary div to parse HTML and get text content
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlContent;
+    const text = tempDiv.textContent || tempDiv.innerText || "";
+    const words = text.trim().split(/\s+/); // Split by any whitespace
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ");
+    }
+    return text;
+  };
+
   return (
     <div className="relative w-full min-h-screen">
       {/* Single Background for entire page */}
@@ -22,7 +42,7 @@ export default function About() {
         <div className="">
           <div className="relative flex items-center justify-center px-24 py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
             {/* Main Container */}
-            <div className="relative max-w-7xl w-full grid md:grid-cols-2 gap-12 items-center">
+            <div className="relative max-w-7xl w-full grid md:grid-cols-2 gap-12 items-start">
               {/* Left Side */}
               <div
                 data-aos="fade-right"
@@ -61,25 +81,33 @@ export default function About() {
                 <h2 className="text-[#FF80EB] text-xl md:text-2xl font-unbounded font-medium leading-loose">
                   Our Story
                 </h2>
-                <div className="space-y-4 text-white text-base font-unbounded leading-loose">
-                  <p>
-                    In 2022, we, two young entrepreneurs, started this journey
-                    with a common goal: to make content creation in the digital
-                    world easier and more effective. Our aim was to create a
-                    platform that not only uses technology but also leverages
-                    the power of creativity to help users turn their ideas into
-                    reality. ContentFlow is not just a website; it is a
-                    community where creative people can come together and work.
+                {isLoading && (
+                  <p className="text-center text-gray-400">Loading...</p>
+                )}
+                {isError && (
+                  <p className="text-center text-red-500">
+                    Failed to load content.
                   </p>
-                  <p>
-                    We believe that every story should be told and every idea
-                    should be expressed correctly. ContentFlow is the platform
-                    that gives you the opportunity to express your thoughts in
-                    your own language, in your own way. Our journey has just
-                    begun, and we are continuously working on new features and
-                    tools to help your creativity flourish.
-                  </p>
-                </div>
+                )}
+                {aboutInfo ? (
+                  <div>
+                    <p className="text-white text-base font-unbounded leading-loose">
+                      {getTruncatedText(aboutInfo.description, 150)}
+                      <Link
+                        to="/about-us-details"
+                        className="text-[#FF80EB] hover:underline ml-1"
+                      >
+                        ... see more
+                      </Link>
+                    </p>
+                  </div>
+                ) : (
+                  !isLoading && (
+                    <p className="text-center text-gray-500">
+                      No "About Us" information found.
+                    </p>
+                  )
+                )}
               </div>
             </div>
           </div>

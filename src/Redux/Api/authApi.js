@@ -38,6 +38,23 @@ export const authApi = api.injectEndpoints({
       query: () => "/tags/",
       providesTags: ["tags"],
     }),
+    // === CONTACT FORM ===
+    sendContactMessage: builder.mutation({
+      query: (data) => ({
+        url: "/email-records/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+     // === LIKE CONTENT ===
+    likeContent: builder.mutation({
+      query: (data) => ({
+        url: "/content-likes/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["content"], // re-fetch content if needed
+    }),
 
     getPrivacyPolicy: builder.query({
       query: () => "/adminapi/privacy/",
@@ -82,6 +99,16 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ["terms"],
     }),
+    // === ABOUT US ===
+    getAboutUs: builder.query({
+      query: () => "/about-us/",
+      providesTags: ["aboutUs"],
+    }),
+    // === CORE VALUES ===
+    getCoreValues: builder.query({
+      query: () => "/core-values/",
+      providesTags: ["coreValues"],
+    }),
   }),
 });
 
@@ -98,4 +125,8 @@ export const {
   useGetContentsQuery,
   useGetContentByIdQuery,
   useGetTagsQuery,
+  useSendContactMessageMutation,
+  useLikeContentMutation,
+  useGetAboutUsQuery,
+  useGetCoreValuesQuery,
 } = authApi;
