@@ -1,27 +1,36 @@
 import vaultsHeaderImg from "@/assets/images/vaults_header.png";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
 import { Scroll, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import featuredImg2 from "@/assets/images/featuredImg2.jpg";
 import featuredImg3 from "@/assets/images/featuredImg3.jpg";
 import featuredImg4 from "@/assets/images/featuredImg4.jpg";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
+import { useGetBlogContentsQuery, useGetTagsQuery } from "@/Redux/Api/authApi";
 
 export default function Vaults() {
-  const [topics, setTopics] = useState([
-    { name: "All Vaults", active: true },
-    { name: "Art", active: false },
-    { name: "Design", active: false },
-    { name: "History", active: false },
-    { name: "Technology", active: false },
-    { name: "Philosophy", active: false },
-    { name: "Science", active: false },
-    { name: "Literature", active: false },
-    { name: "Music", active: false },
-  ]);
+  const { data, isLoading, isError } = useGetBlogContentsQuery();
+  const blogs = data?.data?.results || [];
+  console.log("blogs:", blogs);
 
-  const navigate = useNavigate();
+  const {
+    data: tagsData,
+    isLoading: tagsLoading,
+    isError: tagsError,
+  } = useGetTagsQuery();
+
+  const [topics, setTopics] = useState([]);
+
+  useEffect(() => {
+    if (tagsData?.data) {
+      const initialTopics = tagsData.data.map((t) => ({
+        ...t,
+        active: false,
+      }));
+      setTopics(initialTopics);
+    }
+  }, [tagsData]);
 
   const handleTopicClick = (selectedName) => {
     const updatedTopics = topics.map((topic) =>
@@ -30,10 +39,34 @@ export default function Vaults() {
         : { ...topic, active: false }
     );
     setTopics(updatedTopics);
+
+    handleFilterBlogs(selectedName);
   };
 
-  const handleGotoDetails = () => {
-    navigate("/vault-detail");
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
+
+  useEffect(() => {
+    if (blogs.length > 0) {
+      setFilteredBlogs(blogs);
+    }
+  }, [blogs]);
+
+  const handleFilterBlogs = (selectedName) => {
+    if (selectedName === "All" || !selectedName) {
+      setFilteredBlogs(blogs);
+      return;
+    }
+
+    const filtered = blogs.filter((blog) =>
+      blog.tags_name?.includes(selectedName)
+    );
+    setFilteredBlogs(filtered);
+  };
+
+  const navigate = useNavigate();
+
+  const handleGotoDetails = (id) => {
+    navigate(`/vault-detail/${id}`);
   };
 
   const featuredVaults = [
@@ -93,8 +126,25 @@ export default function Vaults() {
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
       <ScrollRestoration />
+      {/* === Background Layer (Fixed) === */}
+      <div
+        style={{
+          backgroundImage: `url(${vaultsBg})`,
+          backgroundAttachment: "fixed",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+        }}
+      ></div>
+
       {/* === Header Section (Full Width Image) === */}
-      <div className="w-full">
+      <div className="w-full relative z-10">
         <img
           src={vaultsHeaderImg.src || vaultsHeaderImg}
           alt="Vaults Header"
@@ -102,128 +152,127 @@ export default function Vaults() {
         />
       </div>
 
-      {/* === Layered Backgrounds for Content === */}
-      <div className="relative z-10">
-        <div
-          className="absolute inset-0 -z-10 bg-no-repeat bg-cover bg-center"
-          style={{
-            backgroundImage: `
-              url(${vaultsBg})
-            `,
-          }}
-        ></div>
-
-        {/* === Page Content === */}
-        <div className="px-4 md:px-8 lg:px-16">
-          {/* Search & Filter Section */}
-          <div className="pt-10">
-            <div className="">
-              <div className="w-full bg-white rounded-xl flex justify-start items-center gap-2.5 px-10 py-3">
-                <Search size={16} color="#727272" />
-                <input
-                  type="text"
-                  placeholder="Search vaults..."
-                  className="text-[#727272] placeholder:text-[#727272] text-base font-normal font-unbounded leading-normal w-full bg-white pl-1 focus:outline-none focus:ring-0"
-                />
-              </div>
-            </div>
-
-            <div className="pt-6 pb-4">
-              <p className="text-white text-base font-medium font-unbounded leading-7 mb-2">
-                Filter by topic:
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {topics.map((topic) => (
-                  <button
-                    key={topic.name}
-                    onClick={() => handleTopicClick(topic.name)}
-                    className={`px-4 py-2 rounded-md text-xs font-medium font-unbounded leading-none transition-colors duration-200 ${
-                      topic.active
-                        ? "bg-[#C0FF4C] text-black"
-                        : "bg-white text-[#727272]"
-                    }`}
-                  >
-                    {topic.name}
-                  </button>
-                ))}
-              </div>
+      {/* === Page Content === */}
+      <div className="relative z-10 px-4 md:px-8 lg:px-16">
+        {/* Search & Filter Section */}
+        <div className="pt-10">
+          <div className="">
+            <div className="w-full bg-white rounded-xl flex justify-start items-center gap-2.5 px-10 py-3">
+              <Search size={16} color="#727272" />
+              <input
+                type="text"
+                placeholder="Search vaults..."
+                className="text-[#727272] placeholder:text-[#727272] text-base font-normal font-unbounded leading-normal w-full bg-white pl-1 focus:outline-none focus:ring-0"
+              />
             </div>
           </div>
 
-          {/* Featured Vaults */}
-          <div className="pt-1">
-            <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-5">
-              Featured Vaults
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
-              {featuredVaults.map((vault) => (
-                <div
-                  key={vault.id}
-                  data-aos="fade-up"
-                  data-aos-duration="1500"
-                  data-aos-delay="200"
-                  className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)]"
+          <div className="pt-6 pb-4">
+            <p className="text-white text-base font-medium font-unbounded leading-7 mb-2">
+              Filter by topic:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {topics.map((topic) => (
+                <button
+                  key={topic.id}
+                  onClick={() => handleTopicClick(topic.name)}
+                  className={`px-4 py-2 rounded-md text-xs font-medium font-unbounded leading-none transition-colors duration-200 ${
+                    topic.active
+                      ? "bg-[#C0FF4C] text-black"
+                      : "bg-white text-[#727272]"
+                  }`}
                 >
-                  <div className="relative h-64 overflow-hidden ">
-                    <img
-                      src={vault.image}
-                      alt={vault.title}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-                  <div className="bg-[#2C1B2C] p-6">
-                    <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
-                      {vault.title}
-                    </h3>
-                    <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
-                      {vault.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {vault.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <button
-                      onClick={handleGotoDetails}
-                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
-                    >
-                      Read More
-                    </button>
-                  </div>
-                </div>
+                  {topic.name}
+                </button>
               ))}
             </div>
           </div>
+        </div>
 
-          {/* Latest Vaults */}
-          <div className="pb-12">
-            <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
-              Latest Vaults
-            </h2>
+        {/* Featured Vaults */}
+        <div className="pt-1">
+          <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-5">
+            Featured Vaults
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
+            {featuredVaults.map((vault) => (
+              <div
+                key={vault.id}
+                data-aos="fade-up"
+                data-aos-duration="1500"
+                data-aos-delay="200"
+                className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)]"
+              >
+                <div className="relative h-64 overflow-hidden ">
+                  <img
+                    src={vault.image}
+                    alt={vault.title}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+                <div className="bg-[#2C1B2C] p-6">
+                  <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                    {vault.title}
+                  </h3>
+                  <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                    {vault.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {vault.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <button
+                    onClick={handleGotoDetails}
+                    className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
+                  >
+                    Read More
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Latest Vaults */}
+        <div className="pb-12">
+          <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
+            Latest Vaults
+          </h2>
+
+          {isLoading ? (
+            <p className="text-white">Loading...</p>
+          ) : isError ? (
+            <p className="text-red-500">Failed to load vaults.</p>
+          ) : filteredBlogs.length === 0 ? (
+            <p className="text-white">No vaults found for this topic.</p>
+          ) : (
             <div
               data-aos="fade-up"
               data-aos-duration="2000"
               data-aos-delay="300"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {latestVaults.map((vault) => (
+              {filteredBlogs.map((vault) => (
                 <div
                   key={vault.id}
                   className="border border-[#2C1B2C] flex flex-col h-[420px]"
                 >
+                  {/* === Image === */}
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src={vault.image}
+                      src={vault.primary_image || vault.image}
                       alt={vault.title}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                   </div>
 
+                  {/* === Text === */}
                   <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
                     <div>
                       <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
@@ -232,10 +281,11 @@ export default function Vaults() {
                       <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
                         {vault.description}
                       </p>
+
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {vault.tags.map((tag) => (
+                        {(vault.tags_name || vault.tags)?.map((tag, index) => (
                           <span
-                            key={tag}
+                            key={index}
                             className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
                           >
                             {tag}
@@ -243,8 +293,9 @@ export default function Vaults() {
                         ))}
                       </div>
                     </div>
+
                     <button
-                      onClick={handleGotoDetails}
+                      onClick={() => handleGotoDetails(vault.id)} // ✅ id পাঠানো হলো
                       className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
                     >
                       Read More
@@ -253,7 +304,7 @@ export default function Vaults() {
                 </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

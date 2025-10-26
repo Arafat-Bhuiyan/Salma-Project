@@ -1,5 +1,6 @@
 import contentHeader from "@/assets/images/content-header.png";
-import contentBg from "@/assets/images/content-bg.png";
+import contentBg from "@/assets/images/content-bg2.png";
+import dots from "@/assets/images/dots.png";
 import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
 import videoIcon from "@/assets/icons/video.svg";
@@ -23,7 +24,7 @@ export default function ContentLibrary() {
   const contents = data || [];
   console.log("contents data:", data);
 
-  const [visibleCount, setVisibleCount] = useState(9);
+  const [visibleCount, setVisibleCount] = useState(6);
   const {
     data: tagsData,
     isLoading: tagsLoading,
@@ -131,7 +132,7 @@ export default function ContentLibrary() {
       <div className="relative z-10">
         <div
           className="absolute inset-0 -z-10 bg-cover bg-no-repeat 
-  bg-[center_0px] 3xl:bg-[center_-400px]"
+  bg-[center] 3xl:bg-[center] bg-fixed"
           style={{
             backgroundImage: `url(${contentBg})`,
           }}
@@ -421,7 +422,7 @@ export default function ContentLibrary() {
 
               {/* Load More & Subscribe */}
               <div className="flex flex-col items-center justify-between gap-20 pt-8 pb-5">
-                {visibleCount <
+                {visibleCount <=
                   (filterMode === "content"
                     ? contentFilteredVaults.length
                     : filteredVaults.length) && (
@@ -479,14 +480,24 @@ export default function ContentLibrary() {
 
                     <div>
                       {/* Subscribe section */}
-                      <div className="text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
-                        Want More? Sign Up for Updates
+                      <div className="relative inline-block">
+                        {/* Background tilted area */}
+                        <div
+                          className="absolute inset-0 top-[-48px] left-[-25px] w-[739.35px] h-32 rotate-[-0.29deg]  bg-fixed bg-repeat"
+                          style={{ backgroundImage: `url(${dots})` }}
+                        ></div>
+
+                        {/* Text */}
+                        <h2 className="relative text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
+                          Want More? Sign Up for Updates
+                        </h2>
                       </div>
-                      <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal py-5">
+
+                      <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal pt-5 text-center">
                         Get notified about new content and exclusive releases
                       </div>
 
-                      <div className="flex items-center justify-center pt-5 pb-44 gap-5">
+                      <div className="flex items-center justify-center pt-3 pb-44 gap-5">
                         <input
                           type="email"
                           value={email}

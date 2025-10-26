@@ -7,30 +7,24 @@ import like from "@/assets/icons/like.svg";
 import share from "@/assets/icons/share.svg";
 import { useParams } from "react-router-dom";
 import {
-  useGetBlogContentByIdQuery,
-  useLikeBlogMutation,
-  useGetRelatedBlogsQuery,
+  useGetArticleContentByIdQuery,
+  useLikeArticleMutation,
   useGetPopularTagsQuery,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
+import { ar } from "date-fns/locale";
 
-export function VaultDetail() {
+export function DispatchDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data, isLoading, isError } = useGetBlogContentByIdQuery(id);
-  const [likeArticle, { isLoading: isLiking }] = useLikeBlogMutation();
-  const { data: relatedData, isLoading: isRelatedLoading } =
-    useGetRelatedBlogsQuery(id);
-  const { data: relatedPostsData, isLoading: isRelatedPostsLoading } =
-    useGetRelatedBlogsQuery(id);
+  const { data, isLoading, isError } = useGetArticleContentByIdQuery(id);
+  const [likeArticle, { isLoading: isLiking }] = useLikeArticleMutation();
   const { data: tagsData, isLoading: isTagsLoading } = useGetPopularTagsQuery();
 
   const article = data || {};
 
-  console.log("Article", article);
-
   const handleGotoDetails = () => {
-    navigate("/vault-detail");
+    navigate("/dispatch-detail");
   };
 
   useEffect(() => {
@@ -69,12 +63,12 @@ export function VaultDetail() {
 
   const handleLike = async () => {
     try {
-      const res = await likeArticle({ blog: id, like: true }).unwrap();
-      toast.success(res?.message || "Blog liked successfully!");
+      const res = await likeArticle({ article: id, like: true }).unwrap();
+      toast.success(res?.message || "Article liked successfully!");
       console.log("Like Response:", res);
     } catch (error) {
       console.error("Like error:", error);
-      toast.error(error?.data?.message || "Failed to like the blog.");
+      toast.error(error?.data?.message || "Failed to like the article.");
     }
   };
 
@@ -94,7 +88,7 @@ export function VaultDetail() {
           {/* === Header Section (Full Width Image) === */}
           <div className="w-full">
             <img
-              src={article?.blog_image}
+              src={article?.banner_image}
               alt="Vaults Header"
               className="w-full h-[508px] object-cover object-center"
             />
@@ -106,8 +100,8 @@ export function VaultDetail() {
               className="absolute inset-0 -z-10 bg-no-repeat bg-cover bg-center"
               style={{
                 backgroundImage: `
-        url(${vaultsBg})
-      `,
+      url(${vaultsBg})
+    `,
               }}
             ></div>
 
@@ -169,7 +163,7 @@ export function VaultDetail() {
                         Introduction
                       </div>
                       <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-relaxed">
-                        {article?.blog_1st_part}
+                        {article?.article_1st_part}
                       </div>
 
                       {/* Quote */}
@@ -180,9 +174,9 @@ export function VaultDetail() {
                       </div>
 
                       {/* Image */}
-                      {article?.primary_image && (
+                      {article?.article_image && (
                         <img
-                          src={article?.primary_image}
+                          src={article?.article_image}
                           alt="Article visual"
                           className="w-full h-64 pb-9"
                         />
@@ -193,7 +187,7 @@ export function VaultDetail() {
                         In Depth
                       </div>
                       <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-relaxed pb-11">
-                        {article?.blog_2nd_part}
+                        {article?.article_2nd_part}
                       </div>
                     </div>
 
@@ -204,36 +198,32 @@ export function VaultDetail() {
                           Related Posts
                         </div>
 
-                        {isRelatedPostsLoading ? (
-                          <p className="text-gray-400 text-sm px-4">
-                            Loading related posts...
-                          </p>
-                        ) : relatedPostsData?.data?.results?.length ? (
-                          <div className="flex flex-col justify-center items-start gap-4">
-                            {relatedPostsData.data.results.map((post) => (
-                              <div
-                                key={post.id}
-                                className="flex flex-col gap-1.5 px-16"
-                              >
-                                <div className="text-[#F4F4F3] text-sm font-normal font-unbounded leading-tight">
-                                  {post.title}
-                                </div>
-                                <div
-                                  onClick={() =>
-                                    navigate(`/vault-detail/${post.id}`)
-                                  }
-                                  className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none cursor-pointer hover:underline"
-                                >
-                                  Read More →
-                                </div>
-                              </div>
-                            ))}
+                        <div className="flex flex-col justify-center items-start gap-4">
+                          <div className="flex flex-col gap-1.5 px-16">
+                            <div className="text-[#F4F4F3] text-sm font-normal font-unbounded leading-tight">
+                              Machine Learning in Frontend
+                            </div>
+                            <div className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none">
+                              Read More →
+                            </div>
                           </div>
-                        ) : (
-                          <p className="text-gray-400 text-sm px-4">
-                            No related posts found.
-                          </p>
-                        )}
+                          <div className="flex flex-col gap-1.5 px-16">
+                            <div className="text-[#F4F4F3] text-sm font-normal font-unbounded leading-tight">
+                              Responsive Design Evolution
+                            </div>
+                            <div className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none">
+                              Read More →
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-1.5 px-16">
+                            <div className="text-[#F4F4F3] text-sm font-normal font-unbounded leading-tight">
+                              AI-Powered Security
+                            </div>
+                            <div className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none">
+                              Read More →
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       <div className="max-w-sm bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
@@ -287,67 +277,54 @@ export function VaultDetail() {
                 </div>
               </div>
 
-              {/* Related Blogs */}
+              {/* Related Articles */}
               <div className="pb-12 px-4">
                 <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
-                  Related Blogs
+                  Related Articles
                 </h2>
-
-                {isRelatedLoading ? (
-                  <p className="text-center text-gray-400">
-                    Loading related blogs...
-                  </p>
-                ) : relatedData?.data?.results?.length ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {relatedData.data.results.map((vault) => (
-                      <div
-                        key={vault.id}
-                        className="border border-[#2C1B2C] flex flex-col h-[420px]"
-                      >
-                        <div className="relative h-48 overflow-hidden">
-                          <img
-                            src={vault.primary_image}
-                            alt={vault.title}
-                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                          />
-                        </div>
-
-                        <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
-                          <div>
-                            <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
-                              {vault.title}
-                            </h3>
-                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
-                              {vault.description}
-                            </p>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {vault.tags_name.map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="px-3 py-1 bg-white/10 text-white text-xs font-medium leading-none rounded-full font-poppins"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          <button
-                            onClick={() =>
-                              navigate(`/vault-detail/${vault.id}`)
-                            }
-                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
-                          >
-                            Read More
-                          </button>
-                        </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {relatedArticles.map((vault) => (
+                    <div
+                      key={vault.id}
+                      className="border border-[#2C1B2C] flex flex-col h-[420px]"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={vault.image}
+                          alt={vault.title}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                        />
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-center text-gray-400">
-                    No related blogs found.
-                  </p>
-                )}
+
+                      <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                          <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                            {vault.title}
+                          </h3>
+                          <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                            {vault.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {vault.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-3 py-1 bg-white/10 text-white text-xs font-medium leading-none rounded-full font-poppins"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <button
+                          onClick={handleGotoDetails}
+                          className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                        >
+                          Read More
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

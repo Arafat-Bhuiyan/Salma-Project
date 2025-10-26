@@ -53,7 +53,7 @@ const Contact = () => {
 
   return (
     <div
-      className="relative min-h-screen text-white px-6 text-center"
+      className="relative min-h-screen text-white px-6 text-center bg-no-repeat bg-fixed"
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",

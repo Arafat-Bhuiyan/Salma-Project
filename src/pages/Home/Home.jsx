@@ -1,11 +1,12 @@
-import bgImg from "@/assets/images/homeBg.png";
+import bgImg from "@/assets/images/content-bg2.png";
+import dots from "@/assets/images/dots.png";
 import { Link } from "react-router-dom";
 
 export function Home() {
   return (
     <div
-      className="relative w-full min-h-screen bg-cover bg-no-repeat 
-      bg-[center_0px] sm:bg-[center_0px] lg:bg-[center_-0px] 2xl:bg-[center_-63px] 3xl:bg-[center_-300px]" 
+      className="relative w-full min-h-screen bg-cover bg-no-repeat bg-fixed
+      "
       style={{
         backgroundImage: `url(${bgImg})`,
       }}
@@ -58,10 +59,18 @@ export function Home() {
       {/* CTA Section */}
       <section className="relative w-full h-[498px] flex items-center justify-center text-center">
         <div className="relative z-10 flex flex-col items-center justify-center px-4">
-          <h2 className="text-white text-4xl font-semibold font-unbounded leading-10 mb-5">
-            Be part of the commons
-          </h2>
+          <div className="relative inline-block">
+            {/* Background tilted area */}
+            <div
+              className="absolute inset-0 top-[-48px] left-[-25px] w-[582.35px] h-28 rotate-[-0.29deg]  bg-fixed bg-repeat"
+              style={{ backgroundImage: `url(${dots})` }}
+            ></div>
 
+            {/* Text */}
+            <h2 className="relative text-[#F4F4F3] text-4xl font-semibold font-unbounded leading-10 mb-5">
+              Be part of the commons
+            </h2>
+          </div>
           <p className="text-[#D1D5DB] text-base font-normal font-unbounded leading-normal mb-7 max-w-[536px]">
             Start today to express your creativity and become a part of our
             community.

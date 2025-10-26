@@ -1,25 +1,37 @@
 import dispatchesBg from "@/assets/images/dispatches_bg.png";
 import headerImg from "@/assets/images/dispatches-header-photo.png";
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import featuredImg2 from "@/assets/images/featuredImg2.jpg";
-import featuredImg3 from "@/assets/images/featuredImg3.jpg";
-import featuredImg4 from "@/assets/images/featuredImg4.jpg";
 import { useNavigate } from "react-router-dom";
+import {
+  useGetArticleContentsQuery,
+  useGetTagsQuery,
+} from "@/Redux/Api/authApi";
 
 export default function Dispatches() {
-  const [topics, setTopics] = useState([
-    { name: "All Topics", active: true },
-    { name: "Art", active: false },
-    { name: "Design", active: false },
-    { name: "History", active: false },
-    { name: "Technology", active: false },
-    { name: "Philosophy", active: false },
-    { name: "Science", active: false },
-    { name: "Literature", active: false },
-    { name: "Music", active: false },
-  ]);
+  const { data, isLoading, isError } = useGetArticleContentsQuery();
+  const articles = data?.data?.results || [];
+  console.log("articles:", articles);
+
+  const {
+    data: tagsData,
+    isLoading: tagsLoading,
+    isError: tagsError,
+  } = useGetTagsQuery();
+
+  const [topics, setTopics] = useState([]);
+
+  useEffect(() => {
+    if (tagsData?.data) {
+      const initialTopics = tagsData.data.map((t) => ({
+        ...t,
+        active: false,
+      }));
+      setTopics(initialTopics);
+    }
+  }, [tagsData]);
 
   const handleTopicClick = (selectedName) => {
     const updatedTopics = topics.map((topic) =>
@@ -28,12 +40,34 @@ export default function Dispatches() {
         : { ...topic, active: false }
     );
     setTopics(updatedTopics);
+
+    handleFilterArticles(selectedName);
+  };
+
+  const [filteredArticles, setFilteredArticles] = useState([]);
+
+  useEffect(() => {
+    if (articles.length > 0) {
+      setFilteredArticles(articles);
+    }
+  }, [articles]);
+
+  const handleFilterArticles = (selectedName) => {
+    if (selectedName === "All" || !selectedName) {
+      setFilteredArticles(articles);
+      return;
+    }
+
+    const filtered = articles.filter((article) =>
+      article.tags_name?.includes(selectedName)
+    );
+    setFilteredArticles(filtered);
   };
 
   const navigate = useNavigate();
-  
-  const handleGotoDetails = () => {
-    navigate("/vault-detail");
+
+  const handleGotoDetails = (id) => {
+    navigate(`/dispatch-detail/${id}`);
   };
 
   const featuredPosts = [
@@ -55,45 +89,10 @@ export default function Dispatches() {
     },
   ];
 
-  const latestPosts = [
-    {
-      id: 1,
-      image: featuredImg1,
-      title: "The Future of Collective Organizing",
-      description:
-        "Exploring new models of decentralized community action for social change.",
-      tags: ["Politics", "Philosophy"],
-    },
-    {
-      id: 2,
-      image: featuredImg3,
-      title: "Digital Tools for Movement Building",
-      description:
-        "A review of software and platforms that can enhance organizing efforts.",
-      tags: ["Technology", "Politics"],
-    },
-    {
-      id: 3,
-      image: featuredImg2,
-      title: "Art as Resistance: Case Studies",
-      description:
-        "How creative expression has powered social movements throughout history.",
-      tags: ["Art", "History"],
-    },
-    {
-      id: 4,
-      image: featuredImg4,
-      title: "Climate Justice and Solidarity",
-      description:
-        "Connecting environmental activism with broader social justice movements.",
-      tags: ["Science", "History"],
-    },
-  ];
-
   return (
     <div className="relative w-full min-h-screen">
       <div
-        className="absolute top-0 left-0 w-full min-h-full z-0 bg-cover bg-center"
+        className="absolute top-0 left-0 w-full min-h-full z-0 bg-cover bg-center bg-fixed"
         style={{
           backgroundImage: `url(${dispatchesBg})`,
         }}
@@ -132,7 +131,7 @@ export default function Dispatches() {
             <div className="flex flex-wrap gap-2">
               {topics.map((topic) => (
                 <button
-                  key={topic.name}
+                  key={topic.id}
                   onClick={() => handleTopicClick(topic.name)}
                   className={`px-4 py-2 rounded-md text-xs font-medium font-unbounded leading-none transition-colors duration-200 ${
                     topic.active
@@ -184,7 +183,10 @@ export default function Dispatches() {
                       </span>
                     ))}
                   </div>
-                  <button onClick={handleGotoDetails} className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
+                  <button
+                    onClick={handleGotoDetails}
+                    className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                  >
                     Read More
                   </button>
                 </div>
@@ -198,55 +200,66 @@ export default function Dispatches() {
           <h2 className="text-white text-2xl font-bold font-poppins leading-loose mb-6">
             Latest Posts
           </h2>
-          <div
-            data-aos="fade-up"
-            data-aos-duration="2000"
-            data-aos-delay="300"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {latestPosts.map((post) => (
-              <div
-                key={post.id}
-                className="border border-[#5C42B5] flex flex-col h-[420px]" // fixed total height
-              >
-                {/* Image Section */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={post.image || "/placeholder.svg"}
-                    alt={post.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
 
-                {/* Text Section */}
-                <div className="bg-[#5C42B5] p-5 flex flex-col flex-grow justify-between">
-                  <div>
-                    <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
-                      {post.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+          {isLoading ? (
+            <p className="text-white">Loading...</p>
+          ) : isError ? (
+            <p className="text-red-500">Failed to load articles.</p>
+          ) : filteredArticles.length === 0 ? (
+            <p className="text-white">No articles found for this topic.</p>
+          ) : (
+            <div
+              data-aos="fade-up"
+              data-aos-duration="2000"
+              data-aos-delay="300"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {filteredArticles.map((post) => (
+                <div
+                  key={post.id}
+                  className="border border-[#5C42B5] flex flex-col h-[420px]"
+                >
+                  {/* Image Section */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={post.banner_image}
+                      alt={post.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
 
-                  {/* Button (always bottom aligned) */}
-                  <button onClick={handleGotoDetails} className="w-32 h-8 text-center  outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded">
-                    Read More
-                  </button>
+                  {/* Text Section */}
+                  <div className="bg-[#5C42B5] p-5 flex flex-col flex-grow justify-between">
+                    <div>
+                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                        {post.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {post.tags_name.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleGotoDetails(post.id)}
+                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                    >
+                      Read More
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

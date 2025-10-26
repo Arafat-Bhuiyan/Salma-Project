@@ -14,6 +14,7 @@ import ContentDetails from "@/pages/Content/ContentDetails";
 import ContentLibrary from "@/pages/Content/ContentLibrary";
 import AboutUsDetails from "@/pages/About/AboutUsDetails";
 import OurMission from "@/pages/About/OurMission";
+import { DispatchDetail } from "@/pages/Dispatches/DispatchDetails";
 // import ForgetPassword from "@/pages/Auth/ForgetPassword";
 // import VerifyOtp from "@/pages/Auth/VerifyOTP";
 // import ResetPassword from "@/pages/Auth/ResetPassword";
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "content", element: <ContentLibrary /> },
       { path: "vaults", element: <Vaults /> },
-      { path: "vault-detail", element: <VaultDetail /> },
+      { path: "vault-detail/:id", element: <VaultDetail /> },
+      { path: "dispatch-detail/:id", element: <DispatchDetail /> },
       { path: "dispatches", element: <Dispatches /> },
       { path: "about", element: <About /> },
       { path: "about-us-details", element: <AboutUsDetails /> },

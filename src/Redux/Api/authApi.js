@@ -46,7 +46,7 @@ export const authApi = api.injectEndpoints({
         body: data,
       }),
     }),
-     // === LIKE CONTENT ===
+    // === LIKE CONTENT ===
     likeContent: builder.mutation({
       query: (data) => ({
         url: "/content-likes/",
@@ -54,50 +54,6 @@ export const authApi = api.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ["content"], // re-fetch content if needed
-    }),
-
-    getPrivacyPolicy: builder.query({
-      query: () => "/adminapi/privacy/",
-      providesTags: ["privacy"],
-    }),
-
-    createPrivacyPolicy: builder.mutation({
-      query: (data) => ({
-        url: "/adminapi/privacy/",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["privacy"],
-    }),
-
-    updatePrivacyPolicy: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/adminapi/privacy/${id}/`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["privacy"],
-    }),
-
-    getTerms: builder.query({
-      query: () => "/adminapi/terms/",
-      providesTags: ["terms"],
-    }),
-    createTerms: builder.mutation({
-      query: (data) => ({
-        url: "/adminapi/terms/",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["terms"],
-    }),
-    updateTerms: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/adminapi/terms/${id}/`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["terms"],
     }),
     // === ABOUT US ===
     getAboutUs: builder.query({
@@ -109,18 +65,61 @@ export const authApi = api.injectEndpoints({
       query: () => "/core-values/",
       providesTags: ["coreValues"],
     }),
+    // === ARTICLE CONTENTS ===
+    getArticleContents: builder.query({
+      query: () => "/article/contents/list/",
+      providesTags: ["articleContents"],
+    }),
+    // === SINGLE ARTICLE CONTENT ===
+    getArticleContentById: builder.query({
+      query: (id) => `/article/contents/${id}/`,
+      providesTags: ["articleContent"],
+    }),
+    // === LIKE ARTICLE ===
+    likeArticle: builder.mutation({
+      query: (data) => ({
+        url: "/article-likes/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["articleContent"], // refresh article data if needed
+    }),
+    // === BLOG (Vaults) CONTENTS ===
+    getBlogContents: builder.query({
+      query: () => "/blog/contents/list/",
+      providesTags: ["blogContents"],
+    }),
+
+    // === SINGLE BLOG (Vault) CONTENT ===
+    getBlogContentById: builder.query({
+      query: (id) => `/blog/contents/${id}/`,
+      providesTags: ["blogContent"],
+    }),
+    // === LIKE BLOG (Vault) ===
+    likeBlog: builder.mutation({
+      query: (data) => ({
+        url: "/blog-likes/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["blogContent"], // refresh blog data if needed
+    }),
+    // === GET RELATED BLOGS ===
+    getRelatedBlogs: builder.query({
+      query: (id) => `/blog/related-contents/${id}/`,
+      providesTags: ["blogContent"],
+    }),
+    // === GET POPULAR TAGS ===
+    getPopularTags: builder.query({
+      query: () => `/popular-tags/`,
+      providesTags: ["popularTags"],
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
   useSignupMutation,
-  useGetPrivacyPolicyQuery,
-  useCreatePrivacyPolicyMutation,
-  useUpdatePrivacyPolicyMutation,
-  useGetTermsQuery,
-  useCreateTermsMutation,
-  useUpdateTermsMutation,
   useGetPartnersQuery,
   useGetContentsQuery,
   useGetContentByIdQuery,
@@ -129,4 +128,12 @@ export const {
   useLikeContentMutation,
   useGetAboutUsQuery,
   useGetCoreValuesQuery,
+  useGetArticleContentsQuery,
+  useGetArticleContentByIdQuery,
+  useLikeArticleMutation,
+  useGetBlogContentsQuery,
+  useGetBlogContentByIdQuery,
+  useLikeBlogMutation,
+  useGetRelatedBlogsQuery,
+  useGetPopularTagsQuery,
 } = authApi;

@@ -28,7 +28,7 @@ export default function About() {
     <div className="relative w-full min-h-screen">
       {/* Single Background for entire page */}
       <div
-        className="absolute inset-0 -z-10 bg-no-repeat bg-cover bg-center"
+        className="absolute inset-0 -z-10 bg-no-repeat bg-cover bg-center bg-fixed"
         style={{
           backgroundImage: `
             url(${aboutBg})
