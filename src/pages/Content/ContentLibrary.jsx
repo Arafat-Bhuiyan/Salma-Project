@@ -12,10 +12,18 @@ import leftIcon from "@/assets/icons/left.svg";
 import views from "@/assets/icons/views.svg";
 import noContentImg from "@/assets/images/no-content.png";
 import { useState } from "react";
-import { useGetContentsQuery, useGetTagsQuery } from "@/Redux/Api/authApi";
+import {
+  useGetContentsQuery,
+  useGetTagsQuery,
+  useSubscribeEmailMutation,
+} from "@/Redux/Api/authApi";
+import { toast } from "react-toastify";
 
 export default function ContentLibrary() {
   const [email, setEmail] = useState("");
+  const [subscribeEmail, { isLoading: isSubscribeLoading }] =
+    useSubscribeEmailMutation();
+
   const [selectedTags, setSelectedTags] = useState([]);
   const [filterMode, setFilterMode] = useState("tag"); // "tag" | "content"
   const [selectedContentType, setSelectedContentType] = useState("all");
@@ -79,19 +87,18 @@ export default function ContentLibrary() {
 
   const noContentFound = contentFilteredVaults.length === 0;
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (!email) return alert("Please enter your email before subscribing!");
-    alert(`Thanks for subscribing, ${email}!`);
-    setEmail("");
+  const handleSubscribe = async () => {
+    if (!email) return toast.error("Please enter an email");
+    try {
+      const res = await subscribeEmail(email).unwrap();
+      if (res.success) {
+        toast.success(res.message || "Subscription successful!");
+        setEmail("");
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || "Subscription failed");
+    }
   };
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen text-white text-2xl">
-        Loading contents...
-      </div>
-    );
-  }
 
   if (isError) {
     return (

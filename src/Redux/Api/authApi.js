@@ -114,6 +114,25 @@ export const authApi = api.injectEndpoints({
       query: () => `/popular-tags/`,
       providesTags: ["popularTags"],
     }),
+    // === SUBSCRIBE EMAIL ===
+    subscribeEmail: builder.mutation({
+      query: (email) => ({
+        url: `/subscribe/`,
+        method: "POST",
+        body: { email },
+      }),
+      invalidatesTags: [],
+    }),
+    // === GET PRIVACY POLICY ===
+    getPrivacyPolicy: builder.query({
+      query: () => "/privacy/",
+      providesTags: ["privacyPolicy"],
+    }),
+    // === GET Terms And Conditions ===
+    getTerms: builder.query({
+      query: () => "/terms/",
+      providesTags: ["terms"],
+    }),
   }),
 });
 
@@ -136,4 +155,7 @@ export const {
   useLikeBlogMutation,
   useGetRelatedBlogsQuery,
   useGetPopularTagsQuery,
+  useSubscribeEmailMutation,
+  useGetPrivacyPolicyQuery,
+  useGetTermsQuery,
 } = authApi;

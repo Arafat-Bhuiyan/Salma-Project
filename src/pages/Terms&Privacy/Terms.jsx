@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import bgImg from "@/assets/images/bgImg.png";
+import { useGetTermsQuery } from "@/Redux/Api/authApi";
+import { TextView } from "@/components/TextView";
 
 const TermsAndConditions = () => {
-  const [termsData, setTermsData] = useState("");
+  const { data, isLoading, isError } = useGetTermsQuery();
 
-  useEffect(() => {
-    // Example API call — replace with your real backend endpoint later
-    const fetchTermsData = async () => {
-      try {
-        const res = await fetch("https://your-backend-api.com/terms");
-        const data = await res.json();
-        setTermsData(data?.content || ""); // backend e content field thakbe
-      } catch (error) {
-        console.error("Error fetching terms and conditions:", error);
-      }
-    };
+  const termsContent = data?.content;
 
-    fetchTermsData();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-white text-2xl">
+        Loading Terms and Conditions...
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-red-400 text-xl">
+        Failed to load Terms and Conditions
+      </div>
+    );
+  }
 
   return (
     <div
@@ -28,69 +33,25 @@ const TermsAndConditions = () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Content */}
-      <div className="">
-        <h1 className="text-[#FF39B0] text-5xl font-semibold font-unbounded pt-20 pb-28">
-          Terms of Service
-        </h1>
+      <h1 className="text-[#FF39B0] text-5xl font-semibold font-unbounded pt-20 pb-28">
+        Terms of Service
+      </h1>
 
-        <div className="text-white text-xl font-normal font-unbounded leading-loose tracking-wide px-24 text-start">
-          {termsData ? (
-            <p
-              dangerouslySetInnerHTML={{
-                __html: termsData,
-              }}
-            ></p>
-          ) : (
-            <>
-              <p>
-                <strong>Clause 1</strong> <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra
-                condimentum eget purus in. Consectetur eget id morbi amet amet,
-                in. Ipsum viverra pretium tellus neque. Ullamcorper suspendisse
-                aenean leo pharetra in sit semper et. Amet quam placerat sem.
-              </p>
-              <br />
-              <p>
-                <strong>Clause 2</strong> <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra
-                condimentum eget purus in. Consectetur eget id morbi amet amet,
-                in. Ipsum viverra pretium tellus neque. Ullamcorper suspendisse
-                aenean leo pharetra in sit semper et. Amet quam placerat sem.
-                <br />
-                <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra
-                condimentum eget purus in. Consectetur eget id morbi amet amet,
-                in. Ipsum viverra pretium tellus neque. Ullamcorper suspendisse
-                aenean leo pharetra in sit semper et. Amet quam placerat sem.
-              </p>
-              <br />
-              <p>
-                <strong>Clause 3</strong> <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra
-                condimentum eget purus in. Consectetur eget id morbi amet amet,
-                in. Ipsum viverra pretium tellus neque. Ullamcorper suspendisse
-                aenean leo pharetra in sit semper et. Amet quam placerat sem.
-                <br />
-                <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra
-                condimentum eget purus in. Consectetur eget id morbi amet amet,
-                in. Ipsum viverra pretium tellus neque. Ullamcorper suspendisse
-                aenean leo pharetra in sit semper et. Amet quam placerat sem.
-              </p>
-            </>
-          )}
-        </div>
+      <div className="text-white text-xl font-normal font-unbounded leading-loose tracking-wide px-24 text-start">
+        {termsContent ? (
+          <TextView htmlContent={termsContent} />
+        ) : (
+          <p>No terms found.</p>
+        )}
+      </div>
 
-        {/* Back Button */}
-        <div className="py-16">
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="text-center text-white text-lg font-normal font-unbounded px-8 py-2.5 bg-[#C12E83]"
-          >
-            Back To Homepage
-          </button>
-        </div>
+      <div className="py-16">
+        <button
+          onClick={() => (window.location.href = "/")}
+          className="text-center text-white text-lg font-normal font-unbounded px-8 py-2.5 bg-[#C12E83]"
+        >
+          Back To Homepage
+        </button>
       </div>
     </div>
   );
