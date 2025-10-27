@@ -38,7 +38,7 @@ export default function ContentDetails() {
           toast("Already liked!");
         }
       } else {
-        toast.error("Failed to like content.");
+        toast.error("Failed to like the content. Please log in to like the content.");
       }
     } catch (error) {
       console.error("Like error:", error);

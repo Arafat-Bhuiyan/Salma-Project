@@ -46,25 +46,6 @@ export function VaultDetail() {
     { id: 6, name: "JavaScript" },
   ];
 
-  const relatedArticles = [
-    {
-      id: 1,
-      image: featuredImg3,
-      title: "Digital Preservation Tools",
-      description:
-        "How technology is helping preserve artistic and historical materials.",
-      tags: ["Technology", "Science"],
-    },
-    {
-      id: 2,
-      image: featuredImg4,
-      title: "Art in the Archives",
-      description:
-        "Exploring how artists reinterpret archival materials for modern times.",
-      tags: ["Art", "History"],
-    },
-  ];
-
   console.log("Article Data: ", article);
 
   const handleLike = async () => {
@@ -74,7 +55,7 @@ export function VaultDetail() {
       console.log("Like Response:", res);
     } catch (error) {
       console.error("Like error:", error);
-      toast.error(error?.data?.message || "Failed to like the blog.");
+      toast.error(error?.data?.message || "Failed to like the blog. Please log in to like the blog.");
     }
   };
 

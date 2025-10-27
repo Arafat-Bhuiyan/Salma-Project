@@ -84,6 +84,12 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ["articleContent"], // refresh article data if needed
     }),
+    // GET RELATED ARTICLES
+    getRelatedArticles: builder.query({
+      query: (id) => `/article/related-contents/${id}/`,
+      providesTags: ["article"],
+    }),
+
     // === BLOG (Vaults) CONTENTS ===
     getBlogContents: builder.query({
       query: () => "/blog/contents/list/",
@@ -150,6 +156,7 @@ export const {
   useGetArticleContentsQuery,
   useGetArticleContentByIdQuery,
   useLikeArticleMutation,
+  useGetRelatedArticlesQuery,
   useGetBlogContentsQuery,
   useGetBlogContentByIdQuery,
   useLikeBlogMutation,
