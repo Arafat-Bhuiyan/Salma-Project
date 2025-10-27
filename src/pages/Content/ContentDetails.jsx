@@ -6,7 +6,7 @@ import { LuShare2 } from "react-icons/lu";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { Download, ArrowLeft } from "lucide-react";
 // Simulated data - this would come from your backend/API
-import { BiLike } from "react-icons/bi";
+import { BiLike, BiSolidLike } from "react-icons/bi";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
 import {
   useGetContentByIdQuery,
@@ -26,19 +26,28 @@ export default function ContentDetails() {
 
   const handleLike = async () => {
     try {
-      const response = await likeContent({ content: id, like: true }).unwrap();
+      // toggle like state
+      const newLikeState = !hasLiked;
+
+      // send payload dynamically (true/false)
+      const response = await likeContent({
+        content: id,
+        like: newLikeState,
+      }).unwrap();
 
       if (response.success) {
-        // if new like created
-        if (response.data.created === true) {
+        if (newLikeState) {
+          // liked
           setLikeCount((prev) => prev + 1);
-          setHasLiked(true);
           toast.success("You liked this content!");
         } else {
-          toast("Already liked!");
+          // unliked
+          setLikeCount((prev) => Math.max(prev - 1, 0));
+          toast("You unliked this content!");
         }
+        setHasLiked(newLikeState);
       } else {
-        toast.error("Failed to like the content. Please log in to like the content.");
+        toast.error("Action failed. Please try again.");
       }
     } catch (error) {
       console.error("Like error:", error);
@@ -145,9 +154,19 @@ export default function ContentDetails() {
                 <div className="gap-4 flex">
                   <div
                     onClick={handleLike}
-                    className="items-center gap-2 text-sm text-[#C8C8C8] mt-4 cursor-pointer border inline-flex p-2 px-4 border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none hover:text-white active:bg-[#C12E83] active:text-white active:border-none"
+                    disabled={isLoading}
+                    className={`items-center gap-2 text-sm mt-4 cursor-pointer border inline-flex p-2 px-4 transition-all duration-200 ${
+                      hasLiked
+                        ? "bg-[#FF80EB] border-none text-white"
+                        : "border-[#FF80EB] text-[#C8C8C8] hover:bg-[#FF80EB] active:bg-[#C12E83] hover:text-white hover:border-none"
+                    }`}
                   >
-                    <BiLike className="text-xl" /> Like
+                    {hasLiked ? (
+                      <BiSolidLike className="text-xl" />
+                    ) : (
+                      <BiLike className="text-xl" />
+                    )}
+                    {hasLiked ? "Unlike" : "Like"}
                   </div>
                   <div className="items-center gap-2 text-sm text-white mt-4 cursor-pointer inline-flex p-2 px-4 bg-[#FF80EB] active:bg-[#C12E83]">
                     <LuShare2 className="text-xl" /> Share

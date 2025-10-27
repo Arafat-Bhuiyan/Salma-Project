@@ -70,6 +70,12 @@ export const authApi = api.injectEndpoints({
       query: () => "/article/contents/list/",
       providesTags: ["articleContents"],
     }),
+    // GET FEATURED (Highlighted) ARTICLES
+    getHighlightedArticles: builder.query({
+      query: () => `/highlighted-articles/`,
+      providesTags: ["contents"],
+    }),
+
     // === SINGLE ARTICLE CONTENT ===
     getArticleContentById: builder.query({
       query: (id) => `/article/contents/${id}/`,
@@ -94,6 +100,12 @@ export const authApi = api.injectEndpoints({
     getBlogContents: builder.query({
       query: () => "/blog/contents/list/",
       providesTags: ["blogContents"],
+    }),
+
+    // ✅ GET FEATURED (Highlighted) BLOGS
+    getHighlightedBlogs: builder.query({
+      query: () => `/highlighted-blogs/`,
+      providesTags: ["contents"],
     }),
 
     // === SINGLE BLOG (Vault) CONTENT ===
@@ -155,9 +167,11 @@ export const {
   useGetCoreValuesQuery,
   useGetArticleContentsQuery,
   useGetArticleContentByIdQuery,
+  useGetHighlightedArticlesQuery,
   useLikeArticleMutation,
   useGetRelatedArticlesQuery,
   useGetBlogContentsQuery,
+  useGetHighlightedBlogsQuery,
   useGetBlogContentByIdQuery,
   useLikeBlogMutation,
   useGetRelatedBlogsQuery,

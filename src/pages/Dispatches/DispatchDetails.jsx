@@ -1,7 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
-import featuredImg3 from "@/assets/images/featuredImg3.jpg";
-import featuredImg4 from "@/assets/images/featuredImg4.jpg";
 import { useNavigate } from "react-router-dom";
 import like from "@/assets/icons/like.svg";
 import share from "@/assets/icons/share.svg";
@@ -18,7 +16,42 @@ export function DispatchDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isLoading, isError } = useGetArticleContentByIdQuery(id);
+
+  // 🧠 States
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0); // optional if you show count
+
   const [likeArticle, { isLoading: isLiking }] = useLikeArticleMutation();
+
+  const handleLike = async () => {
+    try {
+      const newLikeState = !hasLiked; // toggle true/false
+      const res = await likeArticle({
+        article: id,
+        like: newLikeState,
+      }).unwrap();
+
+      if (res.success) {
+        setHasLiked(newLikeState);
+        setLikeCount((prev) => prev + (newLikeState ? 1 : -1));
+
+        // ✅ Custom toast message
+        if (newLikeState) {
+          toast.success("Article liked!");
+        } else {
+          toast.success("Article unliked!");
+        }
+      } else {
+        toast.error("Failed to update like status.");
+      }
+    } catch (error) {
+      console.error("Like error:", error);
+      toast.error(
+        error?.data?.message || "Please log in to like this article."
+      );
+    }
+  };
+
   const { data: tagsData, isLoading: isTagsLoading } = useGetPopularTagsQuery();
   const { data: relatedData, isLoading: isRelatedLoading } =
     useGetRelatedArticlesQuery(id);
@@ -42,37 +75,7 @@ export function DispatchDetail() {
     { id: 6, name: "JavaScript" },
   ];
 
-  const relatedArticles = [
-    {
-      id: 1,
-      image: featuredImg3,
-      title: "Digital Preservation Tools",
-      description:
-        "How technology is helping preserve artistic and historical materials.",
-      tags: ["Technology", "Science"],
-    },
-    {
-      id: 2,
-      image: featuredImg4,
-      title: "Art in the Archives",
-      description:
-        "Exploring how artists reinterpret archival materials for modern times.",
-      tags: ["Art", "History"],
-    },
-  ];
-
   console.log("Article Data: ", article);
-
-  const handleLike = async () => {
-    try {
-      const res = await likeArticle({ article: id, like: true }).unwrap();
-      toast.success(res?.message || "Article liked successfully!");
-      console.log("Like Response:", res);
-    } catch (error) {
-      console.error("Like error:", error);
-      toast.error(error?.data?.message || "Failed to like the article. Please log in to like the article.");
-    }
-  };
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
@@ -137,10 +140,20 @@ export function DispatchDetail() {
                       <button
                         onClick={handleLike}
                         disabled={isLiking}
-                        className="flex items-center justify-start gap-1 text-[#C8C8C8] hover:text-white text-base font-normal font-unbounded disabled:opacity-50"
+                        className={`flex items-center justify-start gap-1 text-base font-normal font-unbounded disabled:opacity-50 transition-colors ${
+                          hasLiked
+                            ? "text-[#C8C8C8] hover:text-white"
+                            : "text-[#C8C8C8] hover:text-white"
+                        }`}
                       >
-                        <img src={like} alt="" className="hover:text-white" />
-                        {isLiking ? "Liking..." : "Like"}
+                        <img
+                          src={like}
+                          alt=""
+                          className={`hover:text-white ${
+                            hasLiked ? "brightness-200" : ""
+                          }`}
+                        />
+                        {isLiking ? "Liking..." : hasLiked ? "Unlike" : "Like"}
                       </button>
                     </div>
 
@@ -264,11 +277,15 @@ export function DispatchDetail() {
 
                 {/* Author Details */}
                 <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] py-9 px-24 mt-10">
-                  <div className="text-[#F4F4F3] text-lg font-bold font-['Unbounded'] leading-7">
+                  <div className="text-[#F4F4F3] text-lg font-bold font-['Unbounded'] leading-7 pb-3">
                     About the Author
                   </div>
-                  <div className="flex items-center gap-2">
-                    <img src={article?.author_image} alt="" />
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={article?.author_image}
+                      alt=""
+                      className="w-16 h-16 relative rounded-full shadow-[0px_0px_12px_0px_rgba(255,57,176,1.00)]"
+                    />
                     <div className="flex flex-col justify-center gap-1">
                       <div className="text-[#F4F4F3] text-sm font-medium font-['Unbounded'] leading-normal">
                         {article?.author_name}

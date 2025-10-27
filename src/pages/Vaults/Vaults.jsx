@@ -4,14 +4,23 @@ import { Scroll, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import featuredImg1 from "@/assets/images/featuredImg1.jpg";
 import featuredImg2 from "@/assets/images/featuredImg2.jpg";
-import featuredImg3 from "@/assets/images/featuredImg3.jpg";
-import featuredImg4 from "@/assets/images/featuredImg4.jpg";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
-import { useGetBlogContentsQuery, useGetTagsQuery } from "@/Redux/Api/authApi";
+import {
+  useGetBlogContentsQuery,
+  useGetTagsQuery,
+  useGetHighlightedBlogsQuery,
+} from "@/Redux/Api/authApi";
 
 export default function Vaults() {
   const { data, isLoading, isError } = useGetBlogContentsQuery();
   const blogs = data?.data?.results || [];
+  const {
+    data: highlightedData,
+    isLoading: highlightedLoading,
+    isError: highlightedError,
+  } = useGetHighlightedBlogsQuery();
+  const highlightedVaults = highlightedData?.data?.results || [];
+
   console.log("blogs:", blogs);
 
   const {
@@ -88,41 +97,6 @@ export default function Vaults() {
     },
   ];
 
-  const latestVaults = [
-    {
-      id: 1,
-      image: featuredImg3,
-      title: "Digital Preservation Tools",
-      description:
-        "How technology is helping preserve artistic and historical materials.",
-      tags: ["Technology", "Science"],
-    },
-    {
-      id: 2,
-      image: featuredImg4,
-      title: "Art in the Archives",
-      description:
-        "Exploring how artists reinterpret archival materials for modern times.",
-      tags: ["Art", "History"],
-    },
-    {
-      id: 3,
-      image: featuredImg2,
-      title: "Design Vault: Timeless Creations",
-      description:
-        "A showcase of creative works and their impact through the decades.",
-      tags: ["Design", "Philosophy"],
-    },
-    {
-      id: 4,
-      image: featuredImg1,
-      title: "The Future of Curation",
-      description:
-        "New approaches to organizing and sharing digital knowledge.",
-      tags: ["Technology", "Philosophy"],
-    },
-  ];
-
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
       <ScrollRestoration />
@@ -189,54 +163,72 @@ export default function Vaults() {
           </div>
         </div>
 
-        {/* Featured Vaults */}
+        {/* Featured Vaults (Dynamic from API) */}
         <div className="pt-1">
           <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-5">
             Featured Vaults
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
-            {featuredVaults.map((vault) => (
-              <div
-                key={vault.id}
-                data-aos="fade-up"
-                data-aos-duration="1500"
-                data-aos-delay="200"
-                className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)]"
-              >
-                <div className="relative h-64 overflow-hidden ">
-                  <img
-                    src={vault.image}
-                    alt={vault.title}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-                <div className="bg-[#2C1B2C] p-6">
-                  <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
-                    {vault.title}
-                  </h3>
-                  <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
-                    {vault.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {vault.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <button
-                    onClick={handleGotoDetails}
-                    className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
+
+          {highlightedLoading ? (
+            <p className="text-white">Loading featured vaults...</p>
+          ) : highlightedError ? (
+            <p className="text-red-500">Failed to load featured vaults.</p>
+          ) : highlightedVaults.length === 0 ? (
+            <p className="text-white">No featured vaults found.</p>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {highlightedVaults.map((item) => {
+                const blog = item.blog;
+                return (
+                  <div
+                    key={blog.id}
+                    data-aos="fade-up"
+                    data-aos-duration="1500"
+                    data-aos-delay="200"
+                    className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)]"
                   >
-                    Read More
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                    <div className="relative h-64 overflow-hidden">
+                      <img
+                        src={
+                          blog.primary_image ||
+                          "https://via.placeholder.com/400x300?text=No+Image"
+                        }
+                        alt={blog.title}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    </div>
+
+                    <div className="bg-[#2C1B2C] p-6">
+                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                        {blog.title}
+                      </h3>
+                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                        {blog.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {blog.tags_name?.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={() => handleGotoDetails(blog.id)}
+                        className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
+                      >
+                        Read More
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Latest Vaults */}

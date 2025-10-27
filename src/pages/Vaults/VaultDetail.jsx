@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
 import featuredImg3 from "@/assets/images/featuredImg3.jpg";
 import featuredImg4 from "@/assets/images/featuredImg4.jpg";
-import { useNavigate } from "react-router-dom";
+import { ScrollRestoration, useNavigate } from "react-router-dom";
 import like from "@/assets/icons/like.svg";
 import share from "@/assets/icons/share.svg";
 import { useParams } from "react-router-dom";
@@ -18,7 +18,44 @@ export function VaultDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isLoading, isError } = useGetBlogContentByIdQuery(id);
+
+  // === Like states ===
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  useEffect(() => {
+    if (data?.user_has_liked !== undefined) {
+      setHasLiked(data.user_has_liked);
+      setLikeCount(data.likes_count || 0);
+    }
+  }, [data]);
+
   const [likeArticle, { isLoading: isLiking }] = useLikeBlogMutation();
+
+  const handleLike = async () => {
+    try {
+      const newLikeState = !hasLiked; // toggle true/false
+      const res = await likeArticle({ blog: id, like: newLikeState }).unwrap();
+
+      if (res.success) {
+        setHasLiked(newLikeState);
+        setLikeCount((prev) => prev + (newLikeState ? 1 : -1));
+
+        // ✅ Custom message based on like/unlike
+        if (newLikeState) {
+          toast.success("Blog liked!");
+        } else {
+          toast.success("Blog unliked!");
+        }
+      } else {
+        toast.error("Failed to update like status.");
+      }
+    } catch (error) {
+      console.error("Like error:", error);
+      toast.error(error?.data?.message || "Please log in to like this blog.");
+    }
+  };
+
   const { data: relatedData, isLoading: isRelatedLoading } =
     useGetRelatedBlogsQuery(id);
   const { data: relatedPostsData, isLoading: isRelatedPostsLoading } =
@@ -48,19 +85,9 @@ export function VaultDetail() {
 
   console.log("Article Data: ", article);
 
-  const handleLike = async () => {
-    try {
-      const res = await likeArticle({ blog: id, like: true }).unwrap();
-      toast.success(res?.message || "Blog liked successfully!");
-      console.log("Like Response:", res);
-    } catch (error) {
-      console.error("Like error:", error);
-      toast.error(error?.data?.message || "Failed to like the blog. Please log in to like the blog.");
-    }
-  };
-
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
+      <ScrollRestoration />
       {/* === Loading / Error State === */}
       {isLoading && <p className="text-white text-center py-20">Loading...</p>}
 
@@ -75,7 +102,7 @@ export function VaultDetail() {
           {/* === Header Section (Full Width Image) === */}
           <div className="w-full">
             <img
-              src={article?.blog_image}
+              src={article?.primary_image}
               alt="Vaults Header"
               className="w-full h-[508px] object-cover object-center"
             />
@@ -122,10 +149,24 @@ export function VaultDetail() {
                       <button
                         onClick={handleLike}
                         disabled={isLiking}
-                        className="flex items-center justify-start gap-1 text-[#C8C8C8] hover:text-white text-base font-normal font-unbounded disabled:opacity-50"
+                        className={`flex items-center justify-start gap-1 text-base font-normal font-unbounded transition-all duration-200 ${
+                          hasLiked
+                            ? "text-[#C8C8C8] hover:text-white"
+                            : "text-[#C8C8C8] hover:text-white"
+                        } disabled:opacity-50`}
                       >
-                        <img src={like} alt="" className="hover:text-white" />
-                        {isLiking ? "Liking..." : "Like"}
+                        <img
+                          src={like}
+                          alt="like"
+                          className={`w-5 h-5 ${
+                            hasLiked ? "brightness-150" : ""
+                          }`}
+                        />
+                        {isLiking
+                          ? "Processing..."
+                          : hasLiked
+                          ? "Unlike"
+                          : "Like"}{" "}
                       </button>
                     </div>
 
@@ -161,9 +202,9 @@ export function VaultDetail() {
                       </div>
 
                       {/* Image */}
-                      {article?.primary_image && (
+                      {article?.blog_image && (
                         <img
-                          src={article?.primary_image}
+                          src={article?.blog_image}
                           alt="Article visual"
                           className="w-full h-64 pb-9"
                         />
@@ -251,11 +292,15 @@ export function VaultDetail() {
 
                 {/* Author Details */}
                 <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] py-9 px-24 mt-10">
-                  <div className="text-[#F4F4F3] text-lg font-bold font-['Unbounded'] leading-7">
+                  <div className="text-[#F4F4F3] text-lg font-bold font-['Unbounded'] leading-7 pb-3">
                     About the Author
                   </div>
-                  <div className="flex items-center gap-2">
-                    <img src={article?.author_image} alt="" />
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={article?.author_image}
+                      className="w-16 h-16 relative rounded-full shadow-[0px_0px_12px_0px_rgba(255,57,176,1.00)]"
+                      alt=""
+                    />
                     <div className="flex flex-col justify-center gap-1">
                       <div className="text-[#F4F4F3] text-sm font-medium font-['Unbounded'] leading-normal">
                         {article?.author_name}
