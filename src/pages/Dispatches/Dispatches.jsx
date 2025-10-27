@@ -7,6 +7,7 @@ import {
   useGetArticleContentsQuery,
   useGetTagsQuery,
   useGetHighlightedArticlesQuery,
+  useRecordArticleViewMutation,
 } from "@/Redux/Api/authApi";
 
 export default function Dispatches() {
@@ -17,6 +18,7 @@ export default function Dispatches() {
     isLoading: highlightedLoading,
     isError: highlightedError,
   } = useGetHighlightedArticlesQuery();
+  const [recordArticleView] = useRecordArticleViewMutation();
 
   const highlightedPosts = highlightedData?.data?.results || [];
 
@@ -73,8 +75,16 @@ export default function Dispatches() {
 
   const navigate = useNavigate();
 
-  const handleGotoDetails = (id) => {
-    navigate(`/dispatch-detail/${id}`);
+  const handleGotoDetails = async (id) => {
+    try {
+      console.log("Sending article_id:", id);
+      const res = await recordArticleView({ article_id: id }).unwrap();
+      console.log("View recorded:", res);
+      navigate(`/dispatch-detail/${id}`);
+    } catch (error) {
+      console.error("Error recording view:", error);
+      if (error?.data) console.error("Server response:", error.data);
+    }
   };
 
   return (

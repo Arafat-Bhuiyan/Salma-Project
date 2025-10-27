@@ -96,6 +96,15 @@ export const authApi = api.injectEndpoints({
       providesTags: ["article"],
     }),
 
+    // View count for Article
+     recordArticleView: builder.mutation({
+      query: (articleId) => ({
+        url: "/click/article",
+        method: "POST",
+        body: { article_id: articleId },
+      }),
+    }),
+
     // === BLOG (Vaults) CONTENTS ===
     getBlogContents: builder.query({
       query: () => "/blog/contents/list/",
@@ -170,6 +179,7 @@ export const {
   useGetHighlightedArticlesQuery,
   useLikeArticleMutation,
   useGetRelatedArticlesQuery,
+  useRecordArticleViewMutation,
   useGetBlogContentsQuery,
   useGetHighlightedBlogsQuery,
   useGetBlogContentByIdQuery,

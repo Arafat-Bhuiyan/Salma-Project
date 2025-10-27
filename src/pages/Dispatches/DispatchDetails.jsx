@@ -2,20 +2,22 @@ import { useEffect, useState } from "react";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
 import { useNavigate } from "react-router-dom";
 import like from "@/assets/icons/like.svg";
-import share from "@/assets/icons/share.svg";
 import { useParams } from "react-router-dom";
 import {
   useGetArticleContentByIdQuery,
   useLikeArticleMutation,
   useGetPopularTagsQuery,
   useGetRelatedArticlesQuery,
+  useRecordArticleViewMutation,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
+import ShareButton from "@/components/ShareButton";
 
 export function DispatchDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isLoading, isError } = useGetArticleContentByIdQuery(id);
+  const [recordArticleView] = useRecordArticleViewMutation();
 
   // 🧠 States
   const [hasLiked, setHasLiked] = useState(false);
@@ -49,6 +51,18 @@ export function DispatchDetail() {
       toast.error(
         error?.data?.message || "Please log in to like this article."
       );
+    }
+  };
+
+  const handleReadMore = async (articleId) => {
+    try {
+      const res = await recordArticleView(articleId).unwrap();
+      console.log("View recorded:", res);
+      navigate(`/dispatch-detail/${articleId}`);
+    } catch (error) {
+      console.error("View record failed:", error);
+      // Even if API fails, still navigate
+      navigate(`/dispatch-detail/${articleId}`);
     }
   };
 
@@ -157,12 +171,7 @@ export function DispatchDetail() {
                       </button>
                     </div>
 
-                    <div className="w-28 h-12 px-3.5 flex items-center bg-[#FF80EB] active:bg-[#C12E83]">
-                      <button className="flex items-center justify-start gap-1 text-white text-base font-normal font-unbounded">
-                        <img src={share} alt="" className="w-5" />
-                        Share
-                      </button>
-                    </div>
+                    <ShareButton />
                   </div>
 
                   <div className="w-full flex items-start justify-center gap-20">
@@ -230,7 +239,7 @@ export function DispatchDetail() {
                                 <div className="text-[#F4F4F3] text-sm font-normal font-unbounded leading-tight hover:underline">
                                   {item.title}
                                 </div>
-                                <div className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none">
+                                <div onClick={() => handleReadMore(article.id)} className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none">
                                   Read More →
                                 </div>
                               </div>
@@ -346,9 +355,7 @@ export function DispatchDetail() {
                             </div>
                           </div>
                           <button
-                            onClick={() =>
-                              navigate(`/dispatch-detail/${article.id}`)
-                            }
+                            onClick={() => handleReadMore(article.id)}
                             className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
                           >
                             Read More

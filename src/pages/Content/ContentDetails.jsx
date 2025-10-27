@@ -1,8 +1,6 @@
 import bgImg from "../../assets/images/detailsbg.png";
 import pdf from "../../assets/icons/pdf-icon.png";
-import featuredImg from "../../assets/images/featuredImg1.jpg";
 import React, { useState } from "react";
-import { LuShare2 } from "react-icons/lu";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { Download, ArrowLeft } from "lucide-react";
 // Simulated data - this would come from your backend/API
@@ -13,6 +11,7 @@ import {
   useLikeContentMutation,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
+import ShareButton from "@/components/ShareButton";
 
 export default function ContentDetails() {
   const { id } = useParams();
@@ -168,9 +167,7 @@ export default function ContentDetails() {
                     )}
                     {hasLiked ? "Unlike" : "Like"}
                   </div>
-                  <div className="items-center gap-2 text-sm text-white mt-4 cursor-pointer inline-flex p-2 px-4 bg-[#FF80EB] active:bg-[#C12E83]">
-                    <LuShare2 className="text-xl" /> Share
-                  </div>
+                  <ShareButton />
                 </div>
               </div>
             </div>

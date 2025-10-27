@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
-import featuredImg3 from "@/assets/images/featuredImg3.jpg";
-import featuredImg4 from "@/assets/images/featuredImg4.jpg";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
 import like from "@/assets/icons/like.svg";
-import share from "@/assets/icons/share.svg";
 import { useParams } from "react-router-dom";
 import {
   useGetBlogContentByIdQuery,
@@ -13,6 +10,7 @@ import {
   useGetPopularTagsQuery,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
+import ShareButton from "@/components/ShareButton";
 
 export function VaultDetail() {
   const navigate = useNavigate();
@@ -170,12 +168,7 @@ export function VaultDetail() {
                       </button>
                     </div>
 
-                    <div className="w-28 h-12 px-3.5 flex items-center bg-[#FF80EB] active:bg-[#C12E83]">
-                      <button className="flex items-center justify-start gap-1 text-white text-base font-normal font-unbounded">
-                        <img src={share} alt="" className="w-5" />
-                        Share
-                      </button>
-                    </div>
+                    <ShareButton />
                   </div>
 
                   <div className="w-full flex items-start justify-center gap-20">
