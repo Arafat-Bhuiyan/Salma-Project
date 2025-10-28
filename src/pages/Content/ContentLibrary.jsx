@@ -16,6 +16,8 @@ import {
   useGetContentsQuery,
   useGetTagsQuery,
   useSubscribeEmailMutation,
+  useGetHighlightedContentsQuery,
+  useRecordContentViewMutation,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
 
@@ -23,6 +25,13 @@ export default function ContentLibrary() {
   const [email, setEmail] = useState("");
   const [subscribeEmail, { isLoading: isSubscribeLoading }] =
     useSubscribeEmailMutation();
+  const {
+    data: highlightsData,
+    isLoading: highlightsLoading,
+    refetch: refetchHighlights,
+  } = useGetHighlightedContentsQuery();
+
+  console.log("Highlight Data:", highlightsData);
 
   const [selectedTags, setSelectedTags] = useState([]);
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
@@ -33,6 +42,23 @@ export default function ContentLibrary() {
   const contents = data || [];
   console.log("contents data:", data);
 
+  const [recordBlogView] = useRecordContentViewMutation();
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const highlights = highlightsData?.data?.results || [];
+
+  const handleNext = () => {
+    if (highlights.length > 0) {
+      setActiveIndex((prev) => (prev + 1) % highlights.length);
+    }
+  };
+
+  const handlePrev = () => {
+    if (highlights.length > 0) {
+      setActiveIndex((prev) => (prev === 0 ? highlights.length - 1 : prev - 1));
+    }
+  };
+
   const [visibleCount, setVisibleCount] = useState(6);
   const {
     data: tagsData,
@@ -40,8 +66,17 @@ export default function ContentLibrary() {
     isError: tagsError,
   } = useGetTagsQuery();
 
-  const handleGotoDetails = (id) => {
-    navigate(`/content-details/${id}`);
+  const handleGotoDetails = async (id) => {
+    try {
+      const res = await recordBlogView({ content_id: id }).unwrap();
+      console.log("View Recorded:", res);
+
+      await refetchHighlights(); // ✅ refresh view count in highlights
+      navigate(`/content-details/${id}`);
+    } catch (error) {
+      console.error("View record failed:", error);
+      navigate(`/content-details/${id}`);
+    }
   };
 
   const tags = tagsData?.data?.map((tag) => tag.name) || [];
@@ -248,7 +283,7 @@ export default function ContentLibrary() {
                             {vault.description}
                           </p>
                           <div className="flex flex-wrap gap-2 mb-4">
-                            {vault.tags_names.map((tag) => (
+                            {vault.tags_names.slice(0, 4).map((tag) => (
                               <span
                                 key={tag}
                                 className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
@@ -256,6 +291,15 @@ export default function ContentLibrary() {
                                 {tag}
                               </span>
                             ))}
+
+                            {vault.tags_names.length > 4 && (
+                              <button
+                                onClick={() => handleGotoDetails(vault.id)}
+                                className="text-white text-[10.20px] font-medium font-poppins underline"
+                              >
+                                ...more
+                              </button>
+                            )}
                           </div>
                         </div>
                         <button
@@ -364,7 +408,7 @@ export default function ContentLibrary() {
                         onClick={() =>
                           setVisibleTagsCount(visibleTagsCount + 15)
                         }
-                        className="px-3.5 py-1.5 border border-[#C12E83] text-white text-xs font-unbounded"
+                        className="px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] text-white text-xs font-unbounded"
                       >
                         ...more
                       </button>
@@ -468,49 +512,86 @@ export default function ContentLibrary() {
                 {/* Week's Highlights + Subscribe Section */}
                 {selectedTags.length === 0 && (
                   <>
-                    <div className="w-full max-w-7xl h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB]">
-                      <div className="flex items-start justify-center py-9 px-20 gap-9">
-                        <div className="flex flex-col items-start justify-start">
-                          <h1 className="text-[#F4F4F3] text-4xl font-semibold font-unbounded pb-8">
-                            Week's highlights
-                          </h1>
-                          <p className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-7">
-                            Digital Art Revolution
-                          </p>
-                          <p className=" text-[#FF39B0] text-base font-normal font-unbounded leading-none pt-5">
-                            Video
-                          </p>
-                          <div className="flex gap-2.5 py-5">
-                            <img src={views} alt="" />
-                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
-                              12650
+                    {highlightsLoading ? (
+                      <div className="text-center text-white text-xl py-20">
+                        Loading highlights...
+                      </div>
+                    ) : highlights.length > 0 ? (
+                      <div className="w-full max-w-7xl h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
+                        <div className="flex items-start justify-center py-9 px-20 gap-9">
+                          <div className="flex flex-col items-start justify-start">
+                            <h1 className="text-[#F4F4F3] text-4xl font-semibold font-unbounded pb-8">
+                              Week's highlights
+                            </h1>
+                            <p className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-7">
+                              {highlights[activeIndex]?.content?.title ||
+                                "No Title"}
                             </p>
-                          </div>
-                          <div
-                            onClick={() => handleGotoDetails(1)}
-                            className="w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
-                          >
-                            <div className="text-center text-white text-2xl font-normal font-unbounded">
-                              View
+                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal pt-3">
+                              {highlights[activeIndex]?.content?.content_type ||
+                                "No Type"}
+                            </p>
+
+                            <div className="flex gap-2.5 py-5">
+                              <img src={views} alt="" />
+                              <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
+                                {highlights[activeIndex]?.content
+                                  ?.views_count || 0}
+                              </p>
+                            </div>
+                            <div
+                              onClick={() =>
+                                handleGotoDetails(
+                                  highlights[activeIndex]?.content?.id
+                                )
+                              }
+                              className="w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
+                            >
+                              <div className="text-center text-white text-2xl font-normal font-unbounded">
+                                View
+                              </div>
                             </div>
                           </div>
+                          <img
+                            className="w-[474px] h-64 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
+                            src={
+                              highlights[activeIndex]?.content
+                                ?.upload_files?.[0]?.url || noContentImg
+                            }
+                            alt="Highlight"
+                          />
                         </div>
-                        <img
-                          className="w-[474px] h-64 relative shadow-[0px_0px_49.20000076293945px_0px_rgba(0,0,0,0.25)]"
-                          src={featuredImg1}
-                        />
-                      </div>
 
-                      <div className="absolute top-32 right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                        <img src={rightIcon} alt="" className="w-[5px] h-2.5" />
+                        {/* === Navigation Arrows === */}
+                        <div
+                          onClick={handleNext}
+                          className="absolute top-32 right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                        >
+                          <img
+                            src={rightIcon}
+                            alt=""
+                            className="w-[5px] h-2.5"
+                          />
+                        </div>
+                        <div
+                          onClick={handlePrev}
+                          className="absolute top-32 left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                        >
+                          <img
+                            src={leftIcon}
+                            alt=""
+                            className="w-[5px] h-2.5"
+                          />
+                        </div>
                       </div>
-                      <div className="absolute top-32 left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full">
-                        <img src={leftIcon} alt="" className="w-[5px] h-2.5" />
+                    ) : (
+                      <div className="text-center text-white text-xl py-20">
+                        No highlights found.
                       </div>
-                    </div>
+                    )}
 
+                    {/* Subscribe section */}
                     <div>
-                      {/* Subscribe section */}
                       <div className="relative inline-block">
                         {/* Background tilted area */}
                         <div

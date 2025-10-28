@@ -38,6 +38,12 @@ export const authApi = api.injectEndpoints({
       query: () => "/tags/",
       providesTags: ["tags"],
     }),
+
+    // === Week's highlights ===
+    getHighlightedContents: builder.query({
+      query: () => "/highlighted-contents/",
+    }),
+
     // === CONTACT FORM ===
     sendContactMessage: builder.mutation({
       query: (data) => ({
@@ -94,6 +100,15 @@ export const authApi = api.injectEndpoints({
     getRelatedArticles: builder.query({
       query: (id) => `/article/related-contents/${id}/`,
       providesTags: ["article"],
+    }),
+
+    // View count for Content
+    recordContentView: builder.mutation({
+      query: (body) => ({
+        url: "/click/content",
+        method: "POST",
+        body,
+      }),
     }),
 
     // View count for Article
@@ -179,6 +194,7 @@ export const {
   useGetContentsQuery,
   useGetContentByIdQuery,
   useGetTagsQuery,
+  useGetHighlightedContentsQuery,
   useSendContactMessageMutation,
   useLikeContentMutation,
   useGetAboutUsQuery,
@@ -188,6 +204,7 @@ export const {
   useGetHighlightedArticlesQuery,
   useLikeArticleMutation,
   useGetRelatedArticlesQuery,
+  useRecordContentViewMutation,
   useRecordArticleViewMutation,
   useRecordBlogViewMutation,
   useGetBlogContentsQuery,

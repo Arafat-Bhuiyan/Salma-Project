@@ -105,6 +105,28 @@ export default function ContentDetails() {
     window.open(pdfUrl, "_blank");
   };
 
+  // Helper to convert YouTube/Vimeo/etc. link to embed format
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+    // YouTube watch URL
+    if (url.includes("youtube.com/watch?v=")) {
+      const videoId = url.split("v=")[1].split("&")[0];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    // YouTube short URL
+    if (url.includes("youtu.be/")) {
+      const videoId = url.split("youtu.be/")[1].split("?")[0];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    // Vimeo URL
+    if (url.includes("vimeo.com/")) {
+      const videoId = url.split("vimeo.com/")[1].split("?")[0].split("/")[0];
+      return `https://player.vimeo.com/video/${videoId}`;
+    }
+    // If already embed or other platform, return as is
+    return url;
+  };
+
   return (
     <div
       className="min-h-screen bg-gray-900 text-white font-unbounded"
@@ -227,16 +249,15 @@ export default function ContentDetails() {
                 </div>
               </div>
             ) : content.content_type?.toLowerCase() === "video" ? (
-              /* Video Content */
               <div className="bg-gray-800 overflow-hidden shadow-2xl border border-gray-700">
                 <div className="aspect-video bg-black relative">
                   <iframe
-                    className="w-full h-full"
-                    src={content.vedio_url}
-                    title="Video Content"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    src={getEmbedUrl(content.vedio_url)}
+                    title="Video Preview"
+                    className="w-full h-full rounded-lg border border-zinc-700"
                     allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
                   ></iframe>
                 </div>
               </div>
