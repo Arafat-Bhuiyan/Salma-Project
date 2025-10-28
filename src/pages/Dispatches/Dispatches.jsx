@@ -78,7 +78,7 @@ export default function Dispatches() {
   const handleGotoDetails = async (id) => {
     try {
       console.log("Sending article_id:", id);
-      const res = await recordArticleView({ article_id: id }).unwrap();
+      const res = await recordArticleView(id).unwrap();
       console.log("View recorded:", res);
       navigate(`/dispatch-detail/${id}`);
     } catch (error) {

@@ -1,14 +1,13 @@
 import vaultsHeaderImg from "@/assets/images/vaults_header.png";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
-import { Scroll, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import featuredImg1 from "@/assets/images/featuredImg1.jpg";
-import featuredImg2 from "@/assets/images/featuredImg2.jpg";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
 import {
   useGetBlogContentsQuery,
   useGetTagsQuery,
   useGetHighlightedBlogsQuery,
+  useRecordBlogViewMutation,
 } from "@/Redux/Api/authApi";
 
 export default function Vaults() {
@@ -20,6 +19,7 @@ export default function Vaults() {
     isError: highlightedError,
   } = useGetHighlightedBlogsQuery();
   const highlightedVaults = highlightedData?.data?.results || [];
+  const [recordBlogView] = useRecordBlogViewMutation();
 
   console.log("blogs:", blogs);
 
@@ -74,28 +74,19 @@ export default function Vaults() {
 
   const navigate = useNavigate();
 
-  const handleGotoDetails = (id) => {
-    navigate(`/vault-detail/${id}`);
-  };
+  const handleGotoDetails = async (id) => {
+    try {
+      // ✅ view count API কল (blog_id ব্যবহার করে)
+      const res = await recordBlogView({ blog_id: id }).unwrap();
+      console.log("Blog view recorded:", res);
 
-  const featuredVaults = [
-    {
-      id: 1,
-      image: featuredImg1,
-      title: "Exploring Hidden Archives",
-      description:
-        "Dive into rare collections and forgotten works curated by experts.",
-      tags: ["History", "Art"],
-    },
-    {
-      id: 2,
-      image: featuredImg2,
-      title: "Design Vault: Timeless Creations",
-      description:
-        "A showcase of creative works and their impact through the decades.",
-      tags: ["Design", "Philosophy"],
-    },
-  ];
+      // ✅ সফল হলে navigate করবে
+      navigate(`/vault-detail/${id}`);
+    } catch (error) {
+      console.error("Error recording blog view:", error);
+      // চাইলে এখানে toast দেখাতে পারো
+    }
+  };
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">

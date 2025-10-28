@@ -8,6 +8,7 @@ import {
   useLikeBlogMutation,
   useGetRelatedBlogsQuery,
   useGetPopularTagsQuery,
+  useRecordBlogViewMutation,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
 import ShareButton from "@/components/ShareButton";
@@ -62,26 +63,27 @@ export function VaultDetail() {
 
   const article = data || {};
 
-  console.log("Article", article);
-
-  const handleGotoDetails = () => {
-    navigate("/vault-detail");
-  };
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const topics = [
-    { id: 1, name: "AI" },
-    { id: 2, name: "Web Dev" },
-    { id: 3, name: "Machine Learning" },
-    { id: 4, name: "Frontend" },
-    { id: 5, name: "React" },
-    { id: 6, name: "JavaScript" },
-  ];
-
   console.log("Article Data: ", article);
+
+  const [recordBlogView] = useRecordBlogViewMutation();
+
+  const handleGotoDetails = async (id) => {
+    try {
+      const res = await recordBlogView({ blog: id }).unwrap();
+      if (res.success) {
+        console.log("View recorded:", res.data);
+      }
+      navigate(`/vault-detail/${id}`);
+    } catch (error) {
+      console.error("Error recording view:", error);
+      toast.error("Failed to record view.");
+      navigate(`/vault-detail/${id}`); // Navigate anyway
+    }
+  };
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
@@ -234,9 +236,7 @@ export function VaultDetail() {
                                   {post.title}
                                 </div>
                                 <div
-                                  onClick={() =>
-                                    navigate(`/vault-detail/${post.id}`)
-                                  }
+                                  onClick={() => handleGotoDetails(post.id)}
                                   className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none cursor-pointer hover:underline"
                                 >
                                   Read More →
@@ -351,9 +351,7 @@ export function VaultDetail() {
                             </div>
                           </div>
                           <button
-                            onClick={() =>
-                              navigate(`/vault-detail/${vault.id}`)
-                            }
+                            onClick={() => handleGotoDetails(vault.id)}
                             className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
                           >
                             Read More

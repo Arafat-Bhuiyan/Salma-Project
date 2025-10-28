@@ -97,11 +97,20 @@ export const authApi = api.injectEndpoints({
     }),
 
     // View count for Article
-     recordArticleView: builder.mutation({
+    recordArticleView: builder.mutation({
       query: (articleId) => ({
         url: "/click/article",
         method: "POST",
         body: { article_id: articleId },
+      }),
+    }),
+
+    // View count for Article
+    recordBlogView: builder.mutation({
+      query: (body) => ({
+        url: "/click/blog",
+        method: "POST",
+        body, // { blog: id }
       }),
     }),
 
@@ -180,6 +189,7 @@ export const {
   useLikeArticleMutation,
   useGetRelatedArticlesQuery,
   useRecordArticleViewMutation,
+  useRecordBlogViewMutation,
   useGetBlogContentsQuery,
   useGetHighlightedBlogsQuery,
   useGetBlogContentByIdQuery,

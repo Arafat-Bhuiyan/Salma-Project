@@ -25,6 +25,7 @@ export default function ContentLibrary() {
     useSubscribeEmailMutation();
 
   const [selectedTags, setSelectedTags] = useState([]);
+  const [visibleTagsCount, setVisibleTagsCount] = useState(15);
   const [filterMode, setFilterMode] = useState("tag"); // "tag" | "content"
   const [selectedContentType, setSelectedContentType] = useState("all");
   const navigate = useNavigate();
@@ -338,22 +339,36 @@ export default function ContentLibrary() {
 
                   {/* Tag List */}
                   <div className="flex flex-wrap gap-3">
-                    {tagsData?.data?.map((tag) => {
-                      const isSelected = selectedTags.includes(tag.name);
-                      return (
-                        <div
-                          key={tag.id}
-                          onClick={() => handleTagClick(tag.name)}
-                          className={`cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] ${
-                            isSelected
-                              ? "bg-yellow-300 text-black"
-                              : "bg-transparent text-[#C6C6C6]"
-                          } text-xs font-unbounded`}
-                        >
-                          {tag.name} ({tag.content_count})
-                        </div>
-                      );
-                    })}
+                    {tagsData?.data
+                      ?.slice(0, visibleTagsCount) // শুধুমাত্র visible count পর্যন্ত দেখাবে
+                      .map((tag) => {
+                        const isSelected = selectedTags.includes(tag.name);
+                        return (
+                          <div
+                            key={tag.id}
+                            onClick={() => handleTagClick(tag.name)}
+                            className={`cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] ${
+                              isSelected
+                                ? "bg-yellow-300 text-black"
+                                : "bg-transparent text-[#C6C6C6]"
+                            } text-xs font-unbounded`}
+                          >
+                            {tag.name} ({tag.content_count})
+                          </div>
+                        );
+                      })}
+
+                    {/* যদি মোট ট্যাগ সংখ্যা visibleTagsCount থেকে বেশি হয় তাহলে "more" বাটন দেখাবে */}
+                    {visibleTagsCount < tagsData?.data?.length && (
+                      <button
+                        onClick={() =>
+                          setVisibleTagsCount(visibleTagsCount + 15)
+                        }
+                        className="px-3.5 py-1.5 border border-[#C12E83] text-white text-xs font-unbounded"
+                      >
+                        ...more
+                      </button>
+                    )}
                   </div>
 
                   {/* Selected Tags */}
@@ -404,7 +419,7 @@ export default function ContentLibrary() {
                               {vault.description}
                             </p>
                             <div className="flex flex-wrap gap-2 mb-4">
-                              {vault.tags_names.map((tag) => (
+                              {vault.tags_names.slice(0, 4).map((tag) => (
                                 <span
                                   key={tag}
                                   className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
@@ -412,6 +427,15 @@ export default function ContentLibrary() {
                                   {tag}
                                 </span>
                               ))}
+
+                              {vault.tags_names.length > 4 && (
+                                <button
+                                  onClick={() => handleGotoDetails(vault.id)}
+                                  className="text-white text-[10.20px] font-medium font-poppins underline"
+                                >
+                                  ...more
+                                </button>
+                              )}
                             </div>
                           </div>
                           <button

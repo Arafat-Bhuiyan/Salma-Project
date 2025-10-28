@@ -3,8 +3,7 @@ import pdf from "../../assets/icons/pdf-icon.png";
 import React, { useState } from "react";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { Download, ArrowLeft } from "lucide-react";
-// Simulated data - this would come from your backend/API
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import like from "@/assets/icons/like.svg";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
 import {
   useGetContentByIdQuery,
@@ -19,7 +18,7 @@ export default function ContentDetails() {
   const content = data || {};
   const [likeCount, setLikeCount] = useState(content.views_count || 0); // 🆕 initial count
   const [hasLiked, setHasLiked] = useState(false); // 🆕 track user like
-  const [likeContent, { isLoading: liking }] = useLikeContentMutation(); // 🆕 RTK Mutation
+  const [likeContent, { isLoading: isLiking }] = useLikeContentMutation(); // 🆕 RTK Mutation
 
   console.log("ID:", id, "Full Data:", content);
 
@@ -150,23 +149,33 @@ export default function ContentDetails() {
                     </span>
                   ))}
                 </div>
-                <div className="gap-4 flex">
-                  <div
-                    onClick={handleLike}
-                    disabled={isLoading}
-                    className={`items-center gap-2 text-sm mt-4 cursor-pointer border inline-flex p-2 px-4 transition-all duration-200 ${
-                      hasLiked
-                        ? "bg-[#FF80EB] border-none text-white"
-                        : "border-[#FF80EB] text-[#C8C8C8] hover:bg-[#FF80EB] active:bg-[#C12E83] hover:text-white hover:border-none"
-                    }`}
-                  >
-                    {hasLiked ? (
-                      <BiSolidLike className="text-xl" />
-                    ) : (
-                      <BiLike className="text-xl" />
-                    )}
-                    {hasLiked ? "Unlike" : "Like"}
+                {/* Like and Share Buttons */}
+                <div className="flex gap-2 items-center">
+                  <div className="w-28 h-12 px-3.5 flex items-center outline outline-2 outline-offset-[-2px] outline-[#FF80EB] hover:bg-[#FF80EB] active:bg-[#C12E83] active:outline-none">
+                    <button
+                      onClick={handleLike}
+                      disabled={isLiking}
+                      className={`flex items-center justify-start gap-1 text-base font-normal font-unbounded transition-all duration-200 ${
+                        hasLiked
+                          ? "text-[#C8C8C8] hover:text-white"
+                          : "text-[#C8C8C8] hover:text-white"
+                      } disabled:opacity-50`}
+                    >
+                      <img
+                        src={like}
+                        alt="like"
+                        className={`w-5 h-5 ${
+                          hasLiked ? "brightness-150" : ""
+                        }`}
+                      />
+                      {isLiking
+                        ? "Processing..."
+                        : hasLiked
+                        ? "Unlike"
+                        : "Like"}{" "}
+                    </button>
                   </div>
+
                   <ShareButton />
                 </div>
               </div>
