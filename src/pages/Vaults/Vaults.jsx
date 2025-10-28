@@ -30,6 +30,7 @@ export default function Vaults() {
   } = useGetTagsQuery();
 
   const [topics, setTopics] = useState([]);
+  const [visibleTagsCount, setVisibleTagsCount] = useState(15);
 
   useEffect(() => {
     if (tagsData?.data) {
@@ -53,6 +54,7 @@ export default function Vaults() {
   };
 
   const [filteredBlogs, setFilteredBlogs] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (blogs.length > 0) {
@@ -60,17 +62,27 @@ export default function Vaults() {
     }
   }, [blogs]);
 
-  const handleFilterBlogs = (selectedName) => {
-    if (selectedName === "All" || !selectedName) {
-      setFilteredBlogs(blogs);
-      return;
+  useEffect(() => {
+    const activeTopic = topics.find((t) => t.active)?.name;
+
+    let newFilteredBlogs = blogs;
+
+    // Filter by topic
+    if (activeTopic && activeTopic !== "All") {
+      newFilteredBlogs = newFilteredBlogs.filter((blog) =>
+        blog.tags_name?.includes(activeTopic)
+      );
     }
 
-    const filtered = blogs.filter((blog) =>
-      blog.tags_name?.includes(selectedName)
-    );
-    setFilteredBlogs(filtered);
-  };
+    // Filter by search query
+    if (searchQuery) {
+      newFilteredBlogs = newFilteredBlogs.filter((blog) =>
+        blog.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredBlogs(newFilteredBlogs);
+  }, [searchQuery, topics, blogs]);
 
   const navigate = useNavigate();
 
@@ -127,6 +139,8 @@ export default function Vaults() {
               <input
                 type="text"
                 placeholder="Search vaults..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="text-[#727272] placeholder:text-[#727272] text-base font-normal font-unbounded leading-normal w-full bg-white pl-1 focus:outline-none focus:ring-0"
               />
             </div>
@@ -137,7 +151,7 @@ export default function Vaults() {
               Filter by topic:
             </p>
             <div className="flex flex-wrap gap-2">
-              {topics.map((topic) => (
+              {topics.slice(0, visibleTagsCount).map((topic) => (
                 <button
                   key={topic.id}
                   onClick={() => handleTopicClick(topic.name)}
@@ -150,6 +164,14 @@ export default function Vaults() {
                   {topic.name}
                 </button>
               ))}
+              {visibleTagsCount < topics.length && (
+                <button
+                  onClick={() => setVisibleTagsCount(visibleTagsCount + 15)}
+                  className="px-4 py-2 rounded-md text-xs font-medium font-unbounded leading-none transition-colors duration-200 bg-white text-[#727272]"
+                >
+                  ... more
+                </button>
+              )}
             </div>
           </div>
         </div>

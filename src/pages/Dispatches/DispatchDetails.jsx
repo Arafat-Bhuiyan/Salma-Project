@@ -67,10 +67,6 @@ export function DispatchDetail() {
 
   const article = data || {};
 
-  const handleGotoDetails = () => {
-    navigate("/dispatch-detail");
-  };
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

@@ -31,6 +31,7 @@ export default function Dispatches() {
   } = useGetTagsQuery();
 
   const [topics, setTopics] = useState([]);
+  const [visibleTagsCount, setVisibleTagsCount] = useState(15);
 
   useEffect(() => {
     if (tagsData?.data) {
@@ -50,28 +51,32 @@ export default function Dispatches() {
     );
     setTopics(updatedTopics);
 
-    handleFilterArticles(selectedName);
   };
 
   const [filteredArticles, setFilteredArticles] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (articles.length > 0) {
-      setFilteredArticles(articles);
-    }
-  }, [articles]);
+    const activeTopic = topics.find((t) => t.active)?.name;
 
-  const handleFilterArticles = (selectedName) => {
-    if (selectedName === "All" || !selectedName) {
-      setFilteredArticles(articles);
-      return;
+    let newFilteredArticles = articles;
+
+    // Filter by topic
+    if (activeTopic && activeTopic !== "All") {
+      newFilteredArticles = newFilteredArticles.filter((article) =>
+        article.tags_name?.includes(activeTopic)
+      );
     }
 
-    const filtered = articles.filter((article) =>
-      article.tags_name?.includes(selectedName)
-    );
-    setFilteredArticles(filtered);
-  };
+    // Filter by search query
+    if (searchQuery) {
+      newFilteredArticles = newFilteredArticles.filter((article) =>
+        article.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredArticles(newFilteredArticles);
+  }, [searchQuery, topics, articles]);
 
   const navigate = useNavigate();
 
@@ -116,6 +121,8 @@ export default function Dispatches() {
               <input
                 type="text"
                 placeholder="Search blog posts..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="text-[#727272] placeholder:text-[#727272] text-base font-normal font-unbounded leading-normal w-full bg-white pl-1 focus:outline-none focus:ring-0"
               />
             </div>
@@ -127,7 +134,7 @@ export default function Dispatches() {
               Filter by topic:
             </p>
             <div className="flex flex-wrap gap-2">
-              {topics.map((topic) => (
+              {topics.slice(0, visibleTagsCount).map((topic) => (
                 <button
                   key={topic.id}
                   onClick={() => handleTopicClick(topic.name)}
@@ -140,6 +147,14 @@ export default function Dispatches() {
                   {topic.name}
                 </button>
               ))}
+              {visibleTagsCount < topics.length && (
+                <button
+                  onClick={() => setVisibleTagsCount(visibleTagsCount + 15)}
+                  className="px-4 py-2 rounded-md text-xs font-medium font-unbounded leading-none transition-colors duration-200 bg-white text-[#727272]"
+                >
+                  ... more
+                </button>
+              )}
             </div>
           </div>
         </div>
