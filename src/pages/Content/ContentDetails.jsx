@@ -1,6 +1,6 @@
 import bgImg from "../../assets/images/detailsbg.png";
 import pdf from "../../assets/icons/pdf-icon.png";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { Download, ArrowLeft } from "lucide-react";
 import like from "@/assets/icons/like.svg";
@@ -8,6 +8,7 @@ import { Link, ScrollRestoration, useParams } from "react-router-dom";
 import {
   useGetContentByIdQuery,
   useLikeContentMutation,
+  useGetRelatedContentsQuery,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
 import ShareButton from "@/components/ShareButton";
@@ -16,34 +17,30 @@ export default function ContentDetails() {
   const { id } = useParams();
   const { data, isLoading, isError } = useGetContentByIdQuery(id);
   const content = data || {};
-  const [likeCount, setLikeCount] = useState(content.views_count || 0); // 🆕 initial count
-  const [hasLiked, setHasLiked] = useState(false); // 🆕 track user like
+  const [likeCount, setLikeCount] = useState(0);
+  const [hasLiked, setHasLiked] = useState(false);
   const [likeContent, { isLoading: isLiking }] = useLikeContentMutation(); // 🆕 RTK Mutation
+  const { data: relatedData, isLoading: relatedLoading } =
+    useGetRelatedContentsQuery(id);
 
-  console.log("ID:", id, "Full Data:", content);
+  useEffect(() => {
+    if (content) {
+      setHasLiked(content.is_liked || false);
+      setLikeCount(content.views_count || 0);
+    }
+  }, [content]);
 
   const handleLike = async () => {
     try {
-      // toggle like state
-      const newLikeState = !hasLiked;
-
-      // send payload dynamically (true/false)
       const response = await likeContent({
         content: id,
-        like: newLikeState,
+        like: true, // Always like, no unliking
       }).unwrap();
 
       if (response.success) {
-        if (newLikeState) {
-          // liked
-          setLikeCount((prev) => prev + 1);
-          toast.success("You liked this content!");
-        } else {
-          // unliked
-          setLikeCount((prev) => Math.max(prev - 1, 0));
-          toast("You unliked this content!");
-        }
-        setHasLiked(newLikeState);
+        setLikeCount((prev) => prev + 1);
+        toast.success("You liked this content!");
+        setHasLiked(true);
       } else {
         toast.error("Action failed. Please try again.");
       }
@@ -67,35 +64,42 @@ export default function ContentDetails() {
       </div>
     );
 
-  const handleDownload = (content) => {
-    const pdfUrl = content?.metadata?.upload_pdf;
+  const handleDownload = async (content) => {
+    const pdfUrl = content?.upload_files?.[0]?.url;
     if (!pdfUrl) {
       alert("PDF link not found!");
       return;
     }
 
-    // Extract file ID from Google Drive link
-    const match = pdfUrl.match(/\/d\/(.*?)\//);
-    const fileId = match ? match[1] : null;
+    try {
+      const response = await fetch(pdfUrl, {
+        mode: "cors",
+      });
 
-    if (!fileId) {
-      alert("Invalid Google Drive link!");
-      return;
+      if (!response.ok) {
+        throw new Error("File not found or server error");
+      }
+
+      const blob = await response.blob(); // get file data as blob
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = content.title?.replace(/\s+/g, "_") + ".pdf" || "file.pdf"; // filename
+      document.body.appendChild(a);
+      a.click(); // force download
+      a.remove();
+
+      // Cleanup
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("Failed to download the file.");
     }
-
-    // Direct download link
-    const directLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
-
-    const link = document.createElement("a");
-    link.href = directLink;
-    link.download = `${content.title || "document"}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const handleOpenInBrowser = (content) => {
-    const pdfUrl = content?.metadata?.upload_pdf;
+    const pdfUrl = content?.upload_files?.[0]?.url;
     if (!pdfUrl) {
       alert("PDF link not found!");
       return;
@@ -107,6 +111,7 @@ export default function ContentDetails() {
 
   // Helper to convert YouTube/Vimeo/etc. link to embed format
   const getEmbedUrl = (url) => {
+    console.log("URL:", url);
     if (!url) return "";
     // YouTube watch URL
     if (url.includes("youtube.com/watch?v=")) {
@@ -142,8 +147,8 @@ export default function ContentDetails() {
       <div className="relative bg-cover bg-center">
         <div className="w-10/12 mx-auto py-8 lg:pt-20">
           {/* Header */}
-          <div className="flex justify-between items-center">
-            <div>
+          <div className="flex flex-col justify-center pt-32">
+            <div className="">
               <div className="flex items-center justify-between mb-12">
                 <div className="text-[#FF3B9A] text-sm flex items-center gap-2 cursor-pointer">
                   <ArrowLeft /> Back to Blog
@@ -173,28 +178,34 @@ export default function ContentDetails() {
                 </div>
                 {/* Like and Share Buttons */}
                 <div className="flex gap-2 items-center">
-                  <div className="w-28 h-12 px-3.5 flex items-center outline outline-2 outline-offset-[-2px] outline-[#FF80EB] hover:bg-[#FF80EB] active:bg-[#C12E83] active:outline-none">
+                  <div
+                    className={`w-28 h-12 px-3.5 flex items-center transition-all duration-200 ${
+                      content.is_liked
+                        ? "bg-[#c6c6c6]"
+                        : "outline outline-2 outline-offset-[-2px] outline-[#FF80EB] hover:bg-[#FF80EB] active:bg-[#C12E83] active:outline-none"
+                    }`}
+                  >
                     <button
-                      onClick={handleLike}
-                      disabled={isLiking}
-                      className={`flex items-center justify-start gap-1 text-base font-normal font-unbounded transition-all duration-200 ${
-                        hasLiked
-                          ? "text-[#C8C8C8] hover:text-white"
+                      onClick={content.is_liked ? undefined : handleLike}
+                      disabled={isLiking || content.is_liked}
+                      className={`flex w-full items-center justify-center gap-1 text-base font-normal font-unbounded ${
+                        content.is_liked
+                          ? "text-[#7d7d7d]"
                           : "text-[#C8C8C8] hover:text-white"
-                      } disabled:opacity-50`}
+                      }`}
                     >
                       <img
                         src={like}
                         alt="like"
                         className={`w-5 h-5 ${
-                          hasLiked ? "brightness-150" : ""
+                          content.is_liked ? "brightness-50" : ""
                         }`}
                       />
                       {isLiking
                         ? "Processing..."
-                        : hasLiked
-                        ? "Unlike"
-                        : "Like"}{" "}
+                        : content.is_liked || hasLiked
+                        ? "Liked"
+                        : "Like"}
                     </button>
                   </div>
 
@@ -202,14 +213,14 @@ export default function ContentDetails() {
                 </div>
               </div>
             </div>
-            <div>
+            <div className="">
               <img
-                src={content.upload_files?.[0]?.url}
+                src={content.thumbnail_image}
                 alt={content.title || "Image"}
               />
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-center mt-10">
             <p className="text-gray-300 text-lg mb-10 leading-relaxed">
               {content.content}
             </p>
@@ -265,7 +276,7 @@ export default function ContentDetails() {
               /* Image Content */
               <div>
                 <img
-                  src={content.upload_files?.[1]?.url}
+                  src={content.upload_files?.[0]?.url}
                   alt={content.title || "Uploaded Image"}
                   className="max-w-full h-auto mx-auto rounded-lg object-contain shadow-lg"
                 />
@@ -276,42 +287,55 @@ export default function ContentDetails() {
           </div>
 
           {/* Related Content Section */}
-          {/* <div className="mt-24">
+          <div className="mt-24">
             <h2 className="text-3xl mb-8">Related Content</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {content.relatedContent.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-[#2C1B2C] overflow-hidden cursor-pointer"
-                >
-                  <img
-                    src={featuredImg}
-                    alt={item.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-6">
-                    <h3 className="font-semibold mb-2 text-lg">{item.title}</h3>
-                    <p className="text-[#C6C6C6] text-sm mb-4">
-                      A comprehensive guide to transforming creative industries.
-                    </p>
-                    <div>
-                      {item.tags_names.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-block text-[#C6C6C6] text-xs pr-3 py-1 rounded-full mr-2 mb-2"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+
+            {relatedLoading ? (
+              <p className="text-gray-400">Loading related contents...</p>
+            ) : relatedData?.data?.results?.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedData.data.results.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-[#2C1B2C] overflow-hidden cursor-pointer border border-[#2C1B2C] hover:scale-[1.02] transition-transform"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-6">
+                      <h3 className="font-semibold mb-2 text-lg text-white">
+                        {item.title}
+                      </h3>
+                      <p className="text-[#C6C6C6] text-sm mb-4">
+                        {item.excerpt}
+                      </p>
+
+                      <div className="mb-4">
+                        {item.tags_name.map((tag) => (
+                          <span
+                            key={tag}
+                            className="inline-block text-[#C6C6C6] text-xs pr-3 py-1 rounded-full mr-2 mb-2"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <Link to={`/content-details/${item.id}`}>
+                        <button className="border-2 border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none active:border-none active:bg-[#C12E83] px-12 py-1 mt-4 transition text-white">
+                          View
+                        </button>
+                      </Link>
                     </div>
-                    <button className="border-2 border-[#FF80EB] px-12 py-1 mt-4 transition">
-                      View
-                    </button>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div> */}
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-400">No related contents found.</p>
+            )}
+          </div>
 
           {/* Explore More */}
           <div className="my-16 text-center">

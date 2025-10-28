@@ -304,7 +304,7 @@ export default function ContentLibrary() {
                         </div>
                         <button
                           onClick={() => handleGotoDetails(vault.id)}
-                          className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
+                          className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
                         >
                           View
                         </button>
@@ -484,7 +484,7 @@ export default function ContentLibrary() {
                           </div>
                           <button
                             onClick={() => handleGotoDetails(vault.id)}
-                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
+                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
                           >
                             View
                           </button>

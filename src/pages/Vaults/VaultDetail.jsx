@@ -23,8 +23,8 @@ export function VaultDetail() {
   const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
-    if (data?.user_has_liked !== undefined) {
-      setHasLiked(data.user_has_liked);
+    if (data) {
+      setHasLiked(data.is_liked || false);
       setLikeCount(data.likes_count || 0);
     }
   }, [data]);
@@ -33,25 +33,18 @@ export function VaultDetail() {
 
   const handleLike = async () => {
     try {
-      const newLikeState = !hasLiked; // toggle true/false
-      const res = await likeArticle({ blog: id, like: newLikeState }).unwrap();
+      const res = await likeArticle({ blog: id, like: true }).unwrap();
 
       if (res.success) {
-        setHasLiked(newLikeState);
-        setLikeCount((prev) => prev + (newLikeState ? 1 : -1));
-
-        // ✅ Custom message based on like/unlike
-        if (newLikeState) {
-          toast.success("Blog liked!");
-        } else {
-          toast.success("Blog unliked!");
-        }
+        setHasLiked(true);
+        setLikeCount((prev) => prev + 1);
+        toast.success("Blog liked!");
       } else {
-        toast.error("Failed to update like status.");
+        toast.error("Action failed. Please try again.");
       }
     } catch (error) {
       console.error("Like error:", error);
-      toast.error(error?.data?.message || "Please log in to like this blog.");
+      toast.error(error?.data?.message || "Something went wrong!");
     }
   };
 
@@ -145,28 +138,34 @@ export function VaultDetail() {
 
                   {/* Like and Share Buttons */}
                   <div className="flex gap-2 items-center">
-                    <div className="w-28 h-12 px-3.5 flex items-center outline outline-2 outline-offset-[-2px] outline-[#FF80EB] hover:bg-[#FF80EB] active:bg-[#C12E83] active:outline-none">
+                    <div
+                      className={`w-28 h-12 px-3.5 flex items-center transition-all duration-200 ${
+                        article.is_liked
+                          ? "bg-[#c6c6c6]"
+                          : "outline outline-2 outline-offset-[-2px] outline-[#FF80EB] hover:bg-[#FF80EB] active:bg-[#C12E83] active:outline-none"
+                      }`}
+                    >
                       <button
-                        onClick={handleLike}
-                        disabled={isLiking}
-                        className={`flex items-center justify-start gap-1 text-base font-normal font-unbounded transition-all duration-200 ${
-                          hasLiked
-                            ? "text-[#C8C8C8] hover:text-white"
+                        onClick={article.is_liked ? undefined : handleLike}
+                        disabled={isLiking || article.is_liked}
+                        className={`flex w-full items-center justify-center gap-1 text-base font-normal font-unbounded ${
+                          article.is_liked
+                            ? "text-[#7d7d7d]"
                             : "text-[#C8C8C8] hover:text-white"
-                        } disabled:opacity-50`}
+                        }`}
                       >
                         <img
                           src={like}
                           alt="like"
                           className={`w-5 h-5 ${
-                            hasLiked ? "brightness-150" : ""
+                            article.is_liked ? "brightness-50" : ""
                           }`}
                         />
                         {isLiking
                           ? "Processing..."
-                          : hasLiked
-                          ? "Unlike"
-                          : "Like"}{" "}
+                          : article.is_liked || hasLiked
+                          ? "Liked"
+                          : "Like"}
                       </button>
                     </div>
 

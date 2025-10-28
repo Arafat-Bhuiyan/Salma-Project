@@ -96,6 +96,10 @@ export const authApi = api.injectEndpoints({
       }),
       invalidatesTags: ["articleContent"], // refresh article data if needed
     }),
+    // === GET RELATED CONTENTS ===
+    getRelatedContents: builder.query({
+      query: (id) => `/database/related-contents/${id}`,
+    }),
     // GET RELATED ARTICLES
     getRelatedArticles: builder.query({
       query: (id) => `/article/related-contents/${id}/`,
@@ -203,6 +207,7 @@ export const {
   useGetArticleContentByIdQuery,
   useGetHighlightedArticlesQuery,
   useLikeArticleMutation,
+  useGetRelatedContentsQuery,
   useGetRelatedArticlesQuery,
   useRecordContentViewMutation,
   useRecordArticleViewMutation,
