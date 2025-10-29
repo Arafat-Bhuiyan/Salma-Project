@@ -219,8 +219,8 @@ export default function Vaults() {
                         {blog.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {blog.tags_name?.map((tag) => (
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        {blog.tags_name?.slice(0, 4).map((tag) => (
                           <span
                             key={tag}
                             className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
@@ -228,6 +228,14 @@ export default function Vaults() {
                             {tag}
                           </span>
                         ))}
+                        {blog.tags_name?.length > 4 && (
+                          <button
+                            onClick={() => handleGotoDetails(blog.id)}
+                            className="text-white text-[10.20px] font-medium font-poppins underline"
+                          >
+                            ...more
+                          </button>
+                        )}
                       </div>
 
                       <button
@@ -287,8 +295,8 @@ export default function Vaults() {
                         {vault.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {(vault.tags_name || vault.tags)?.map((tag, index) => (
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        {(vault.tags_name || vault.tags)?.slice(0, 4).map((tag, index) => (
                           <span
                             key={index}
                             className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
@@ -296,6 +304,14 @@ export default function Vaults() {
                             {tag}
                           </span>
                         ))}
+                        {(vault.tags_name || vault.tags)?.length > 4 && (
+                          <button
+                            onClick={() => handleGotoDetails(vault.id)}
+                            className="text-white text-[10.20px] font-medium font-poppins underline"
+                          >
+                            ...more
+                          </button>
+                        )}
                       </div>
                     </div>
 

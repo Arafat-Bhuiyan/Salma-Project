@@ -150,9 +150,12 @@ export default function ContentDetails() {
           <div className="flex flex-col justify-center pt-32">
             <div className="">
               <div className="flex items-center justify-between mb-12">
-                <div className="text-[#FF3B9A] text-sm flex items-center gap-2 cursor-pointer">
-                  <ArrowLeft /> Back to Blog
-                </div>
+                <Link
+                  to={"/content"}
+                  className="text-[#FF3B9A] text-sm flex items-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft /> Back to Database
+                </Link>
               </div>
 
               {/* Title Section */}
@@ -312,15 +315,23 @@ export default function ContentDetails() {
                         {item.excerpt}
                       </p>
 
-                      <div className="mb-4">
-                        {item.tags_name.map((tag) => (
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        {item.tags_name.slice(0, 4).map((tag) => (
                           <span
                             key={tag}
-                            className="inline-block text-[#C6C6C6] text-xs pr-3 py-1 rounded-full mr-2 mb-2"
+                            className="inline-block bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full px-3 py-1"
                           >
-                            #{tag}
+                            {tag}
                           </span>
                         ))}
+                        {item.tags_name.length > 4 && (
+                          <Link
+                            to={`/content-details/${item.id}`}
+                            className="text-white text-[10.20px] font-medium font-poppins underline cursor-pointer"
+                          >
+                            ...more
+                          </Link>
+                        )}
                       </div>
 
                       <Link to={`/content-details/${item.id}`}>

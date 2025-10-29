@@ -338,15 +338,23 @@ export function VaultDetail() {
                             <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
                               {vault.description}
                             </p>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {vault.tags_name.map((tag) => (
+                            <div className="flex flex-wrap items-center gap-2 mb-4">
+                              {vault.tags_name?.slice(0, 4).map((tag) => (
                                 <span
                                   key={tag}
-                                  className="px-3 py-1 bg-white/10 text-white text-xs font-medium leading-none rounded-full font-poppins"
+                                  className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
                                 >
                                   {tag}
                                 </span>
                               ))}
+                              {vault.tags_name?.length > 4 && (
+                                <button
+                                  onClick={() => handleGotoDetails(vault.id)}
+                                  className="text-white text-[10.20px] font-medium font-poppins underline"
+                                >
+                                  ...more
+                                </button>
+                              )}
                             </div>
                           </div>
                           <button

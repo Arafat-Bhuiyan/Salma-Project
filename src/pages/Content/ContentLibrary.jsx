@@ -267,7 +267,7 @@ export default function ContentLibrary() {
                     >
                       <div className="relative h-48 overflow-hidden">
                         <img
-                          src={vault.upload_files?.[0]?.url || noContentImg}
+                          src={vault.thumbnail_image || noContentImg}
                           alt={vault.title}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                         />
@@ -331,6 +331,100 @@ export default function ContentLibrary() {
                   </button>
                 </div>
               )}
+
+              {/* Load More & Subscribe */}
+              <div className="flex flex-col items-center justify-between gap-20 pt-8 pb-5">
+                {visibleCount < contentFilteredVaults.length && (
+                  <div
+                    onClick={() => setVisibleCount(visibleCount + 9)}
+                    className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"
+                  >
+                    Load More Content
+                  </div>
+                )}
+
+                {/* Week's Highlights + Subscribe Section */}
+                {selectedContentType === "all" && (
+                  <>
+                    {highlightsLoading ? (
+                      <div className="text-center text-white text-xl py-20">
+                        Loading highlights...
+                      </div>
+                    ) : highlights.length > 0 ? (
+                      <div className="w-full max-w-7xl h-auto lg:h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
+                        <div className="flex flex-col lg:flex-row items-center justify-center py-9 px-6 sm:px-10 lg:px-20 gap-9">
+                          <div className="flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
+                            <h1 className="text-[#F4F4F3] text-3xl lg:text-4xl font-semibold font-unbounded pb-6 lg:pb-8">
+                              Week's highlights
+                            </h1>
+                            <p className="text-[#F4F4F3] text-2xl lg:text-3xl font-normal font-unbounded leading-7">
+                              {highlights[activeIndex]?.content?.title ||
+                                "No Title"}
+                            </p>
+                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal pt-2">
+                              {highlights[activeIndex]?.content?.content_type ||
+                                "No Type"}
+                            </p>
+                            <div className="flex gap-2.5 py-4">
+                              <img src={views} alt="" />
+                              <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
+                                {highlights[activeIndex]?.content
+                                  ?.views_count || 0}
+                              </p>
+                            </div>
+                            <div
+                              onClick={() =>
+                                handleGotoDetails(
+                                  highlights[activeIndex]?.content?.id
+                                )
+                              }
+                              className="w-full sm:w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
+                            >
+                              <div className="text-center text-white text-xl lg:text-2xl font-normal font-unbounded">
+                                View
+                              </div>
+                            </div>
+                          </div>
+                          <img
+                            className="w-full lg:w-[474px] h-64 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
+                            src={
+                              highlights[activeIndex]?.content
+                                ?.upload_files?.[0]?.url || noContentImg
+                            }
+                            alt="Highlight"
+                          />
+                        </div>
+
+                        {/* === Navigation Arrows === */}
+                        <div
+                          onClick={handleNext}
+                          className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                        >
+                          <img
+                            src={rightIcon}
+                            alt=""
+                            className="w-[5px] h-2.5"
+                          />
+                        </div>
+                        <div
+                          onClick={handlePrev}
+                          className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                        >
+                          <img
+                            src={leftIcon}
+                            alt=""
+                            className="w-[5px] h-2.5"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center text-white text-xl py-20">
+                        No highlights found.
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           )}
 
@@ -446,7 +540,7 @@ export default function ContentLibrary() {
                       >
                         <div className="relative h-48 overflow-hidden">
                           <img
-                            src={vault.upload_files?.[0]?.url || noContentImg}
+                            src={vault.thumbnail_image || noContentImg}
                             alt={vault.title}
                             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                           />
@@ -495,10 +589,7 @@ export default function ContentLibrary() {
 
               {/* Load More & Subscribe */}
               <div className="flex flex-col items-center justify-between gap-20 pt-8 pb-5">
-                {visibleCount <=
-                  (filterMode === "content"
-                    ? contentFilteredVaults.length
-                    : filteredVaults.length) && (
+                {visibleCount < filteredVaults.length && (
                   <div
                     onClick={() => setVisibleCount(visibleCount + 9)}
                     className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"
