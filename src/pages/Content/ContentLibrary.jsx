@@ -183,10 +183,10 @@ export default function ContentLibrary() {
 
         <div className="px-4 md:px-8 lg:px-16">
           {/* === Mode Switch === */}
-          <div className="flex justify-center gap-5 pt-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-10">
             <button
               onClick={() => setFilterMode("tag")}
-              className={`px-6 py-2 font-unbounded text-sm ${
+              className={`w-full sm:w-auto px-6 py-2 font-unbounded text-sm ${
                 filterMode === "tag"
                   ? "bg-[#C12E83] text-white"
                   : "bg-[#C6C6C6] text-[#727272]"
@@ -196,7 +196,7 @@ export default function ContentLibrary() {
             </button>
             <button
               onClick={() => setFilterMode("content")}
-              className={`px-6 py-2 font-unbounded text-sm ${
+              className={`w-full sm:w-auto px-6 py-2 font-unbounded text-sm ${
                 filterMode === "content"
                   ? "bg-[#C12E83] text-white"
                   : "bg-[#C6C6C6] text-[#727272]"
@@ -212,7 +212,7 @@ export default function ContentLibrary() {
               <h1
                 data-aos="fade-up"
                 data-aos-duration="1200"
-                className="text-[#F4F4F3] text-6xl font-normal font-unbounded leading-[60px]"
+                className="text-[#F4F4F3] text-4xl md:text-6xl font-normal font-unbounded leading-tight md:leading-[60px] text-center"
               >
                 Explore Content Library
               </h1>
@@ -220,14 +220,14 @@ export default function ContentLibrary() {
                 data-aos="fade-up"
                 data-aos-delay="200"
                 data-aos-duration="1400"
-                className="text-[#C6C6C6] text-xl font-normal font-unbounded leading-7 pt-2 pb-12"
+                className="text-[#C6C6C6] text-lg md:text-xl font-normal font-unbounded leading-7 pt-2 pb-12 text-center"
               >
                 Discover videos, PDFs, photos, and more in our futuristic
                 digital collection
               </p>
 
               {/* Category Buttons */}
-              <div className="w-full flex items-center justify-center gap-5">
+              <div className="w-full flex flex-wrap items-center justify-center gap-4">
                 {[
                   { label: "All Content", type: "all" },
                   { label: "Video", type: "video", icon: videoIcon },
@@ -239,9 +239,7 @@ export default function ContentLibrary() {
                     <div
                       key={item.type}
                       onClick={() => setSelectedContentType(item.type)}
-                      className={`cursor-pointer ${
-                        item.type === "all" ? "w-32" : "w-28"
-                      } h-12 flex items-center justify-center gap-2 text-base font-medium font-unbounded transition-all duration-200 ${
+                      className={`cursor-pointer w-auto px-4 h-12 flex items-center justify-center gap-2 text-base font-medium font-unbounded transition-all duration-200 ${
                         isActive
                           ? "bg-[#C12E83] text-[#F4F4F3]"
                           : "bg-[#C6C6C6] text-[#727272]"
@@ -265,7 +263,7 @@ export default function ContentLibrary() {
                       data-aos="fade-up"
                       data-aos-duration="2000"
                       data-aos-delay="200"
-                      className="w-80 border border-[#2C1B2C] flex flex-col h-[420px]"
+                      className="w-full border border-[#2C1B2C] flex flex-col h-[420px]"
                     >
                       <div className="relative h-48 overflow-hidden">
                         <img
@@ -319,10 +317,10 @@ export default function ContentLibrary() {
                     alt="No content found"
                     className="w-32 h-auto"
                   />
-                  <h2 className="text-[#FF80EB] text-5xl font-normal leading-[60px] font-unbounded mb-2">
+                  <h2 className="text-[#FF80EB] text-3xl md:text-5xl text-center font-normal leading-tight md:leading-[60px] font-unbounded mb-2">
                     No content found
                   </h2>
-                  <p className="text-white text-2xl font-normal font-unbounded mb-6">
+                  <p className="text-white text-lg md:text-2xl text-center font-normal font-unbounded mb-6">
                     Try adjusting your filters to discover more content
                   </p>
                   <button
@@ -344,7 +342,7 @@ export default function ContentLibrary() {
                 <h1
                   data-aos="fade-up"
                   data-aos-duration="1200"
-                  className="text-[#F4F4F3] text-6xl font-normal font-unbounded leading-[60px]"
+                  className="text-[#F4F4F3] text-4xl md:text-6xl font-normal font-unbounded leading-tight md:leading-[60px] text-center"
                 >
                   Explore Content Library
                 </h1>
@@ -352,14 +350,14 @@ export default function ContentLibrary() {
                   data-aos="fade-up"
                   data-aos-delay="200"
                   data-aos-duration="1400"
-                  className="text-[#C6C6C6] text-xl font-normal font-unbounded leading-7 pt-2 pb-12"
+                  className="text-[#C6C6C6] text-lg md:text-xl font-normal font-unbounded leading-7 pt-2 pb-12 text-center"
                 >
                   Discover videos, PDFs, photos, and more in our futuristic
                   digital collection
                 </p>
 
                 {/* Filters */}
-                <div className="bg-[#1A0E1E]/70 px-16 pb-10 pt-6 mt-14 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
+                <div className="bg-[#1A0E1E]/70 px-4 sm:px-8 md:px-16 pb-10 pt-6 mt-14 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
                   <div className="flex items-center justify-start gap-3 w-full">
                     <div className="text-[#F4F4F3] text-lg font-normal font-unbounded">
                       Filters
@@ -444,7 +442,7 @@ export default function ContentLibrary() {
                         data-aos="fade-up"
                         data-aos-duration="2000"
                         data-aos-delay="200"
-                        className="w-80 border border-[#2C1B2C] flex flex-col h-[420px]"
+                        className="w-full border border-[#2C1B2C] flex flex-col h-[420px]"
                       >
                         <div className="relative h-48 overflow-hidden">
                           <img
@@ -517,22 +515,21 @@ export default function ContentLibrary() {
                         Loading highlights...
                       </div>
                     ) : highlights.length > 0 ? (
-                      <div className="w-full max-w-7xl h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
-                        <div className="flex items-start justify-center py-9 px-20 gap-9">
-                          <div className="flex flex-col items-start justify-start">
-                            <h1 className="text-[#F4F4F3] text-4xl font-semibold font-unbounded pb-8">
+                      <div className="w-full max-w-7xl h-auto lg:h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
+                        <div className="flex flex-col lg:flex-row items-center justify-center py-9 px-6 sm:px-10 lg:px-20 gap-9">
+                          <div className="flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
+                            <h1 className="text-[#F4F4F3] text-3xl lg:text-4xl font-semibold font-unbounded pb-6 lg:pb-8">
                               Week's highlights
                             </h1>
-                            <p className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-7">
+                            <p className="text-[#F4F4F3] text-2xl lg:text-3xl font-normal font-unbounded leading-7">
                               {highlights[activeIndex]?.content?.title ||
                                 "No Title"}
                             </p>
-                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal pt-3">
+                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal pt-2">
                               {highlights[activeIndex]?.content?.content_type ||
                                 "No Type"}
                             </p>
-
-                            <div className="flex gap-2.5 py-5">
+                            <div className="flex gap-2.5 py-4">
                               <img src={views} alt="" />
                               <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
                                 {highlights[activeIndex]?.content
@@ -545,15 +542,15 @@ export default function ContentLibrary() {
                                   highlights[activeIndex]?.content?.id
                                 )
                               }
-                              className="w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
+                              className="w-full sm:w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
                             >
-                              <div className="text-center text-white text-2xl font-normal font-unbounded">
+                              <div className="text-center text-white text-xl lg:text-2xl font-normal font-unbounded">
                                 View
                               </div>
                             </div>
                           </div>
                           <img
-                            className="w-[474px] h-64 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
+                            className="w-full lg:w-[474px] h-64 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
                             src={
                               highlights[activeIndex]?.content
                                 ?.upload_files?.[0]?.url || noContentImg
@@ -565,7 +562,7 @@ export default function ContentLibrary() {
                         {/* === Navigation Arrows === */}
                         <div
                           onClick={handleNext}
-                          className="absolute top-32 right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                          className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
                         >
                           <img
                             src={rightIcon}
@@ -575,7 +572,7 @@ export default function ContentLibrary() {
                         </div>
                         <div
                           onClick={handlePrev}
-                          className="absolute top-32 left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                          className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
                         >
                           <img
                             src={leftIcon}
@@ -595,27 +592,27 @@ export default function ContentLibrary() {
                       <div className="relative inline-block">
                         {/* Background tilted area */}
                         <div
-                          className="absolute inset-0 top-[-48px] left-[-25px] w-[739.35px] h-32 rotate-[-0.29deg]  bg-fixed bg-repeat"
+                          className="absolute inset-0 top-[-48px] left-[-25px] w-full h-32 rotate-[-0.29deg] bg-fixed bg-repeat hidden md:block"
                           style={{ backgroundImage: `url(${dots})` }}
                         ></div>
 
                         {/* Text */}
-                        <h2 className="relative text-[#F4F4F3] text-4xl font-normal font-unbounded leading-10">
+                        <h2 className="relative text-[#F4F4F3] text-2xl md:text-4xl font-normal font-unbounded leading-tight md:leading-10 text-center">
                           Want More? Sign Up for Updates
                         </h2>
                       </div>
 
-                      <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-normal pt-5 text-center">
+                      <div className="text-[#C6C6C6] text-sm md:text-base font-normal font-unbounded leading-normal pt-5 text-center">
                         Get notified about new content and exclusive releases
                       </div>
 
-                      <div className="flex items-center justify-center pt-3 pb-44 gap-5">
+                      <div className="flex flex-col sm:flex-row items-center justify-center pt-3 pb-44 gap-4">
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Enter your email"
-                          className="w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
+                          className="w-full sm:w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
                         />
                         <button
                           onClick={handleSubscribe}
