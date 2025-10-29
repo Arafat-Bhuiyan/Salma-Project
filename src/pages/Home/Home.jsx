@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export function Home() {
   return (
     <div
-      className="relative w-full min-h-screen bg-cover bg-no-repeat bg-fixed
+      className="relative w-full min-h-screen bg-cover bg-no-repeat bg-fixed overflow-hidden
       "
       style={{
         backgroundImage: `url(${bgImg})`,
