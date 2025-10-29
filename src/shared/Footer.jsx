@@ -3,7 +3,7 @@ import bgImg from "../assets/images/bgImg3.jpg";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-gradient-to-b from-[#7E7E7E]/80 to-[#4E4E4E]/90 text-black py-8 px-20 md:px-20 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
+    <footer className="relative w-full bg-gradient-to-b from-[#7E7E7E]/80 to-[#4E4E4E]/90 text-black py-8 px-4 sm:px-8 lg:px-16 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
       {/* Background Image with Opacity */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0"
@@ -13,26 +13,26 @@ export default function Footer() {
       ></div>
 
       {/* Content */}
-      <div className="relative z-10 mx-32 mt-8">
+      <div className="relative z-10 max-w-7xl mx-auto mt-4 sm:mt-8">
         {/* Main Footer Content */}
-        <div className="flex justify-between mb-11">
+        <div className="flex flex-col lg:flex-row justify-between gap-10 lg:gap-4 mb-8 lg:mb-11">
           {/* Logo and Description */}
-          <div className="flex flex-col justify-start items-start space-y-6">
+          <div className="flex flex-col justify-start items-start space-y-4 lg:space-y-6">
             <div>
-              <img src={logo} alt="logo" className="w-[232px] h-[72px]" />
+              <img src={logo} alt="logo" className="w-[180px] sm:w-[232px] h-auto" />
             </div>
-            <p className="w-96 text-black text-xs font-normal font-unbounded leading-tight">
+            <p className="max-w-md lg:w-96 text-black text-xs font-normal font-unbounded leading-tight">
               The Radical Commons is a platform for sharing and exploring
               radical ideas and resources for collective liberation.
             </p>
           </div>
 
           {/* Navigation */}
-          <div className="text-black font-unbounded leading-normal flex flex-col justify-start items-start">
-            <h3 className="text-base font-medium mb-5">Navigation</h3>
-            <ul className="space-y-3 text-xs font-normal">
+          <div className="text-black font-unbounded leading-normal flex flex-col justify-start items-start ">
+            <h3 className="text-base font-medium mb-4">Navigation</h3>
+            <ul className="space-y-2 text-xs font-normal">
               <li  className="!list-none" >
-                <a  href="/" className="hover:text-[#EB4DAC] !text-black transition-colors">
+                <a  href="/" className="hover:text-[#EB4DAC] !text-black transition-colors text-sm">
                   Home
                 </a>
               </li>
@@ -40,7 +40,7 @@ export default function Footer() {
                 <a
                   href="/content"
                   className="hover:text-[#EB4DAC] !text-black transition-colors"
-                >
+                > 
                   Database
                 </a>
               </li>
@@ -64,9 +64,9 @@ export default function Footer() {
           </div>
 
           {/* Legal */}
-          <div className="text-black font-unbounded leading-normal flex flex-col justify-start items-start">
-            <h3 className="text-base font-medium mb-5">Legal</h3>
-            <ul className="space-y-3 text-xs font-normal">
+          <div className="text-black font-unbounded leading-normal flex flex-col justify-start items-start ">
+            <h3 className="text-base font-medium mb-4">Legal</h3>
+            <ul className="space-y-2 text-xs font-normal">
              <li  className="!list-none" >
                 <a
                   href="/terms"
@@ -96,8 +96,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-black pt-2">
-          <p className="text-start text-black text-xs font-normal font-['Unbounded'] leading-tight">
+        <div className="border-t border-black pt-4">
+          <p className="text-center lg:text-start text-black text-xs font-normal font-['Unbounded'] leading-tight">
             © 2025. The Radical Commons. All rights reserved.
           </p>
         </div>
