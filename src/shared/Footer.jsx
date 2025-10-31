@@ -3,7 +3,7 @@ import bgImg from "../assets/images/bgImg3.jpg";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-gradient-to-b from-[#7E7E7E]/80 to-[#4E4E4E]/90 text-black py-8 px-4 sm:px-8 lg:px-16 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
+    <footer className="relative w-full bg-gradient-to-b from-[#7E7E7E]/90 to-[#4E4E4E]/100 text-black py-8 px-4 sm:px-8 lg:px-16 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] overflow-hidden">
       {/* Background Image with Opacity */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-10 z-0"

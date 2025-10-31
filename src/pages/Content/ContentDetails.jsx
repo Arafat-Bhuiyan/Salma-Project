@@ -216,13 +216,14 @@ export default function ContentDetails() {
                 </div>
               </div>
             </div>
-            <div className="">
+            
+          </div>
+          <div className="flex justify-center">
               <img
                 src={content.thumbnail_image}
                 alt={content.title || "Image"}
               />
             </div>
-          </div>
           <div className="flex justify-center mt-10">
             <p className="text-gray-300 text-lg mb-10 leading-relaxed">
               {content.content}

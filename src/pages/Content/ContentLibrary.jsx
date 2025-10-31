@@ -160,6 +160,15 @@ export default function ContentLibrary() {
     );
   }
 
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
+    }
+    return text;
+  };
+
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
       <ScrollRestoration />
@@ -182,8 +191,26 @@ export default function ContentLibrary() {
         ></div>
 
         <div className="px-4 md:px-8 lg:px-16">
+          <div className="py-16 flex flex-col items-center justify-center">
+            <h1
+              data-aos="fade-up"
+              data-aos-duration="1200"
+              className="text-[#F4F4F3] text-4xl md:text-6xl font-normal font-unbounded leading-tight md:leading-[60px] text-center"
+            >
+              Explore Content Library
+            </h1>
+            <p
+              data-aos="fade-up"
+              data-aos-delay="200"
+              data-aos-duration="1400"
+              className="text-[#C6C6C6] text-lg md:text-xl font-normal font-unbounded leading-7 pt-2 text-center"
+            >
+              Discover videos, PDFs, photos, and more in our futuristic digital
+              collection
+            </p>
+          </div>
           {/* === Mode Switch === */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={() => setFilterMode("tag")}
               className={`w-full sm:w-auto px-6 py-2 font-unbounded text-sm ${
@@ -209,23 +236,6 @@ export default function ContentLibrary() {
           {/* === CONTENT TYPE FILTER MODE === */}
           {filterMode === "content" && (
             <div className="py-16 flex flex-col items-center justify-center">
-              <h1
-                data-aos="fade-up"
-                data-aos-duration="1200"
-                className="text-[#F4F4F3] text-4xl md:text-6xl font-normal font-unbounded leading-tight md:leading-[60px] text-center"
-              >
-                Explore Content Library
-              </h1>
-              <p
-                data-aos="fade-up"
-                data-aos-delay="200"
-                data-aos-duration="1400"
-                className="text-[#C6C6C6] text-lg md:text-xl font-normal font-unbounded leading-7 pt-2 pb-12 text-center"
-              >
-                Discover videos, PDFs, photos, and more in our futuristic
-                digital collection
-              </p>
-
               {/* Category Buttons */}
               <div className="w-full flex flex-wrap items-center justify-center gap-4">
                 {[
@@ -256,7 +266,7 @@ export default function ContentLibrary() {
 
               {/* Cards */}
               {!noContentFound ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[100px] pt-16 max-w-6xl">
                   {contentFilteredVaults.slice(0, visibleCount).map((vault) => (
                     <div
                       key={vault.id}
@@ -264,27 +274,35 @@ export default function ContentLibrary() {
                       data-aos-duration="2000"
                       data-aos-delay="200"
                       className="w-full border border-[#2C1B2C] flex flex-col h-[420px]"
-                    >
-                      <div className="relative h-48 overflow-hidden">
+                    > 
+                      <div
+                        className="relative h-48 overflow-hidden cursor-pointer"
+                        onClick={() => handleGotoDetails(vault.id)}
+                      >
                         <img
                           src={vault.thumbnail_image || noContentImg}
                           alt={vault.title}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                         />
                       </div>
-                      <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
+                       <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
                         <div>
-                          <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                          <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
                             {vault.title}
                           </h3>
-                          <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
-                            {vault.description}
+                          <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                            {truncateText(vault.content, 10)}
+                            {vault.content && vault.content.split(" ").length > 10 && (
+                              <span onClick={() => handleGotoDetails(vault.id)} className="text-white underline cursor-pointer ml-1">
+                                ...more
+                              </span>
+                            )}
                           </p>
                           <div className="flex flex-wrap gap-2 mb-4">
                             {vault.tags_names.slice(0, 4).map((tag) => (
                               <span
                                 key={tag}
-                                className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                                className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-inter"
                               >
                                 {tag}
                               </span>
@@ -293,7 +311,7 @@ export default function ContentLibrary() {
                             {vault.tags_names.length > 4 && (
                               <button
                                 onClick={() => handleGotoDetails(vault.id)}
-                                className="text-white text-[10.20px] font-medium font-poppins underline"
+                                className="text-white text-[10.20px] font-medium font-inter underline"
                               >
                                 ...more
                               </button>
@@ -333,7 +351,7 @@ export default function ContentLibrary() {
               )}
 
               {/* Load More & Subscribe */}
-              <div className="flex flex-col items-center justify-between gap-20 pt-8 pb-5">
+              <div className="flex flex-col items-center justify-between gap-20 pt-20 pb-5">
                 {visibleCount < contentFilteredVaults.length && (
                   <div
                     onClick={() => setVisibleCount(visibleCount + 9)}
@@ -351,9 +369,9 @@ export default function ContentLibrary() {
                         Loading highlights...
                       </div>
                     ) : highlights.length > 0 ? (
-                      <div className="w-full max-w-7xl h-auto lg:h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
-                        <div className="flex flex-col lg:flex-row items-center justify-center py-9 px-6 sm:px-10 lg:px-20 gap-9">
-                          <div className="flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
+                      <div className="w-full max-w-6xl relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
+                        <div className="w-full flex flex-col lg:flex-row items-center justify-center py-10 px-6 sm:px-10 lg:px-20 gap-20">
+                          <div className="flex-1 flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
                             <h1 className="text-[#F4F4F3] text-3xl lg:text-4xl font-semibold font-unbounded pb-6 lg:pb-8">
                               Week's highlights
                             </h1>
@@ -361,13 +379,13 @@ export default function ContentLibrary() {
                               {highlights[activeIndex]?.content?.title ||
                                 "No Title"}
                             </p>
-                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal pt-2">
+                            <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal pt-2">
                               {highlights[activeIndex]?.content?.content_type ||
                                 "No Type"}
                             </p>
-                            <div className="flex gap-2.5 py-4">
+                            <div className="flex gap-2.5 py-5">
                               <img src={views} alt="" />
-                              <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
+                              <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal">
                                 {highlights[activeIndex]?.content
                                   ?.views_count || 0}
                               </p>
@@ -378,7 +396,7 @@ export default function ContentLibrary() {
                                   highlights[activeIndex]?.content?.id
                                 )
                               }
-                              className="w-full sm:w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
+                              className="w-full sm:w-72 h-11 px-5 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 cursor-pointer"
                             >
                               <div className="text-center text-white text-xl lg:text-2xl font-normal font-unbounded">
                                 View
@@ -386,7 +404,7 @@ export default function ContentLibrary() {
                             </div>
                           </div>
                           <img
-                            className="w-full lg:w-[474px] h-64 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
+                            className="flex-1 w-full lg:w-[474px] h-72 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
                             src={
                               highlights[activeIndex]?.content
                                 ?.upload_files?.[0]?.url || noContentImg
@@ -432,26 +450,9 @@ export default function ContentLibrary() {
           {filterMode === "tag" && (
             <>
               {/* Search & Filter Section */}
-              <div className="pt-20 flex flex-col items-center justify-center">
-                <h1
-                  data-aos="fade-up"
-                  data-aos-duration="1200"
-                  className="text-[#F4F4F3] text-4xl md:text-6xl font-normal font-unbounded leading-tight md:leading-[60px] text-center"
-                >
-                  Explore Content Library
-                </h1>
-                <p
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-                  data-aos-duration="1400"
-                  className="text-[#C6C6C6] text-lg md:text-xl font-normal font-unbounded leading-7 pt-2 pb-12 text-center"
-                >
-                  Discover videos, PDFs, photos, and more in our futuristic
-                  digital collection
-                </p>
-
+              <div className="pt-16 flex flex-col items-center justify-center">
                 {/* Filters */}
-                <div className="bg-[#1A0E1E]/70 px-4 sm:px-8 md:px-16 pb-10 pt-6 mt-14 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
+                <div className="bg-[#1A0E1E]/70 px-4 sm:px-8 md:px-16 pb-10 pt-6 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
                   <div className="flex items-center justify-start gap-3 w-full">
                     <div className="text-[#F4F4F3] text-lg font-normal font-unbounded">
                       Filters
@@ -527,9 +528,9 @@ export default function ContentLibrary() {
               </div>
 
               {/* Vault Cards */}
-              <div className="flex items-start justify-center gap-6 pt-32">
+              <div className="flex items-start justify-center pt-32 max-w-6xl mx-auto">
                 <div className="pb-12">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[100px]">
                     {filteredVaults.slice(0, visibleCount).map((vault) => (
                       <div
                         key={vault.id}
@@ -537,28 +538,36 @@ export default function ContentLibrary() {
                         data-aos-duration="2000"
                         data-aos-delay="200"
                         className="w-full border border-[#2C1B2C] flex flex-col h-[420px]"
-                      >
-                        <div className="relative h-48 overflow-hidden">
+                      > 
+                        <div
+                          className="relative h-52 overflow-hidden cursor-pointer"
+                          onClick={() => handleGotoDetails(vault.id)}
+                        >
                           <img
                             src={vault.thumbnail_image || noContentImg}
                             alt={vault.title}
                             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                           />
                         </div>
-
-                        <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
+ 
+                         <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
                           <div>
-                            <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                            <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
                               {vault.title}
                             </h3>
-                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
-                              {vault.description}
+                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                              {truncateText(vault.content, 10)}
+                              {vault.content && vault.content.split(" ").length > 10 && (
+                                <span onClick={() => handleGotoDetails(vault.id)} className="text-white underline cursor-pointer ml-1">
+                                  ...more
+                                </span>
+                              )}
                             </p>
                             <div className="flex flex-wrap gap-2 mb-4">
                               {vault.tags_names.slice(0, 4).map((tag) => (
                                 <span
                                   key={tag}
-                                  className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                                  className="text-white text-[10.20px] font-medium leading-none rounded-full font-inter"
                                 >
                                   {tag}
                                 </span>
@@ -567,7 +576,7 @@ export default function ContentLibrary() {
                               {vault.tags_names.length > 4 && (
                                 <button
                                   onClick={() => handleGotoDetails(vault.id)}
-                                  className="text-white text-[10.20px] font-medium font-poppins underline"
+                                  className="text-white text-[10.20px] font-medium font-inter underline"
                                 >
                                   ...more
                                 </button>
@@ -606,9 +615,9 @@ export default function ContentLibrary() {
                         Loading highlights...
                       </div>
                     ) : highlights.length > 0 ? (
-                      <div className="w-full max-w-7xl h-auto lg:h-80 relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
-                        <div className="flex flex-col lg:flex-row items-center justify-center py-9 px-6 sm:px-10 lg:px-20 gap-9">
-                          <div className="flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
+                      <div className="w-full max-w-6xl relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
+                        <div className="w-full flex flex-col lg:flex-row items-center justify-center py-10 px-6 sm:px-10 lg:px-20 gap-20">
+                          <div className="flex-1 flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
                             <h1 className="text-[#F4F4F3] text-3xl lg:text-4xl font-semibold font-unbounded pb-6 lg:pb-8">
                               Week's highlights
                             </h1>
@@ -616,13 +625,13 @@ export default function ContentLibrary() {
                               {highlights[activeIndex]?.content?.title ||
                                 "No Title"}
                             </p>
-                            <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal pt-2">
+                            <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal pt-2">
                               {highlights[activeIndex]?.content?.content_type ||
                                 "No Type"}
                             </p>
-                            <div className="flex gap-2.5 py-4">
+                            <div className="flex gap-2.5 py-5">
                               <img src={views} alt="" />
-                              <p className="text-[#F6FF1F] text-base font-normal font-unbounded leading-normal">
+                              <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal">
                                 {highlights[activeIndex]?.content
                                   ?.views_count || 0}
                               </p>
@@ -633,15 +642,16 @@ export default function ContentLibrary() {
                                   highlights[activeIndex]?.content?.id
                                 )
                               }
-                              className="w-full sm:w-72 h-11 px-5 py-1 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 mt-2 cursor-pointer"
+                              className="w-full sm:w-72 h-11 px-5 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 cursor-pointer"
                             >
                               <div className="text-center text-white text-xl lg:text-2xl font-normal font-unbounded">
                                 View
                               </div>
                             </div>
                           </div>
+
                           <img
-                            className="w-full lg:w-[474px] h-64 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
+                            className="flex-1 w-full lg:w-[474px] h-72 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
                             src={
                               highlights[activeIndex]?.content
                                 ?.upload_files?.[0]?.url || noContentImg

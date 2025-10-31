@@ -51,7 +51,7 @@ export default function LoginForm() {
 
   return (
     <div
-      className="my-40 p-32 bg-[#1A0E1E]/70 backdrop-blur-sm shadow-[0_0_30px_0_#FF80EA80]
+      className="my-40 p-32 bg-[#1A0E1E]/70 shadow-[0_0_30px_0_#FF80EA80]
 "
     >
       <div className="relative z-10 w-[600px] h-[494px]">

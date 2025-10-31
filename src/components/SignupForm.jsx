@@ -72,7 +72,7 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="my-20 px-20 py-24 bg-[#1A0E1E]/70 backdrop-blur-sm shadow-[0_0_30px_0_#FF80EA80] rounded-2xl">
+    <div className="my-20 px-20 py-24 bg-[#1A0E1E]/70 shadow-[0_0_30px_0_#FF80EA80] rounded-2xl">
       <div className="relative z-10 w-[715px]">
         {/* ===== Header ===== */}
         <div className="flex flex-col items-center gap-1 mb-10">

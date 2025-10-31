@@ -15,10 +15,6 @@ import ContentLibrary from "@/pages/Content/ContentLibrary";
 import AboutUsDetails from "@/pages/About/AboutUsDetails";
 import OurMission from "@/pages/About/OurMission";
 import { DispatchDetail } from "@/pages/Dispatches/DispatchDetails";
-// import ForgetPassword from "@/pages/Auth/ForgetPassword";
-// import VerifyOtp from "@/pages/Auth/VerifyOTP";
-// import ResetPassword from "@/pages/Auth/ResetPassword";
-// import Welcome from "@/pages/Auth/Welcome";
 
 const router = createBrowserRouter([
   {
@@ -45,22 +41,6 @@ const router = createBrowserRouter([
       // auth routes
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
-      // {
-      //   path: "forget-password",
-      //   element: <ForgetPassword />,
-      // },
-      // {
-      //   path: "verify-otp",
-      //   element: <VerifyOtp />,
-      // },
-      // {
-      //   path: "reset-password",
-      //   element: <ResetPassword />,
-      // },
-      // {
-      //   path: "welcome",
-      //   element: <Welcome />,
-      // },
     ],
   },
 ]);
