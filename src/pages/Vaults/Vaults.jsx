@@ -130,9 +130,9 @@ export default function Vaults() {
       </div>
 
       {/* === Page Content === */}
-      <div className="relative z-10 px-4 md:px-8 lg:px-16">
+      <div className="relative z-10 px-4 md:px-8 lg:px-24">
         {/* Search & Filter Section */}
-        <div className="pt-10">
+        <div className="pt-10 max-w-7xl mx-auto">
           <div className="">
             <div className="w-full bg-white rounded-xl flex justify-start items-center gap-2.5 px-10 py-3">
               <Search size={16} color="#727272" />
@@ -177,7 +177,7 @@ export default function Vaults() {
         </div>
 
         {/* Featured Vaults (Dynamic from API) */}
-        <div className="pt-1">
+        <div className="pt-1 max-w-7xl mx-auto">
           <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-5">
             Featured Vaults
           </h2>
@@ -198,9 +198,9 @@ export default function Vaults() {
                     data-aos="fade-up"
                     data-aos-duration="1500"
                     data-aos-delay="200"
-                    className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)]"
+                    className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)] h-[401px]"
                   >
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-48 overflow-hidden">
                       <img
                         src={
                           blog.primary_image ||
@@ -211,19 +211,19 @@ export default function Vaults() {
                       />
                     </div>
 
-                    <div className="bg-[#2C1B2C] p-6">
-                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                    <div className="bg-[#2C1B2C] px-4 py-8 h-[209px]">
+                      <h3 className="text-white text-base font-medium font-inter leading-7 mb-2.5">
                         {blog.title}
                       </h3>
-                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-inter mb-5">
                         {blog.description}
                       </p>
 
-                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
                         {blog.tags_name?.slice(0, 4).map((tag) => (
                           <span
                             key={tag}
-                            className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                            className="px-3 py-1 text-center text-white text-[10.20px] font-inter font-medium leading-none rounded-full"
                           >
                             {tag}
                           </span>
@@ -253,7 +253,7 @@ export default function Vaults() {
         </div>
 
         {/* Latest Vaults */}
-        <div className="pb-12">
+        <div className="pb-12 max-w-7xl mx-auto">
           <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
             Latest Vaults
           </h2>
@@ -274,10 +274,10 @@ export default function Vaults() {
               {filteredBlogs.map((vault) => (
                 <div
                   key={vault.id}
-                  className="border border-[#2C1B2C] flex flex-col h-[420px]"
+                  className="border border-[#2C1B2C] flex flex-col h-[421px]"
                 >
                   {/* === Image === */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-[200px] overflow-hidden">
                     <img
                       src={vault.primary_image || vault.image}
                       alt={vault.title}
@@ -286,25 +286,27 @@ export default function Vaults() {
                   </div>
 
                   {/* === Text === */}
-                  <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
+                  <div className="bg-[#2C1B2C] px-4 py-8 flex flex-col flex-grow justify-between h-[221px]">
                     <div>
-                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2.5">
                         {vault.title}
                       </h3>
-                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-5">
                         {vault.description}
                       </p>
 
-                      <div className="flex flex-wrap items-center gap-2 mb-4">
-                        {(vault.tags_name || vault.tags)?.slice(0, 4).map((tag, index) => (
-                          <span
-                            key={index}
-                            className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        {(vault.tags_name || vault.tags)?.length > 4 && (
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        {(vault.tags_name || vault.tags)
+                          ?.slice(0, 3)
+                          .map((tag, index) => (
+                            <span
+                              key={index}
+                              className="px-3 py-1 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        {(vault.tags_name || vault.tags)?.length > 3 && (
                           <button
                             onClick={() => handleGotoDetails(vault.id)}
                             className="text-white text-[10.20px] font-medium font-poppins underline"
@@ -316,7 +318,7 @@ export default function Vaults() {
                     </div>
 
                     <button
-                      onClick={() => handleGotoDetails(vault.id)} // ✅ id পাঠানো হলো
+                      onClick={() => handleGotoDetails(vault.id)}
                       className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
                     >
                       Read More

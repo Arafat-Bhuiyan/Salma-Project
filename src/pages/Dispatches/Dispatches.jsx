@@ -50,7 +50,6 @@ export default function Dispatches() {
         : { ...topic, active: false }
     );
     setTopics(updatedTopics);
-
   };
 
   const [filteredArticles, setFilteredArticles] = useState([]);
@@ -113,7 +112,7 @@ export default function Dispatches() {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="px-4 md:px-8 lg:px-16 mb-8">
+        <div className="mb-8 max-w-7xl mx-auto">
           {/* Search Bar */}
           <div className="mb-6">
             <div className="w-full bg-white rounded-xl flex justify-start items-center gap-2.5 px-10 py-3">
@@ -160,7 +159,7 @@ export default function Dispatches() {
         </div>
 
         {/* Featured Posts Section (Dynamic from API) */}
-        <div className="px-4 md:px-8 lg:px-16 mb-16">
+        <div className="mb-16 max-w-7xl mx-auto">
           <h2 className="text-white text-2xl font-bold font-poppins leading-loose mb-6">
             Featured Dispatches
           </h2>
@@ -181,8 +180,9 @@ export default function Dispatches() {
                     data-aos="fade-up"
                     data-aos-duration="1500"
                     data-aos-delay="200"
+                    className="h-[401px]"
                   >
-                    <div className="relative h-64 overflow-hidden shadow-[0px_0px_20px_0px_rgba(92,66,181,1.00)]">
+                    <div className="relative h-48 overflow-hidden shadow-[0px_0px_20px_0px_rgba(92,66,181,1.00)] ">
                       <img
                         src={
                           post.banner_image ||
@@ -193,19 +193,19 @@ export default function Dispatches() {
                       />
                     </div>
 
-                    <div className="bg-[#5C42B5] p-6">
-                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                    <div className="bg-[#5C42B5] px-4 py-8 h-[209px]">
+                      <h3 className="text-white text-base font-medium font-inter leading-7 mb-2.5">
                         {post.title}
                       </h3>
-                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-inter mb-5">
                         {post.description}
                       </p>
 
-                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
                         {post.tags_name?.slice(0, 4).map((tag) => (
                           <span
                             key={tag}
-                            className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                            className="px-3 py-1 text-center text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
                           >
                             {tag}
                           </span>
@@ -235,7 +235,7 @@ export default function Dispatches() {
         </div>
 
         {/* Latest Posts Section */}
-        <div className="px-4 md:px-8 lg:px-16 pb-20">
+        <div className="pb-20 max-w-7xl mx-auto">
           <h2 className="text-white text-2xl font-bold font-poppins leading-loose mb-6">
             Latest Dispatches
           </h2>
@@ -256,10 +256,10 @@ export default function Dispatches() {
               {filteredArticles.map((post) => (
                 <div
                   key={post.id}
-                  className="border border-[#5C42B5] flex flex-col h-[420px]"
+                  className="border border-[#5C42B5] flex flex-col h-[421px]"
                 >
                   {/* Image Section */}
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-[200px] overflow-hidden">
                     <img
                       src={post.banner_image}
                       alt={post.title}
@@ -268,24 +268,24 @@ export default function Dispatches() {
                   </div>
 
                   {/* Text Section */}
-                  <div className="bg-[#5C42B5] p-5 flex flex-col flex-grow justify-between">
+                  <div className="bg-[#5C42B5] px-4 py-8 flex flex-col flex-grow justify-between h-[221px]">
                     <div>
-                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
+                      <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2.5">
                         {post.title}
                       </h3>
-                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                      <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-5">
                         {post.description}
                       </p>
-                      <div className="flex flex-wrap items-center gap-2 mb-4">
-                        {post.tags_name?.slice(0, 4).map((tag) => (
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        {post.tags_name?.slice(0, 3).map((tag) => (
                           <span
                             key={tag}
-                            className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                            className="px-3 py-1 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
                           >
                             {tag}
                           </span>
                         ))}
-                        {post.tags_name?.length > 4 && (
+                        {post.tags_name?.length > 3 && (
                           <button
                             onClick={() => handleGotoDetails(post.id)}
                             className="text-white text-[10.20px] font-medium font-poppins underline"
@@ -295,10 +295,9 @@ export default function Dispatches() {
                         )}
                       </div>
                     </div>
-
                     <button
                       onClick={() => handleGotoDetails(post.id)}
-                      className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                      className="w-32 py-2 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
                     >
                       Read More
                     </button>
