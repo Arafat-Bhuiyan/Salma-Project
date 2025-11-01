@@ -42,7 +42,7 @@ export default function About() {
         <div className="">
           <div className="relative flex items-center justify-center px-24 py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
             {/* Main Container */}
-            <div className="relative max-w-7xl w-full grid md:grid-cols-2 gap-12 items-start">
+            <div className="relative max-w-7xl w-full">
               {/* Left Side */}
               <div
                 data-aos="fade-right"
@@ -58,56 +58,57 @@ export default function About() {
                     How we started and what our goals are.
                   </p>
                 </div>
+                <div className="flex gap-10 md:gap-20 flex-col md:flex-row justify-center">
+                  {/* Team Image */}
+                  <div className="flex-1 relative w-[90%] max-w-[541px]">
+                    <div className="bg-gray-900 rounded-lg shadow-[0_0_20px_0_rgba(255,59,154,1)] outline outline-1 outline-gray-800 overflow-hidden">
+                      <img
+                        src={officeTeamMeeting}
+                        alt="Team meeting"
+                        className="w-full h-96 object-cover"
+                      />
+                    </div>
+                  </div>
 
-                {/* Team Image */}
-                <div className="relative w-[90%] max-w-[541px]">
-                  <div className="bg-gray-900 rounded-lg shadow-[0_0_20px_0_rgba(255,59,154,1)] outline outline-1 outline-gray-800 overflow-hidden">
-                    <img
-                      src={officeTeamMeeting}
-                      alt="Team meeting"
-                      className="w-full h-96 object-cover"
-                    />
+                  {/* Right Side */}
+                  <div
+                    data-aos="fade-left"
+                    data-aos-duration="1200"
+                    data-aos-delay="200"
+                    className="space-y-6 flex-1 md:-mt-10"
+                  >
+                    <h2 className="text-[#FF80EB] text-xl md:text-2xl font-unbounded font-medium leading-loose">
+                      Our Story
+                    </h2>
+                    {isLoading && (
+                      <p className="text-center text-gray-400">Loading...</p>
+                    )}
+                    {isError && (
+                      <p className="text-center text-red-500">
+                        Failed to load content.
+                      </p>
+                    )}
+                    {aboutInfo ? (
+                      <div>
+                        <p className="text-white text-base font-unbounded leading-loose">
+                          {getTruncatedText(aboutInfo.description, 100)}
+                          <Link
+                            to="/about-us-details"
+                            className="text-[#FF80EB] hover:underline ml-1"
+                          >
+                            ... see more
+                          </Link>
+                        </p>
+                      </div>
+                    ) : (
+                      !isLoading && (
+                        <p className="text-center text-gray-500">
+                          No "About Us" information found.
+                        </p>
+                      )
+                    )}
                   </div>
                 </div>
-              </div>
-
-              {/* Right Side */}
-              <div
-                data-aos="fade-left"
-                data-aos-duration="1200"
-                data-aos-delay="200"
-                className="space-y-6"
-              >
-                <h2 className="text-[#FF80EB] text-xl md:text-2xl font-unbounded font-medium leading-loose">
-                  Our Story
-                </h2>
-                {isLoading && (
-                  <p className="text-center text-gray-400">Loading...</p>
-                )}
-                {isError && (
-                  <p className="text-center text-red-500">
-                    Failed to load content.
-                  </p>
-                )}
-                {aboutInfo ? (
-                  <div>
-                    <p className="text-white text-base font-unbounded leading-loose">
-                      {getTruncatedText(aboutInfo.description, 150)}
-                      <Link
-                        to="/about-us-details"
-                        className="text-[#FF80EB] hover:underline ml-1"
-                      >
-                        ... see more
-                      </Link>
-                    </p>
-                  </div>
-                ) : (
-                  !isLoading && (
-                    <p className="text-center text-gray-500">
-                      No "About Us" information found.
-                    </p>
-                  )
-                )}
               </div>
             </div>
           </div>
