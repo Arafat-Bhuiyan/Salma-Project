@@ -96,12 +96,17 @@ export function DispatchDetail() {
       {!isLoading && !isError && (
         <>
           {/* === Header Section (Full Width Image) === */}
-          <div className="w-full">
+          <div className="w-full h-[508px] relative">
             <img
               src={article?.banner_image}
-              alt="Vaults Header"
-              className="w-full h-[508px] object-cover object-center"
+              alt={article?.title || "Dispatch Banner"}
+              className="w-full h-full object-cover object-center"
             />
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4">
+              <h1 className="text-[#FF39B0] max-w-5xl text-center text-7xl font-normal font-unbounded leading-[72px]">
+                {article?.title}
+              </h1>
+            </div>
           </div>
 
           {/* === Layered Backgrounds for Content === */}
@@ -218,7 +223,7 @@ export function DispatchDetail() {
 
                     {/* Right part: Related posts and Popular tags section */}
                     <div className="w-1/3 flex flex-col items-center justify-center gap-8 py-11">
-                      <div className="max-w-sm bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
+                      <div className="w-96 h-80 bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
                         <div className="text-[#F4F4F3] text-start text-xl font-normal font-unbounded pb-6">
                           Related Posts
                         </div>
@@ -229,18 +234,15 @@ export function DispatchDetail() {
                           </p>
                         ) : relatedData?.data?.results?.length ? (
                           <div className="flex flex-col justify-center items-start gap-4">
-                            {relatedData.data.results.map((item) => (
+                            {relatedData.data.results.slice(0, 3).map((item) => (
                               <div
                                 key={item.id}
                                 className="flex flex-col gap-1.5 px-6 cursor-pointer"
-                                onClick={() =>
-                                  navigate(`/dispatch-detail/${item.id}`)
-                                }
                               >
                                 <div className="text-[#F4F4F3] text-sm font-normal font-unbounded leading-tight hover:underline">
                                   {item.title}
                                 </div>
-                                <div onClick={() => handleReadMore(article.id)} className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none">
+                                <div onClick={() => handleReadMore(item.id)} className="text-[#9CA3AF] text-xs font-normal font-unbounded leading-none">
                                   Read More →
                                 </div>
                               </div>
@@ -253,7 +255,7 @@ export function DispatchDetail() {
                         )}
                       </div>
 
-                      <div className="max-w-sm bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
+                      <div className="w-96 h-40 bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
                         <div className="text-[#F4F4F3] text-start text-xl font-normal font-unbounded pb-6">
                           Popular Tags
                         </div>
@@ -264,7 +266,7 @@ export function DispatchDetail() {
                           </p>
                         ) : tagsData?.data?.length ? (
                           <div className="flex flex-wrap gap-2">
-                            {tagsData.data.map((topic) => (
+                            {tagsData.data.slice(0, 6).map((topic) => (
                               <div
                                 key={topic.id}
                                 className="px-3 py-1 outline outline-1 outline-offset-[-1px] outline-[#F4F4F3] flex items-center justify-center cursor-pointer hover:bg-white/10 transition"
@@ -309,7 +311,7 @@ export function DispatchDetail() {
               </div>
 
               {/* Related Articles */}
-              <div className="pb-12 px-4">
+              <div className="pb-12 px-4 max-w-[1370px]">
                 <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
                   Related Articles
                 </h2>
@@ -319,13 +321,13 @@ export function DispatchDetail() {
                     Loading related articles...
                   </p>
                 ) : relatedData?.data?.results?.length ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
                     {relatedData.data.results.map((article) => (
                       <div
                         key={article.id}
-                        className="border border-[#2C1B2C] flex flex-col h-[420px]"
+                        className="border border-[#2C1B2C] flex flex-col h-[421px]"
                       >
-                        <div className="relative h-48 overflow-hidden">
+                        <div className="relative h-[200px] overflow-hidden">
                           <img
                             src={
                               article.banner_image ||
@@ -336,24 +338,24 @@ export function DispatchDetail() {
                           />
                         </div>
 
-                        <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
+                        <div className="bg-[#2C1B2C] px-4 py-8 flex flex-col flex-grow justify-between h-[221px]">
                           <div>
                             <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
                               {article.title}
                             </h3>
-                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-4">
+                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-poppins mb-5">
                               {article.description}
                             </p>
-                            <div className="flex flex-wrap items-center gap-2 mb-4">
-                              {article.tags_name?.slice(0, 4).map((tag) => (
+                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                              {article.tags_name?.slice(0, 3).map((tag) => (
                                 <span
                                   key={tag}
-                                  className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
+                                  className="px-3 py-1 text-white text-[10.20px] font-medium leading-none rounded-full font-poppins"
                                 >
                                   {tag}
                                 </span>
                               ))}
-                              {article.tags_name?.length > 4 && (
+                              {article.tags_name?.length > 3 && (
                                 <button
                                   onClick={() => handleReadMore(article.id)}
                                   className="text-white text-[10.20px] font-medium font-poppins underline"
@@ -365,7 +367,7 @@ export function DispatchDetail() {
                           </div>
                           <button
                             onClick={() => handleReadMore(article.id)}
-                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
+                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
                           >
                             Read More
                           </button>
