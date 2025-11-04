@@ -30,6 +30,7 @@ export default function Dispatches() {
 
   const [activeTopicName, setActiveTopicName] = useState(null);
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
+  const [visibleCount, setVisibleCount] = useState(6);
 
   const topics = useMemo(() => {
     if (tagsData?.data) {
@@ -90,16 +91,16 @@ export default function Dispatches() {
       {/* All Content */}
       <div className="relative z-10">
         {/* Header Image */}
-        <div className="flex justify-center px-4 md:px-20 lg:px-40 xl:px-80 py-12 md:py-20">
+        <div className="flex justify-center px-4 sm:px-8 md:px-20 py-12 md:py-20">
           <img
             src={headerImg.src || headerImg}
             alt="The Radical Dispatches"
-            className="w-full max-w-3xl h-auto"
+            className="w-full max-w-xl md:max-w-2xl lg:max-w-3xl h-auto"
           />
         </div>
 
         {/* Search and Filter Section */}
-        <div className="mb-8 max-w-7xl mx-auto">
+        <div className="mb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           {/* Search Bar */}
           <div className="mb-6">
             <div className="w-full bg-white rounded-xl flex justify-start items-center gap-2.5 px-10 py-3">
@@ -146,8 +147,8 @@ export default function Dispatches() {
         </div>
 
         {/* Featured Posts Section (Dynamic from API) */}
-        <div className="mb-16 max-w-7xl mx-auto">
-          <h2 className="text-white text-2xl font-bold font-poppins leading-loose mb-6">
+        <div className="mb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <h2 className="text-white text-xl sm:text-2xl font-bold font-poppins leading-loose mb-6">
             Featured Dispatches
           </h2>
 
@@ -158,7 +159,7 @@ export default function Dispatches() {
           ) : highlightedPosts.length === 0 ? (
             <p className="text-white">No featured posts found.</p>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
               {highlightedPosts.map((item) => {
                 const post = item.article;
                 return (
@@ -167,9 +168,9 @@ export default function Dispatches() {
                     data-aos="fade-up"
                     data-aos-duration="1500"
                     data-aos-delay="200"
-                    className="h-[401px]"
+                    className="flex flex-col"
                   >
-                    <div className="relative h-48 overflow-hidden shadow-[0px_0px_20px_0px_rgba(92,66,181,1.00)] ">
+                    <div className="relative h-48 overflow-hidden shadow-[0px_0px_20px_0px_rgba(92,66,181,1.00)]">
                       <img
                         src={
                           post.banner_image ||
@@ -180,7 +181,7 @@ export default function Dispatches() {
                       />
                     </div>
 
-                    <div className="bg-[#5C42B5] px-4 py-8 h-[209px]">
+                    <div className="bg-[#5C42B5] p-4 sm:p-6 flex flex-col flex-grow justify-between">
                       <h3 className="text-white text-base font-medium font-inter leading-7 mb-2.5">
                         {post.title}
                       </h3>
@@ -222,8 +223,8 @@ export default function Dispatches() {
         </div>
 
         {/* Latest Posts Section */}
-        <div className="pb-20 max-w-7xl mx-auto">
-          <h2 className="text-white text-2xl font-bold font-poppins leading-loose mb-6">
+        <div className="pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <h2 className="text-white text-xl sm:text-2xl font-bold font-poppins leading-loose mb-6">
             Latest Dispatches
           </h2>
 
@@ -238,12 +239,12 @@ export default function Dispatches() {
               data-aos="fade-up"
               data-aos-duration="2000"
               data-aos-delay="300"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6"
             >
-              {filteredArticles.map((post) => (
+              {filteredArticles.slice(0, visibleCount).map((post) => (
                 <div
                   key={post.id}
-                  className="border border-[#5C42B5] flex flex-col h-[421px]"
+                  className="border border-[#5C42B5] flex flex-col"
                 >
                   {/* Image Section */}
                   <div className="relative h-[200px] overflow-hidden">
@@ -255,7 +256,7 @@ export default function Dispatches() {
                   </div>
 
                   {/* Text Section */}
-                  <div className="bg-[#5C42B5] px-4 py-8 flex flex-col flex-grow justify-between h-[221px]">
+                  <div className="bg-[#5C42B5] p-4 sm:p-6 flex flex-col flex-grow justify-between">
                     <div>
                       <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2.5">
                         {post.title}
@@ -291,6 +292,18 @@ export default function Dispatches() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Load More Button */}
+          {filteredArticles.length > visibleCount && (
+            <div className="flex justify-center pt-12">
+              <button
+                onClick={() => setVisibleCount(visibleCount + 6)}
+                className="px-8 py-3.5 text-center outline outline-2 outline-white text-white text-sm font-unbounded cursor-pointer hover:bg-white/20 transition-colors"
+              >
+                Load More Dispatches
+              </button>
             </div>
           )}
         </div>

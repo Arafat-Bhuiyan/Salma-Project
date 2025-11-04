@@ -29,6 +29,7 @@ export default function Vaults() {
 
   const [activeTopicName, setActiveTopicName] = useState(null);
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
+  const [visibleCount, setVisibleCount] = useState(6);
 
   const topics = useMemo(() => {
     if (tagsData?.data) {
@@ -108,9 +109,9 @@ export default function Vaults() {
       </div>
 
       {/* === Page Content === */}
-      <div className="relative z-10 px-4 md:px-8 lg:px-24">
+      <div className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
         {/* Search & Filter Section */}
-        <div className="pt-10 max-w-7xl mx-auto">
+        <div className="py-10 max-w-7xl mx-auto">
           <div className="">
             <div className="w-full bg-white rounded-xl flex justify-start items-center gap-2.5 px-10 py-3">
               <Search size={16} color="#727272" />
@@ -155,8 +156,8 @@ export default function Vaults() {
         </div>
 
         {/* Featured Vaults (Dynamic from API) */}
-        <div className="pt-1 max-w-7xl mx-auto">
-          <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-5">
+        <div className="pt-8 max-w-7xl mx-auto">
+          <h2 className="text-white text-xl sm:text-2xl font-bold font-poppins leading-loose pb-5">
             Featured Vaults
           </h2>
 
@@ -167,7 +168,7 @@ export default function Vaults() {
           ) : highlightedVaults.length === 0 ? (
             <p className="text-white">No featured vaults found.</p>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-6">
               {highlightedVaults.map((item) => {
                 const blog = item.blog;
                 return (
@@ -176,7 +177,7 @@ export default function Vaults() {
                     data-aos="fade-up"
                     data-aos-duration="1500"
                     data-aos-delay="200"
-                    className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)] h-[401px]"
+                    className="shadow-[0px_0px_20px_0px_rgba(193,46,131,1.00)] flex flex-col"
                   >
                     <div className="relative h-48 overflow-hidden">
                       <img
@@ -189,7 +190,7 @@ export default function Vaults() {
                       />
                     </div>
 
-                    <div className="bg-[#2C1B2C] px-4 py-8 h-[209px]">
+                    <div className="bg-[#2C1B2C] p-4 sm:p-6 flex flex-col flex-grow justify-between">
                       <h3 className="text-white text-base font-medium font-inter leading-7 mb-2.5">
                         {blog.title}
                       </h3>
@@ -232,7 +233,7 @@ export default function Vaults() {
 
         {/* Latest Vaults */}
         <div className="pb-12 max-w-7xl mx-auto">
-          <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
+          <h2 className="text-white text-xl sm:text-2xl font-bold font-poppins leading-loose pb-4 pt-12">
             Latest Vaults
           </h2>
 
@@ -247,12 +248,12 @@ export default function Vaults() {
               data-aos="fade-up"
               data-aos-duration="2000"
               data-aos-delay="300"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6"
             >
-              {filteredBlogs.map((vault) => (
+              {filteredBlogs.slice(0, visibleCount).map((vault) => (
                 <div
                   key={vault.id}
-                  className="border border-[#2C1B2C] flex flex-col h-[421px]"
+                  className="border border-[#2C1B2C] flex flex-col"
                 >
                   {/* === Image === */}
                   <div className="relative h-[200px] overflow-hidden">
@@ -264,7 +265,7 @@ export default function Vaults() {
                   </div>
 
                   {/* === Text === */}
-                  <div className="bg-[#2C1B2C] px-4 py-8 flex flex-col flex-grow justify-between h-[221px]">
+                  <div className="bg-[#2C1B2C] p-4 sm:p-6 flex flex-col flex-grow justify-between">
                     <div>
                       <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2.5">
                         {vault.title}
@@ -304,6 +305,18 @@ export default function Vaults() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Load More Button */}
+          {filteredBlogs.length > visibleCount && (
+            <div className="flex justify-center pt-12">
+              <button
+                onClick={() => setVisibleCount(visibleCount + 6)}
+                className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer hover:bg-[#EB4DAC]/20 transition-colors"
+              >
+                Load More Vaults
+              </button>
             </div>
           )}
         </div>
