@@ -134,15 +134,15 @@ export default function ContentDetails() {
     >
       <ScrollRestoration />
       {/* Hero Section with Background */}
-      <div className="relative bg-cover bg-center">
-        <div className="w-10/12 mx-auto py-8 lg:pt-20">
+      <div className="relative bg-cover bg-center px-4 sm:px-6 md:px-8">
+        <div className="w-full max-w-7xl mx-auto py-8 lg:pt-20">
           {/* Header */}
-          <div className="flex flex-col justify-center pt-32">
+          <div className="flex flex-col justify-center pt-24 sm:pt-32">
             <div className="">
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex items-center justify-between mb-8 md:mb-12">
                 <Link
                   to={"/content"}
-                  className="text-[#FF3B9A] text-sm flex items-center gap-2 cursor-pointer"
+                  className="text-[#FF3B9A] text-sm sm:text-base flex items-center gap-2 cursor-pointer"
                 >
                   <ArrowLeft /> Back to Database
                 </Link>
@@ -156,7 +156,7 @@ export default function ContentDetails() {
                 <div className="inline-block border border-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
                   {content.content_type.toUpperCase()}
                 </div>
-                <h1 className="text-5xl text-[#F4F4F3] mb-4">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl text-[#F4F4F3] mb-4">
                   {content.title}
                 </h1>
                 <div>
@@ -170,7 +170,7 @@ export default function ContentDetails() {
                   ))}
                 </div>
                 {/* Like and Share Buttons */}
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-wrap gap-2 items-center mt-4">
                   <div
                     className={`w-28 h-12 px-3.5 flex items-center transition-all duration-200 ${
                       content.is_liked
@@ -208,10 +208,14 @@ export default function ContentDetails() {
             </div>
           </div>
           <div className="flex justify-center">
-            <img src={content.thumbnail_image} alt={content.title || "Image"} />
+            <img
+              src={content.thumbnail_image}
+              alt={content.title || "Image"}
+              className="w-full max-w-5xl h-auto object-cover rounded-lg"
+            />
           </div>
-          <div className="flex justify-center mt-10">
-            <p className="text-gray-300 text-lg mb-10 leading-relaxed">
+          <div className="flex justify-center mt-8 md:mt-10">
+            <p className="text-gray-300 text-base md:text-lg mb-8 md:mb-10 leading-relaxed max-w-4xl">
               {content.content}
             </p>
           </div>
@@ -219,21 +223,21 @@ export default function ContentDetails() {
       </div>
 
       {/* Content Section with Different Background */}
-      <div className="relative pb-20 bg-cover bg-center">
-        <div className=" mx-auto w-11/12 xl:w-9/12">
+      <div className="relative pb-20 bg-cover bg-center px-4 sm:px-6 md:px-8">
+        <div className=" mx-auto w-full max-w-7xl">
           {/* Conditional Content Display */}
           <div className="mx-auto">
             {content.content_type?.toLowerCase() === "pdf" ? (
               /* PDF Content */
-              <div className="bg-[#1F1F1F] p-12 text-center shadow-2xl">
-                <div className="mb-20">
+              <div className="bg-[#1F1F1F] p-6 md:p-12 text-center shadow-2xl rounded-lg">
+                <div className="mb-10 md:mb-20">
                   <img src={pdf} className="mx-auto" alt="" />
                 </div>
-                <h2 className="text-2xl mb-10 text-white">
+                <h2 className="text-xl md:text-2xl mb-8 md:mb-10 text-white">
                   This content is available as a downloadable PDF document.
                 </h2>
 
-                <div className="flex gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
                     onClick={() => handleDownload(content)}
                     className="bg-[#FF3B9A] hover:bg-pink-600 px-8 py-3 rounded-md transition flex items-center gap-2 text-white"
@@ -282,12 +286,12 @@ export default function ContentDetails() {
 
             {relatedLoading ? (
               <p className="text-gray-400">Loading related contents...</p>
-            ) : relatedData?.data?.results?.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            ) : relatedData?.data?.results?.length > 0 ? ( // Changed grid to be more responsive
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedData.data.results.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-[#2C1B2C] overflow-hidden cursor-pointer border border-[#2C1B2C] hover:scale-[1.02] transition-transform"
+                    className="bg-[#2C1B2C] rounded-lg overflow-hidden cursor-pointer border border-[#2C1B2C] hover:scale-[1.02] transition-transform"
                   >
                     <img
                       src={item.image}
@@ -338,14 +342,14 @@ export default function ContentDetails() {
           {/* Explore More */}
           <div className="my-16 text-center">
             <h3 className="text-3xl mb-6">Explore More</h3>
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={"/vaults"}>
-                <button className="border-2 border-[#FF80EB] px-8 py-3 transition">
+                <button className="w-full sm:w-auto border-2 border-[#FF80EB] px-8 py-3 transition">
                   More Blogs
                 </button>
               </Link>
               <Link to={"/content"}>
-                <button className="text-white cursor-pointer inline-flex px-8 py-3 bg-[#FF80EB]">
+                <button className="w-full sm:w-auto text-white cursor-pointer inline-flex justify-center px-8 py-3 bg-[#FF80EB]">
                   More Content
                 </button>
               </Link>
