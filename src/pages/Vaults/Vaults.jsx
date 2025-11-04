@@ -21,8 +21,6 @@ export default function Vaults() {
   const highlightedVaults = highlightedData?.data?.results || [];
   const [recordBlogView] = useRecordBlogViewMutation();
 
-  console.log("blogs:", blogs);
-
   const {
     data: tagsData,
     isLoading: tagsLoading,
@@ -88,11 +86,7 @@ export default function Vaults() {
 
   const handleGotoDetails = async (id) => {
     try {
-      // ✅ view count API কল (blog_id ব্যবহার করে)
       const res = await recordBlogView({ blog_id: id }).unwrap();
-      console.log("Blog view recorded:", res);
-
-      // ✅ সফল হলে navigate করবে
       navigate(`/vault-detail/${id}`);
     } catch (error) {
       console.error("Error recording blog view:", error);

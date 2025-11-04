@@ -60,16 +60,11 @@ export function VaultDetail() {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log("Article Data: ", article);
-
   const [recordBlogView] = useRecordBlogViewMutation();
 
   const handleGotoDetails = async (id) => {
     try {
       const res = await recordBlogView({ blog_id: id }).unwrap();
-      if (res.success) {
-        console.log("View recorded:", res.data);
-      }
       navigate(`/vault-detail/${id}`);
     } catch (error) {
       console.error("Error recording view:", error);

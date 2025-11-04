@@ -21,8 +21,6 @@ export default function SignupForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup attempt:", { profileName, email, password });
-
     // Step 1️ Prepare payload according to backend fields
     const signupData = {
       full_name: profileName,
@@ -34,7 +32,6 @@ export default function SignupForm() {
     try {
       // Step 2️ Call RTK Query API
       const res = await signup(signupData).unwrap();
-      console.log("Signup response:", res);
 
       // Step 3️ Save token in Redux + localStorage if available
       if (res?.access && res?.refresh) {

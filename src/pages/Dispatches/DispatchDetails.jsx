@@ -52,7 +52,6 @@ export function DispatchDetail() {
   const handleReadMore = async (articleId) => {
     try {
       const res = await recordArticleView(articleId).unwrap();
-      console.log("View recorded:", res);
       navigate(`/dispatch-detail/${articleId}`);
     } catch (error) {
       console.error("View record failed:", error);
@@ -79,8 +78,6 @@ export function DispatchDetail() {
     { id: 5, name: "React" },
     { id: 6, name: "JavaScript" },
   ];
-
-  console.log("Article Data: ", article);
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">

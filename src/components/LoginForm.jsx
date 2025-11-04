@@ -19,7 +19,6 @@ export default function LoginForm() {
 
     try {
       const res = await login({ email, password }).unwrap();
-      console.log("Login response:", res);
 
       // ✅ Backend response check
       if (res?.success || res?.data?.access) {

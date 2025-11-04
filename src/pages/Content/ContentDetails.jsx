@@ -111,7 +111,6 @@ export default function ContentDetails() {
 
   // Helper to convert YouTube/Vimeo/etc. link to embed format
   const getEmbedUrl = (url) => {
-    console.log("URL:", url);
     if (!url) return "";
     // YouTube watch URL
     if (url.includes("youtube.com/watch?v=")) {

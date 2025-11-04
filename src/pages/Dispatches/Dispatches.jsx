@@ -22,8 +22,6 @@ export default function Dispatches() {
 
   const highlightedPosts = highlightedData?.data?.results || [];
 
-  console.log("articles:", articles);
-
   const {
     data: tagsData,
     isLoading: tagsLoading,
@@ -81,9 +79,7 @@ export default function Dispatches() {
 
   const handleGotoDetails = async (id) => {
     try {
-      console.log("Sending article_id:", id);
       const res = await recordArticleView(id).unwrap();
-      console.log("View recorded:", res);
       navigate(`/dispatch-detail/${id}`);
     } catch (error) {
       console.error("Error recording view:", error);

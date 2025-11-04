@@ -30,9 +30,6 @@ export default function ContentLibrary() {
     isLoading: highlightsLoading,
     refetch: refetchHighlights,
   } = useGetHighlightedContentsQuery();
-
-  console.log("Highlight Data:", highlightsData);
-
   const [selectedTags, setSelectedTags] = useState([]);
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
   const [filterMode, setFilterMode] = useState("tag"); // "tag" | "content"
@@ -40,7 +37,6 @@ export default function ContentLibrary() {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useGetContentsQuery();
   const contents = data || [];
-  console.log("contents data:", data);
 
   const [recordBlogView] = useRecordContentViewMutation();
 
@@ -69,7 +65,6 @@ export default function ContentLibrary() {
   const handleGotoDetails = async (id) => {
     try {
       const res = await recordBlogView({ content_id: id }).unwrap();
-      console.log("View Recorded:", res);
 
       await refetchHighlights(); // ✅ refresh view count in highlights
       navigate(`/content-details/${id}`);
