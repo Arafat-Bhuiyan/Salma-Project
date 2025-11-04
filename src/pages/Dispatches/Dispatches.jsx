@@ -1,7 +1,7 @@
 import dispatchesBg from "@/assets/images/dispatches_bg.png";
 import headerImg from "@/assets/images/dispatches-header-photo.png";
 import { Search } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useGetArticleContentsQuery,
@@ -28,40 +28,32 @@ export default function Dispatches() {
     isError: tagsError,
   } = useGetTagsQuery();
 
-  const [topics, setTopics] = useState([]);
+  const [activeTopicName, setActiveTopicName] = useState(null);
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
 
-  useEffect(() => {
+  const topics = useMemo(() => {
     if (tagsData?.data) {
-      const initialTopics = tagsData.data.map((t) => ({
+      return tagsData.data.map((t) => ({
         ...t,
-        active: false,
+        active: t.name === activeTopicName,
       }));
-      setTopics(initialTopics);
     }
-  }, [tagsData]);
+    return [];
+  }, [tagsData, activeTopicName]);
 
   const handleTopicClick = (selectedName) => {
-    const updatedTopics = topics.map((topic) =>
-      topic.name === selectedName
-        ? { ...topic, active: true }
-        : { ...topic, active: false }
-    );
-    setTopics(updatedTopics);
+    setActiveTopicName(activeTopicName === selectedName ? null : selectedName);
   };
 
-  const [filteredArticles, setFilteredArticles] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    const activeTopic = topics.find((t) => t.active)?.name;
-
+  const filteredArticles = useMemo(() => {
     let newFilteredArticles = articles;
 
     // Filter by topic
-    if (activeTopic && activeTopic !== "All") {
+    if (activeTopicName) {
       newFilteredArticles = newFilteredArticles.filter((article) =>
-        article.tags_name?.includes(activeTopic)
+        article.tags_name?.includes(activeTopicName)
       );
     }
 
@@ -71,9 +63,8 @@ export default function Dispatches() {
         article.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
-    setFilteredArticles(newFilteredArticles);
-  }, [searchQuery, topics, articles]);
+    return newFilteredArticles;
+  }, [searchQuery, activeTopicName, articles]);
 
   const navigate = useNavigate();
 

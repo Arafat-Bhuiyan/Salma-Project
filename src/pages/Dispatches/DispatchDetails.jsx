@@ -21,14 +21,6 @@ export function DispatchDetail() {
 
   // 🧠 States
   const [hasLiked, setHasLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0); // optional if you show count
-
-  useEffect(() => {
-    if (data) {
-      setHasLiked(data.is_liked || false);
-      setLikeCount(data.likes_count || 0);
-    }
-  }, [data]);
 
   const [likeArticle, { isLoading: isLiking }] = useLikeArticleMutation();
 
@@ -38,7 +30,6 @@ export function DispatchDetail() {
 
       if (res.success) {
         setHasLiked(true);
-        setLikeCount((prev) => prev + 1);
         toast.success("Article liked!");
       } else {
         toast.error("Action failed. Please try again.");

@@ -1,7 +1,7 @@
 import vaultsHeaderImg from "@/assets/images/vaults_header.png";
 import vaultsBg from "@/assets/images/aboutPageBg.png";
 import { Search } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { ScrollRestoration, useNavigate } from "react-router-dom";
 import {
   useGetBlogContentsQuery,
@@ -27,48 +27,32 @@ export default function Vaults() {
     isError: tagsError,
   } = useGetTagsQuery();
 
-  const [topics, setTopics] = useState([]);
+  const [activeTopicName, setActiveTopicName] = useState(null);
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
 
-  useEffect(() => {
+  const topics = useMemo(() => {
     if (tagsData?.data) {
-      const initialTopics = tagsData.data.map((t) => ({
+      return tagsData.data.map((t) => ({
         ...t,
-        active: false,
+        active: t.name === activeTopicName,
       }));
-      setTopics(initialTopics);
     }
-  }, [tagsData]);
+    return [];
+  }, [tagsData, activeTopicName]);
 
   const handleTopicClick = (selectedName) => {
-    const updatedTopics = topics.map((topic) =>
-      topic.name === selectedName
-        ? { ...topic, active: true }
-        : { ...topic, active: false }
-    );
-    setTopics(updatedTopics);
-
-    handleFilterBlogs(selectedName);
+    setActiveTopicName(activeTopicName === selectedName ? null : selectedName);
   };
 
-  const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    if (blogs.length > 0) {
-      setFilteredBlogs(blogs);
-    }
-  }, [blogs]);
-
-  useEffect(() => {
-    const activeTopic = topics.find((t) => t.active)?.name;
-
-    let newFilteredBlogs = blogs;
+  const filteredBlogs = useMemo(() => {
+    let newFilteredBlogs = blogs || [];
 
     // Filter by topic
-    if (activeTopic && activeTopic !== "All") {
+    if (activeTopicName) {
       newFilteredBlogs = newFilteredBlogs.filter((blog) =>
-        blog.tags_name?.includes(activeTopic)
+        blog.tags_name?.includes(activeTopicName)
       );
     }
 
@@ -79,8 +63,8 @@ export default function Vaults() {
       );
     }
 
-    setFilteredBlogs(newFilteredBlogs);
-  }, [searchQuery, topics, blogs]);
+    return newFilteredBlogs;
+  }, [searchQuery, activeTopicName, blogs]);
 
   const navigate = useNavigate();
 

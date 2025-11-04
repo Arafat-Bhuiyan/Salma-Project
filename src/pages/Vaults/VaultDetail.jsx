@@ -17,17 +17,7 @@ export function VaultDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isLoading, isError } = useGetBlogContentByIdQuery(id);
-
-  // === Like states ===
   const [hasLiked, setHasLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-
-  useEffect(() => {
-    if (data) {
-      setHasLiked(data.is_liked || false);
-      setLikeCount(data.likes_count || 0);
-    }
-  }, [data]);
 
   const [likeArticle, { isLoading: isLiking }] = useLikeBlogMutation();
 
@@ -37,7 +27,6 @@ export function VaultDetail() {
 
       if (res.success) {
         setHasLiked(true);
-        setLikeCount((prev) => prev + 1);
         toast.success("Blog liked!");
       } else {
         toast.error("Action failed. Please try again.");

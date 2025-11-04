@@ -1,6 +1,6 @@
 import bgImg from "../../assets/images/detailsbg.png";
 import pdf from "../../assets/icons/pdf-icon.png";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { Download, ArrowLeft } from "lucide-react";
 import like from "@/assets/icons/like.svg";
@@ -17,18 +17,10 @@ export default function ContentDetails() {
   const { id } = useParams();
   const { data, isLoading, isError } = useGetContentByIdQuery(id);
   const content = data || {};
-  const [likeCount, setLikeCount] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
   const [likeContent, { isLoading: isLiking }] = useLikeContentMutation(); // 🆕 RTK Mutation
   const { data: relatedData, isLoading: relatedLoading } =
     useGetRelatedContentsQuery(id);
-
-  useEffect(() => {
-    if (content) {
-      setHasLiked(content.is_liked || false);
-      setLikeCount(content.views_count || 0);
-    }
-  }, [content]);
 
   const handleLike = async () => {
     try {
@@ -38,7 +30,6 @@ export default function ContentDetails() {
       }).unwrap();
 
       if (response.success) {
-        setLikeCount((prev) => prev + 1);
         toast.success("You liked this content!");
         setHasLiked(true);
       } else {
@@ -215,14 +206,10 @@ export default function ContentDetails() {
                 </div>
               </div>
             </div>
-            
           </div>
           <div className="flex justify-center">
-              <img
-                src={content.thumbnail_image}
-                alt={content.title || "Image"}
-              />
-            </div>
+            <img src={content.thumbnail_image} alt={content.title || "Image"} />
+          </div>
           <div className="flex justify-center mt-10">
             <p className="text-gray-300 text-lg mb-10 leading-relaxed">
               {content.content}
