@@ -84,14 +84,14 @@ export function DispatchDetail() {
       {!isLoading && !isError && (
         <>
           {/* === Header Section (Full Width Image) === */}
-          <div className="w-full h-[508px] relative">
+          <div className="w-full h-[300px] sm:h-[400px] lg:h-[508px] relative">
             <img
               src={article?.banner_image}
               alt={article?.title || "Dispatch Banner"}
               className="w-full h-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4">
-              <h1 className="text-[#FF39B0] max-w-5xl text-center text-7xl font-normal font-unbounded leading-[72px]">
+              <h1 className="text-[#FF39B0] max-w-5xl text-center text-4xl sm:text-5xl lg:text-7xl font-normal font-unbounded leading-tight lg:leading-[72px]">
                 {article?.title}
               </h1>
             </div>
@@ -112,9 +112,9 @@ export function DispatchDetail() {
             <div className="w-full">
               {/* Full detail section */}
               <div className="w-full h-full">
-                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] pt-12 pb-3 px-24 w-full">
+                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] pt-12 pb-3 px-4 sm:px-8 md:px-16 lg:px-24 w-full">
                   {/* Header */}
-                  <div className=" text-[#F4F4F3] text-3xl font-medium font-unbounded leading-10">
+                  <div className="text-[#F4F4F3] text-2xl md:text-3xl font-medium font-unbounded leading-10">
                     {article?.title}
                   </div>
 
@@ -168,25 +168,25 @@ export function DispatchDetail() {
                     <ShareButton />
                   </div>
 
-                  <div className="w-full flex items-start justify-center gap-20">
+                  <div className="w-full flex flex-col lg:flex-row items-start justify-center gap-12 lg:gap-20">
                     {/* Left part: Main Details */}
-                    <div className="w-2/3">
+                    <div className="w-full lg:w-2/3">
                       {/* Description */}
-                      <div className="text-white text-lg font-normal font-unbounded leading-loose py-11">
+                      <div className="text-white text-base md:text-lg font-normal font-unbounded leading-loose py-8 md:py-11">
                         {article?.description}
                       </div>
 
                       {/* First part */}
-                      <div className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-9 pb-6">
+                      <div className="text-[#F4F4F3] text-2xl md:text-3xl font-normal font-unbounded leading-9 pb-6">
                         Introduction
                       </div>
-                      <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-relaxed">
+                      <div className="text-[#C6C6C6] text-sm md:text-base font-normal font-unbounded leading-relaxed">
                         {article?.article_1st_part}
                       </div>
 
                       {/* Quote */}
                       <div className="bg-[#2C1B2C] border border-[#FF80EB] py-9 flex items-center justify-center my-12">
-                        <div className="text-[#F4F4F3] text-2xl font-normal font-poppins italic text-center">
+                        <div className="text-[#F4F4F3] text-xl md:text-2xl font-normal font-poppins italic text-center p-4">
                           “{article?.special_quote}”
                         </div>
                       </div>
@@ -196,22 +196,22 @@ export function DispatchDetail() {
                         <img
                           src={article?.article_image}
                           alt="Article visual"
-                          className="w-full h-64 pb-9"
+                          className="w-full h-auto max-h-96 object-cover pb-9"
                         />
                       )}
 
                       {/* Second part */}
-                      <div className="text-[#F4F4F3] text-3xl font-normal font-unbounded leading-9 pb-6">
+                      <div className="text-[#F4F4F3] text-2xl md:text-3xl font-normal font-unbounded leading-9 pb-6">
                         In Depth
                       </div>
-                      <div className="text-[#C6C6C6] text-base font-normal font-unbounded leading-relaxed pb-11">
+                      <div className="text-[#C6C6C6] text-sm md:text-base font-normal font-unbounded leading-relaxed pb-11">
                         {article?.article_2nd_part}
                       </div>
                     </div>
 
                     {/* Right part: Related posts and Popular tags section */}
-                    <div className="w-1/3 flex flex-col items-center justify-center gap-8 py-11">
-                      <div className="w-96 h-80 bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
+                    <div className="w-full lg:w-1/3 flex flex-col items-center justify-start gap-8 py-11">
+                      <div className="w-full bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
                         <div className="text-[#F4F4F3] text-start text-xl font-normal font-unbounded pb-6">
                           Related Posts
                         </div>
@@ -225,7 +225,7 @@ export function DispatchDetail() {
                             {relatedData.data.results.slice(0, 3).map((item) => (
                               <div
                                 key={item.id}
-                                className="flex flex-col gap-1.5 px-6 cursor-pointer"
+                                className="flex flex-col gap-1.5 cursor-pointer"
                               >
                                 <div className="text-[#F4F4F3] text-sm font-normal font-unbounded leading-tight hover:underline">
                                   {item.title}
@@ -243,7 +243,7 @@ export function DispatchDetail() {
                         )}
                       </div>
 
-                      <div className="w-96 h-40 bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
+                      <div className="w-full bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
                         <div className="text-[#F4F4F3] text-start text-xl font-normal font-unbounded pb-6">
                           Popular Tags
                         </div>
@@ -276,7 +276,7 @@ export function DispatchDetail() {
                 </div>
 
                 {/* Author Details */}
-                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] py-9 px-24 mt-10">
+                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] py-9 px-4 sm:px-8 md:px-16 lg:px-24 mt-10">
                   <div className="text-[#F4F4F3] text-lg font-bold font-['Unbounded'] leading-7 pb-3">
                     About the Author
                   </div>
@@ -299,8 +299,8 @@ export function DispatchDetail() {
               </div>
 
               {/* Related Articles */}
-              <div className="pb-12 px-4 max-w-[1370px]">
-                <h2 className="text-white text-2xl font-bold font-poppins leading-loose pb-4 pt-7">
+              <div className="pb-12 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto">
+                <h2 className="text-white text-xl md:text-2xl font-bold font-poppins leading-loose pb-4 pt-12">
                   Related Articles
                 </h2>
 
@@ -309,11 +309,11 @@ export function DispatchDetail() {
                     Loading related articles...
                   </p>
                 ) : relatedData?.data?.results?.length ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6">
                     {relatedData.data.results.map((article) => (
                       <div
                         key={article.id}
-                        className="border border-[#2C1B2C] flex flex-col h-[421px]"
+                        className="border border-[#2C1B2C] flex flex-col"
                       >
                         <div className="relative h-[200px] overflow-hidden">
                           <img
@@ -326,7 +326,7 @@ export function DispatchDetail() {
                           />
                         </div>
 
-                        <div className="bg-[#2C1B2C] px-4 py-8 flex flex-col flex-grow justify-between h-[221px]">
+                        <div className="bg-[#2C1B2C] p-4 sm:p-6 flex flex-col flex-grow justify-between">
                           <div>
                             <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
                               {article.title}
