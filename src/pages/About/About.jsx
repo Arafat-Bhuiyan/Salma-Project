@@ -37,10 +37,10 @@ export default function About() {
       ></div>
 
       {/* All Content */}
-      <div className="relative z-10 w-full py-28">
+      <div className="relative z-10 w-full py-16 md:py-28">
         {/* Section 1: Our Story */}
         <div className="">
-          <div className="relative flex items-center justify-center px-24 py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
+          <div className="relative flex items-center justify-center px-4 sm:px-8 md:px-16 lg:px-24 py-12 md:py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
             {/* Main Container */}
             <div className="relative max-w-7xl w-full">
               {/* Left Side */}
@@ -51,21 +51,21 @@ export default function About() {
               >
                 {/* Title and Subtitle */}
                 <div>
-                  <h1 className="text-4xl md:text-5xl font-unbounded font-normal text-[#C6C6C6] mb-4 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-unbounded font-normal text-[#C6C6C6] mb-4 leading-tight">
                     About Us
                   </h1>
-                  <p className="text-2xl text-white font-normal font-unbounded leading-tight">
+                  <p className="text-lg sm:text-xl md:text-2xl text-white font-normal font-unbounded leading-tight">
                     How we started and what our goals are.
                   </p>
                 </div>
-                <div className="flex gap-10 md:gap-20 flex-col md:flex-row justify-center">
+                <div className="flex gap-10 md:gap-16 lg:gap-20 flex-col md:flex-row justify-center pt-8">
                   {/* Team Image */}
-                  <div className="flex-1 relative w-[90%] max-w-[541px]">
+                  <div className="flex-1 relative w-full max-w-lg mx-auto md:mx-0">
                     <div className="bg-gray-900 rounded-lg shadow-[0_0_20px_0_rgba(255,59,154,1)] outline outline-1 outline-gray-800 overflow-hidden">
                       <img
                         src={officeTeamMeeting}
                         alt="Team meeting"
-                        className="w-full h-96 object-cover"
+                        className="w-full h-64 sm:h-80 md:h-96 object-cover"
                       />
                     </div>
                   </div>
@@ -77,7 +77,7 @@ export default function About() {
                     data-aos-delay="200"
                     className="space-y-6 flex-1 md:-mt-10"
                   >
-                    <h2 className="text-[#FF80EB] text-xl md:text-2xl font-unbounded font-medium leading-loose">
+                    <h2 className="text-[#FF80EB] text-xl sm:text-2xl font-unbounded font-medium leading-loose">
                       Our Story
                     </h2>
                     {isLoading && (
@@ -90,7 +90,7 @@ export default function About() {
                     )}
                     {aboutInfo ? (
                       <div>
-                        <p className="text-white text-base font-unbounded leading-loose">
+                        <p className="text-white text-sm sm:text-base font-unbounded leading-loose">
                           {getTruncatedText(aboutInfo.description, 100)}
                           <Link
                             to="/about-us-details"
@@ -115,28 +115,28 @@ export default function About() {
         </div>
 
         {/* Section 2: Mission and Vision */}
-        <div className="p-36">
-          <div className="relative flex items-center justify-center px-24 py-10 bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] overflow-hidden">
+        <div className="p-4 sm:p-8 md:p-16 lg:p-24 xl:p-36">
+          <div className="relative flex items-center justify-center px-4 sm:px-8 md:px-16 lg:px-24 py-10 bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] overflow-hidden">
             {/* Main Container */}
-            <div className="text-center max-w-6xl py-28 px-80 flex flex-col gap-12 justify-center items-center">
+            <div className="text-center max-w-6xl w-full py-16 md:py-28 px-4 sm:px-8 flex flex-col gap-8 md:gap-12 justify-center items-center">
               <Link to="/our-mission">
                 <div
                   data-aos="fade-up"
                   data-aos-duration="1000"
-                  className=" bg-[#FF80EB] active:bg-[#C12E83] w-[475px] h-[70px] flex items-center justify-center"
+                  className="bg-[#FF80EB] active:bg-[#C12E83] w-full max-w-md h-16 sm:h-[70px] flex items-center justify-center px-4"
                 >
-                  <div className="justify-start text-[#231D2A] text-3xl font-medium font-unbounded leading-loose">
+                  <div className="justify-start text-[#231D2A] text-xl sm:text-2xl md:text-3xl font-medium font-unbounded leading-loose">
                     Our Mission and Vision
                   </div>
                 </div>
               </Link>
 
-              <Link to="/about-us-details">
+              <Link to="/about-us-details" className="w-full flex justify-center">
                 <button
                   data-aos="fade-up"
                   data-aos-delay="200"
                   data-aos-duration="1200"
-                  className="border-2 border-[#FF80EB] text-white w-[475px] h-[70px] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none transition-colors text-3xl font-medium font-unbounded leading-loose flex items-center justify-center"
+                  className="border-2 border-[#FF80EB] text-white w-full max-w-md h-16 sm:h-[70px] hover:bg-[#EE87E5] hover:border-none active:bg-[#C12E83] active:border-none transition-colors text-xl sm:text-2xl md:text-3xl font-medium font-unbounded leading-loose flex items-center justify-center px-4"
                 >
                   About us
                 </button>

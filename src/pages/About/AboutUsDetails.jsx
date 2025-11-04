@@ -23,10 +23,10 @@ export default function AboutUsDetails() {
       ></div>
 
       {/* All Content */}
-      <div className="relative z-10 w-full py-28">
+      <div className="relative z-10 w-full py-16 md:py-28">
         {/* Section 1: Our Story */}
         <div className="">
-          <div className="relative flex items-center justify-center px-24 py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
+          <div className="relative flex items-center justify-center px-4 sm:px-8 md:px-16 lg:px-24 py-12 md:py-[52px] bg-[#1A0E1E]/70 overflow-hidden">
             {/* Main Container */}
             <div className="relative max-w-7xl w-full flex flex-col gap-12 items-center justify-center">
               {/* Heading Side */}
@@ -37,10 +37,10 @@ export default function AboutUsDetails() {
               >
                 {/* Title and Subtitle */}
                 <div>
-                  <h1 className="text-4xl md:text-5xl font-unbounded font-normal text-center text-[#C6C6C6] mb-4 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-unbounded font-normal text-center text-[#C6C6C6] mb-4 leading-tight">
                     About Us
                   </h1>
-                  <p className="text-2xl text-white font-normal font-unbounded text-center leading-tight">
+                  <p className="text-lg sm:text-xl md:text-2xl text-white font-normal font-unbounded text-center leading-tight">
                     How we started and what our goals are.
                   </p>
                 </div>
@@ -53,7 +53,7 @@ export default function AboutUsDetails() {
                 data-aos-delay="200"
                 className="space-y-6"
               >
-                <h2 className="text-[#FF80EB] text-xl md:text-2xl font-unbounded font-medium leading-loose text-center">
+                <h2 className="text-[#FF80EB] text-xl sm:text-2xl font-unbounded font-medium leading-loose text-center">
                   Our Story
                 </h2>
                 {isLoading && (

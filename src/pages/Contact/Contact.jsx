@@ -62,25 +62,25 @@ const Contact = () => {
     >
       <ScrollRestoration />
       {/* Content */}
-      <div className="">
-        <h1 className="text-[#FF39B0] text-5xl font-semibold font-unbounded pt-20 pb-20">
+      <div className="py-20 md:py-28">
+        <h1 className="text-[#FF39B0] text-3xl sm:text-4xl md:text-5xl font-semibold font-unbounded pb-12 md:pb-20">
           Be part of the commons
         </h1>
 
         {/* Contact Form */}
         <form
           onSubmit={handleSubmit}
-          className="max-w-3xl mx-auto text-black space-y-10"
+          className="max-w-3xl mx-auto text-black space-y-6 md:space-y-10"
         >
           {/* Name and Email */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             <input
               type="text"
               name="name"
               placeholder="Your Name? *"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-3.5 bg-[#D9D9D9] placeholder-[#727272] font-unbounded outline-none placeholder:text-xl text-base font-normal"
+              className="w-full px-4 py-3.5 bg-[#D9D9D9] placeholder-[#727272] font-unbounded outline-none placeholder:text-base md:placeholder:text-xl text-base font-normal"
               required
             />
             <input
@@ -89,7 +89,7 @@ const Contact = () => {
               placeholder="Your Email? *"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3.5 bg-[#D9D9D9] placeholder-[#727272] font-unbounded outline-none placeholder:text-xl text-base font-normal"
+              className="w-full px-4 py-3.5 bg-[#D9D9D9] placeholder-[#727272] font-unbounded outline-none placeholder:text-base md:placeholder:text-xl text-base font-normal"
               required
             />
           </div>
@@ -99,7 +99,7 @@ const Contact = () => {
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            className="w-full px-4 py-3.5 bg-[#D9D9D9] text-[#727272] font-unbounded outline-none placeholder:text-xl text-base font-normal"
+            className="w-full px-4 py-3.5 bg-[#D9D9D9] text-[#727272] font-unbounded outline-none text-base font-normal"
             required
           >
             <option value="">Select Subject</option>
@@ -116,14 +116,14 @@ const Contact = () => {
             value={formData.message}
             onChange={handleChange}
             rows="4"
-            className="w-full px-6 py-4 bg-[#D9D9D9] placeholder-[#727272] font-unbounded outline-none placeholder:text-xl text-base font-normal"
+            className="w-full px-6 py-4 bg-[#D9D9D9] placeholder-[#727272] font-unbounded outline-none placeholder:text-base md:placeholder:text-xl text-base font-normal"
           ></textarea>
 
           {/* Submit Button (Right-aligned) */}
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-center md:justify-end pt-4">
             <button
               type="submit"
-              className="text-white text-lg font-medium font-unbounded px-16 py-2.5 outline outline-2 outline-offset-[-1px] outline-[#C12E83] hover:bg-[#FF80EB] hover:outline-none active:bg-[#C12E83] active:outline-none"
+              className="w-full md:w-auto text-white text-lg font-medium font-unbounded px-16 py-2.5 outline outline-2 outline-offset-[-1px] outline-[#C12E83] hover:bg-[#FF80EB] hover:outline-none active:bg-[#C12E83] active:outline-none"
             >
               {isLoading ? "Sending..." : "Submit"}
             </button>

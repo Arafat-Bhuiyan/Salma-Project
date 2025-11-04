@@ -69,14 +69,14 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="my-20 px-20 py-24 bg-[#1A0E1E]/70 shadow-[0_0_30px_0_#FF80EA80] rounded-2xl">
-      <div className="relative z-10 w-[715px]">
+    <div className="my-16 md:my-20 p-6 sm:p-10 md:p-16 lg:p-20 bg-[#1A0E1E]/70 shadow-[0_0_30px_0_#FF80EA80] rounded-2xl w-full max-w-3xl mx-4">
+      <div className="relative z-10 w-full">
         {/* ===== Header ===== */}
-        <div className="flex flex-col items-center gap-1 mb-10">
-          <h1 className="text-[#FFF9F9] text-3xl font-medium font-unbounded text-center">
+        <div className="flex flex-col items-center gap-1 mb-8 md:mb-10">
+          <h1 className="text-[#FFF9F9] text-2xl md:text-3xl font-medium font-unbounded text-center">
             Create an account
           </h1>
-          <p className="text-white text-base font-unbounded">
+          <p className="text-white text-sm sm:text-base font-unbounded text-center">
             Already have an account?{" "}
             <Link
               to="/login"
@@ -93,7 +93,7 @@ export default function SignupForm() {
           <div className="flex flex-col gap-1">
             <label
               htmlFor="name"
-              className="text-white text-base font-normal font-unbounded"
+              className="text-white text-sm md:text-base font-normal font-unbounded"
             >
               What should we call you?
             </label>
@@ -103,7 +103,7 @@ export default function SignupForm() {
               placeholder="Enter your profile name"
               value={profileName}
               onChange={(e) => setProfileName(e.target.value)}
-              className="h-14 px-6 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
+              className="h-12 md:h-14 px-4 md:px-6 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
               required
             />
           </div>
@@ -112,7 +112,7 @@ export default function SignupForm() {
           <div className="flex flex-col gap-1">
             <label
               htmlFor="email"
-              className="text-white text-base font-normal font-unbounded"
+              className="text-white text-sm md:text-base font-normal font-unbounded"
             >
               What’s your email?
             </label>
@@ -122,7 +122,7 @@ export default function SignupForm() {
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-14 px-6 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
+              className="h-12 md:h-14 px-4 md:px-6 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
               required
             />
           </div>
@@ -131,7 +131,7 @@ export default function SignupForm() {
           <div className="flex flex-col gap-1">
             <label
               htmlFor="password"
-              className="text-white text-base font-normal font-unbounded"
+              className="text-white text-sm md:text-base font-normal font-unbounded"
             >
               Create a password
             </label>
@@ -143,7 +143,7 @@ export default function SignupForm() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-14 w-full px-6 pr-12 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
+                className="h-12 md:h-14 w-full px-4 md:px-6 pr-12 text-sm font-normal bg-transparent rounded-xl border-2 border-white text-white placeholder:text-[#666666]/60 font-unbounded focus:outline-none focus:border-[#FF80EB] transition-colors"
                 pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
                 title="Use 8 or more characters with a mix of letters, numbers & symbols"
                 required
@@ -163,7 +163,7 @@ export default function SignupForm() {
               </button>
             </div>
 
-            <p className="text-white text-sm font-normal font-unbounded mt-1">
+            <p className="text-white text-xs sm:text-sm font-normal font-unbounded mt-1">
               Use 8 or more characters with a mix of letters, numbers & symbols
             </p>
           </div>
@@ -179,7 +179,7 @@ export default function SignupForm() {
               />
               <label
                 htmlFor="terms"
-                className="text-[#666666] text-base font-unbounded"
+                className="text-[#666666] text-xs sm:text-base font-unbounded"
               >
                 By creating an account, you agree to the{" "}
                 <span
@@ -209,20 +209,20 @@ export default function SignupForm() {
         </form>
 
         {/* ===== OR Section ===== */}
-        <div className="flex flex-col items-center gap-4 mt-12">
-          <p className="text-[#666666] text-2xl font-unbounded">
+        <div className="flex flex-col items-center gap-4 mt-8 md:mt-12">
+          <p className="text-[#666666] text-lg md:text-2xl font-unbounded">
             OR Continue with
           </p>
 
-          <div className="flex gap-10">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-10 w-full">
             {/* Google */}
-            <button className="w-80 h-16 flex items-center justify-center gap-4 rounded-[40px] border border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none active:border-none active:bg-[#C12E83] text-white text-xl font-unbounded transition-all">
+            <button className="w-full h-14 md:h-16 flex items-center justify-center gap-4 rounded-[40px] border border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none active:border-none active:bg-[#C12E83] text-white text-lg md:text-xl font-unbounded transition-all">
               <img src={google} alt="Google Logo" className="w-6 h-6" />
               Google
             </button>
 
             {/* Apple */}
-            <button className="w-80 h-16 flex items-center justify-center gap-4 rounded-[40px] border border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none active:border-none active:bg-[#C12E83] text-white text-xl font-unbounded  transition-all">
+            <button className="w-full h-14 md:h-16 flex items-center justify-center gap-4 rounded-[40px] border border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none active:border-none active:bg-[#C12E83] text-white text-lg md:text-xl font-unbounded  transition-all">
               <img src={apple} alt="Google Logo" className="w-7 h-7" />
               Apple
             </button>
