@@ -185,12 +185,12 @@ export default function ContentLibrary() {
           }}
         ></div>
 
-        <div className="px-4 md:px-8 lg:px-16">
-          <div className="py-16 flex flex-col items-center justify-center">
+        <div className="px-4 sm:px-6 md:px-8 lg:px-16">
+          <div className="py-12 md:py-16 flex flex-col items-center justify-center">
             <h1
               data-aos="fade-up"
               data-aos-duration="1200"
-              className="text-[#F4F4F3] text-4xl md:text-6xl font-normal font-unbounded leading-tight md:leading-[60px] text-center"
+              className="text-[#F4F4F3] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal font-unbounded leading-tight md:leading-[60px] text-center"
             >
               Explore Content Library
             </h1>
@@ -198,7 +198,7 @@ export default function ContentLibrary() {
               data-aos="fade-up"
               data-aos-delay="200"
               data-aos-duration="1400"
-              className="text-[#C6C6C6] text-lg md:text-xl font-normal font-unbounded leading-7 pt-2 text-center"
+              className="text-[#C6C6C6] text-base sm:text-lg md:text-xl font-normal font-unbounded leading-7 pt-2 text-center max-w-3xl"
             >
               Discover videos, PDFs, photos, and more in our futuristic digital
               collection
@@ -230,7 +230,7 @@ export default function ContentLibrary() {
 
           {/* === CONTENT TYPE FILTER MODE === */}
           {filterMode === "content" && (
-            <div className="py-16 flex flex-col items-center justify-center">
+            <div className="py-12 md:py-16 flex flex-col items-center justify-center">
               {/* Category Buttons */}
               <div className="w-full flex flex-wrap items-center justify-center gap-4">
                 {[
@@ -261,7 +261,7 @@ export default function ContentLibrary() {
 
               {/* Cards */}
               {!noContentFound ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[100px] pt-16 max-w-6xl">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16 pt-16 max-w-6xl mx-auto">
                   {contentFilteredVaults.slice(0, visibleCount).map((vault) => (
                     <div
                       key={vault.id}
@@ -328,12 +328,12 @@ export default function ContentLibrary() {
                   <img
                     src={noContentImg}
                     alt="No content found"
-                    className="w-32 h-auto"
+                    className="w-24 md:w-32 h-auto"
                   />
-                  <h2 className="text-[#FF80EB] text-3xl md:text-5xl text-center font-normal leading-tight md:leading-[60px] font-unbounded mb-2">
+                  <h2 className="text-[#FF80EB] text-2xl md:text-3xl lg:text-5xl text-center font-normal leading-tight md:leading-[60px] font-unbounded mb-2">
                     No content found
                   </h2>
-                  <p className="text-white text-lg md:text-2xl text-center font-normal font-unbounded mb-6">
+                  <p className="text-white text-base md:text-lg lg:text-2xl text-center font-normal font-unbounded mb-6">
                     Try adjusting your filters to discover more content
                   </p>
                   <button
@@ -364,23 +364,23 @@ export default function ContentLibrary() {
                         Loading highlights...
                       </div>
                     ) : highlights.length > 0 ? (
-                      <div className="w-full max-w-6xl relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
-                        <div className="w-full flex flex-col lg:flex-row items-center justify-center py-10 px-6 sm:px-10 lg:px-20 gap-20">
+                      <div className="w-full max-w-6xl relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500 p-4 sm:p-6">
+                        <div className="w-full flex flex-col lg:flex-row items-center justify-center py-6 md:py-10 px-2 sm:px-6 lg:px-12 gap-8 lg:gap-16">
                           <div className="flex-1 flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
-                            <h1 className="text-[#F4F4F3] text-3xl lg:text-4xl font-semibold font-unbounded pb-6 lg:pb-8">
+                            <h1 className="text-[#F4F4F3] text-2xl md:text-3xl lg:text-4xl font-semibold font-unbounded pb-4 md:pb-6">
                               Week's highlights
                             </h1>
-                            <p className="text-[#F4F4F3] text-2xl lg:text-3xl font-normal font-unbounded leading-7">
+                            <p className="text-[#F4F4F3] text-xl md:text-2xl lg:text-3xl font-normal font-unbounded leading-7">
                               {highlights[activeIndex]?.content?.title ||
                                 "No Title"}
                             </p>
-                            <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal pt-2">
+                            <p className="text-[#FF39B0] text-sm md:text-base font-normal font-unbounded leading-normal pt-2">
                               {highlights[activeIndex]?.content?.content_type ||
                                 "No Type"}
                             </p>
                             <div className="flex gap-2.5 py-5">
                               <img src={views} alt="" />
-                              <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal">
+                              <p className="text-[#FF39B0] text-sm md:text-base font-normal font-unbounded leading-normal">
                                 {highlights[activeIndex]?.content
                                   ?.views_count || 0}
                               </p>
@@ -391,15 +391,15 @@ export default function ContentLibrary() {
                                   highlights[activeIndex]?.content?.id
                                 )
                               }
-                              className="w-full sm:w-72 h-11 px-5 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 cursor-pointer"
+                              className="w-full sm:w-auto h-11 px-5 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 cursor-pointer"
                             >
-                              <div className="text-center text-white text-xl lg:text-2xl font-normal font-unbounded">
+                              <div className="text-center text-white text-lg md:text-xl lg:text-2xl font-normal font-unbounded">
                                 View
                               </div>
                             </div>
                           </div>
                           <img
-                            className="flex-1 w-full lg:w-[474px] h-72 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
+                            className="flex-1 w-full max-w-md lg:max-w-lg h-60 sm:h-72 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
                             src={
                               highlights[activeIndex]?.content
                                 ?.upload_files?.[0]?.url || noContentImg
@@ -411,7 +411,7 @@ export default function ContentLibrary() {
                         {/* === Navigation Arrows === */}
                         <div
                           onClick={handleNext}
-                          className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                          className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
                         >
                           <img
                             src={rightIcon}
@@ -421,7 +421,7 @@ export default function ContentLibrary() {
                         </div>
                         <div
                           onClick={handlePrev}
-                          className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                          className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
                         >
                           <img
                             src={leftIcon}
@@ -445,10 +445,10 @@ export default function ContentLibrary() {
           {filterMode === "tag" && (
             <>
               {/* Search & Filter Section */}
-              <div className="pt-16 flex flex-col items-center justify-center">
+              <div className="pt-12 md:pt-16 flex flex-col items-center justify-center">
                 {/* Filters */}
-                <div className="bg-[#1A0E1E]/70 px-4 sm:px-8 md:px-16 pb-10 pt-6 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
-                  <div className="flex items-center justify-start gap-3 w-full">
+                <div className="bg-[#1A0E1E]/70 px-4 sm:px-6 md:px-8 pb-10 pt-6 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-3 w-full">
                     <div className="text-[#F4F4F3] text-lg font-normal font-unbounded">
                       Filters
                     </div>
@@ -523,9 +523,9 @@ export default function ContentLibrary() {
               </div>
 
               {/* Vault Cards */}
-              <div className="flex items-start justify-center pt-32 max-w-6xl mx-auto">
-                <div className="pb-12">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[100px]">
+              <div className="flex items-start justify-center pt-16 md:pt-24 lg:pt-32">
+                <div className="pb-12 max-w-6xl mx-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
                     {filteredVaults.slice(0, visibleCount).map((vault) => (
                       <div
                         key={vault.id}
@@ -610,23 +610,23 @@ export default function ContentLibrary() {
                         Loading highlights...
                       </div>
                     ) : highlights.length > 0 ? (
-                      <div className="w-full max-w-6xl relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500">
-                        <div className="w-full flex flex-col lg:flex-row items-center justify-center py-10 px-6 sm:px-10 lg:px-20 gap-20">
+                      <div className="w-full max-w-6xl relative bg-[#2C1B2C]/70 outline outline-1 outline-[#FF80EB] transition-all duration-500 p-4 sm:p-6">
+                        <div className="w-full flex flex-col lg:flex-row items-center justify-center py-6 md:py-10 px-2 sm:px-6 lg:px-12 gap-8 lg:gap-16">
                           <div className="flex-1 flex flex-col items-center lg:items-start justify-start text-center lg:text-left">
-                            <h1 className="text-[#F4F4F3] text-3xl lg:text-4xl font-semibold font-unbounded pb-6 lg:pb-8">
+                            <h1 className="text-[#F4F4F3] text-2xl md:text-3xl lg:text-4xl font-semibold font-unbounded pb-4 md:pb-6">
                               Week's highlights
                             </h1>
-                            <p className="text-[#F4F4F3] text-2xl lg:text-3xl font-normal font-unbounded leading-7">
+                            <p className="text-[#F4F4F3] text-xl md:text-2xl lg:text-3xl font-normal font-unbounded leading-7">
                               {highlights[activeIndex]?.content?.title ||
                                 "No Title"}
                             </p>
-                            <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal pt-2">
+                            <p className="text-[#FF39B0] text-sm md:text-base font-normal font-unbounded leading-normal pt-2">
                               {highlights[activeIndex]?.content?.content_type ||
                                 "No Type"}
                             </p>
                             <div className="flex gap-2.5 py-5">
                               <img src={views} alt="" />
-                              <p className="text-[#FF39B0] text-base font-normal font-unbounded leading-normal">
+                              <p className="text-[#FF39B0] text-sm md:text-base font-normal font-unbounded leading-normal">
                                 {highlights[activeIndex]?.content
                                   ?.views_count || 0}
                               </p>
@@ -637,16 +637,16 @@ export default function ContentLibrary() {
                                   highlights[activeIndex]?.content?.id
                                 )
                               }
-                              className="w-full sm:w-72 h-11 px-5 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 cursor-pointer"
+                              className="w-full sm:w-auto h-11 px-5 outline outline-1 outline-[#FF80EB] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] inline-flex justify-center items-center gap-2.5 cursor-pointer"
                             >
-                              <div className="text-center text-white text-xl lg:text-2xl font-normal font-unbounded">
+                              <div className="text-center text-white text-lg md:text-xl lg:text-2xl font-normal font-unbounded">
                                 View
                               </div>
                             </div>
                           </div>
 
                           <img
-                            className="flex-1 w-full lg:w-[474px] h-72 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
+                            className="flex-1 w-full max-w-md lg:max-w-lg h-60 sm:h-72 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
                             src={
                               highlights[activeIndex]?.content
                                 ?.upload_files?.[0]?.url || noContentImg
@@ -658,7 +658,7 @@ export default function ContentLibrary() {
                         {/* === Navigation Arrows === */}
                         <div
                           onClick={handleNext}
-                          className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                          className="absolute top-1/2 -translate-y-1/2 right-2 sm:right-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
                         >
                           <img
                             src={rightIcon}
@@ -668,7 +668,7 @@ export default function ContentLibrary() {
                         </div>
                         <div
                           onClick={handlePrev}
-                          className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-6 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
+                          className="absolute top-1/2 -translate-y-1/2 left-2 sm:left-4 bg-[#D9D9D9]/10 w-6 h-6 flex justify-center items-center outline outline-1 outline-fuchsia-400 backdrop-blur-[6px] hover:bg-fuchsia-400/20 transition-all rounded-full cursor-pointer"
                         >
                           <img
                             src={leftIcon}
@@ -693,7 +693,7 @@ export default function ContentLibrary() {
                         ></div>
 
                         {/* Text */}
-                        <h2 className="relative text-[#F4F4F3] text-2xl md:text-4xl font-normal font-unbounded leading-tight md:leading-10 text-center">
+                        <h2 className="relative text-[#F4F4F3] text-xl sm:text-2xl md:text-4xl font-normal font-unbounded leading-tight md:leading-10 text-center">
                           Want More? Sign Up for Updates
                         </h2>
                       </div>
@@ -702,17 +702,17 @@ export default function ContentLibrary() {
                         Get notified about new content and exclusive releases
                       </div>
 
-                      <div className="flex flex-col sm:flex-row items-center justify-center pt-3 pb-44 gap-4">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center pt-3 pb-24 md:pb-44 gap-4">
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Enter your email"
-                          className="w-full sm:w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
+                          className="w-full sm:w-72 h-12 bg-[#282828] outline outline-1 outline-[#FF39B0] text-[#ADAEBC] text-sm placeholder:text-sm sm:placeholder:text-base font-unbounded px-3 focus:outline-[#FF80EB] placeholder-[#ADAEBC] focus:text-white"
                         />
                         <button
                           onClick={handleSubscribe}
-                          className="px-10 py-3 bg-[#F6FF1F] text-black text-base font-medium font-unbounded transition"
+                          className="w-full sm:w-auto px-10 py-3 bg-[#F6FF1F] text-black text-base font-medium font-unbounded transition"
                         >
                           Subscribe
                         </button>
