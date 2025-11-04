@@ -3,9 +3,19 @@ import { toast } from "react-toastify";
 import { Copy } from "lucide-react";
 import shareIcon from "@/assets/icons/share.svg";
 
-export function ShareButton() {
+export function ShareButton({ variant = "default" }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const currentUrl = window.location.href;
+
+  const buttonStyles = {
+    default: "bg-[#FF80EB] active:bg-[#C12E83]",
+    dispatch: "bg-[#5C42B5] active:bg-[#4a3594]",
+  };
+
+  const modalBorderStyles = {
+    default: "border-[#FF80EB]",
+    dispatch: "border-[#5C42B5]",
+  };
 
   const handleCopy = () => {
     if (navigator.clipboard && window.isSecureContext) {
@@ -46,7 +56,9 @@ export function ShareButton() {
   return (
     <>
       {/* Share Button */}
-      <div className="w-28 h-12 px-3.5 flex items-center bg-[#FF80EB] active:bg-[#C12E83]">
+      <div
+        className={`w-28 h-12 px-3.5 flex items-center ${buttonStyles[variant]}`}
+      >
         <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center justify-start gap-1 text-white text-base font-normal font-unbounded"
@@ -59,11 +71,13 @@ export function ShareButton() {
       {/* Modal (Custom Dialog) */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-[#1A0E1E] text-white border border-[#FF80EB] rounded-lg p-6 w-[90%] max-w-md relative">
+          <div
+            className={`bg-[#1A0E1E] text-white border rounded-lg p-6 w-[90%] max-w-md relative ${modalBorderStyles[variant]}`}
+          >
             {/* Close Button */}
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-2 right-3 text-white text-xl hover:text-[#FF80EB]"
+              className="absolute top-2 right-3 text-white text-xl hover:text-gray-400"
             >
               &times;
             </button>
@@ -74,7 +88,9 @@ export function ShareButton() {
             </p>
 
             {/* URL Input + Copy Button */}
-            <div className="flex items-center space-x-2 p-2 bg-[#2C1B2C] rounded-md border border-[#FF80EB]">
+            <div
+              className={`flex items-center space-x-2 p-2 bg-[#2C1B2C] rounded-md border ${modalBorderStyles[variant]}`}
+            >
               <input
                 type="text"
                 value={currentUrl}

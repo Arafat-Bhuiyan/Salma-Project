@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import vaultsBg from "@/assets/images/aboutPageBg.png";
+import vaultsBg from "@/assets/images/dispatches_bg.png";
 import { useNavigate } from "react-router-dom";
 import like from "@/assets/icons/like.svg";
 import { useParams } from "react-router-dom";
@@ -91,7 +91,7 @@ export function DispatchDetail() {
               className="w-full h-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4">
-              <h1 className="text-[#FF39B0] max-w-5xl text-center text-4xl sm:text-5xl lg:text-7xl font-normal font-unbounded leading-tight lg:leading-[72px]">
+              <h1 className="text-[#9175ec] max-w-5xl text-center text-4xl sm:text-5xl lg:text-7xl font-normal font-unbounded leading-tight lg:leading-[72px]">
                 {article?.title}
               </h1>
             </div>
@@ -112,7 +112,7 @@ export function DispatchDetail() {
             <div className="w-full">
               {/* Full detail section */}
               <div className="w-full h-full">
-                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] pt-12 pb-3 px-4 sm:px-8 md:px-16 lg:px-24 w-full">
+                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(92,66,181,0.50)] pt-12 pb-3 px-4 sm:px-8 md:px-16 lg:px-24 w-full">
                   {/* Header */}
                   <div className="text-[#F4F4F3] text-2xl md:text-3xl font-medium font-unbounded leading-10">
                     {article?.title}
@@ -123,7 +123,7 @@ export function DispatchDetail() {
                     {article?.tags_name?.map((tag, i) => (
                       <div
                         key={i}
-                        className="px-3.5 outline outline-2 outline-offset-[-2px] outline-[#FF80EB]"
+                        className="px-3.5 outline outline-2 outline-offset-[-2px] outline-[#5C42B5]"
                       >
                         <div className="py-1.5 flex items-center justify-center text-center text-white text-xs font-medium font-poppins leading-none">
                           {tag}
@@ -138,7 +138,7 @@ export function DispatchDetail() {
                       className={`w-28 h-12 px-3.5 flex items-center transition-all duration-200 ${
                         article.is_liked
                           ? "bg-[#c6c6c6]"
-                          : "outline outline-2 outline-offset-[-2px] outline-[#FF80EB] hover:bg-[#FF80EB] active:bg-[#C12E83] active:outline-none"
+                          : "outline outline-2 outline-offset-[-2px] outline-[#5C42B5] hover:bg-[#5C42B5] active:bg-[#5C42B5] active:outline-none"
                       }`}
                     >
                       <button
@@ -165,7 +165,7 @@ export function DispatchDetail() {
                       </button>
                     </div>
 
-                    <ShareButton />
+                    <ShareButton variant="dispatch" />
                   </div>
 
                   <div className="w-full flex flex-col lg:flex-row items-start justify-center gap-12 lg:gap-20">
@@ -185,7 +185,7 @@ export function DispatchDetail() {
                       </div>
 
                       {/* Quote */}
-                      <div className="bg-[#2C1B2C] border border-[#FF80EB] py-9 flex items-center justify-center my-12">
+                      <div className="bg-[#6343ce] border border-[#5C42B5] py-9 flex items-center justify-center my-12">
                         <div className="text-[#F4F4F3] text-xl md:text-2xl font-normal font-poppins italic text-center p-4">
                           “{article?.special_quote}”
                         </div>
@@ -211,7 +211,7 @@ export function DispatchDetail() {
 
                     {/* Right part: Related posts and Popular tags section */}
                     <div className="w-full lg:w-1/3 flex flex-col items-center justify-start gap-8 py-11">
-                      <div className="w-full bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
+                      <div className="w-full bg-[#6343ce] outline outline-1 outline-offset-[-1px] outline-[#5C42B5] p-6">
                         <div className="text-[#F4F4F3] text-start text-xl font-normal font-unbounded pb-6">
                           Related Posts
                         </div>
@@ -243,7 +243,7 @@ export function DispatchDetail() {
                         )}
                       </div>
 
-                      <div className="w-full bg-[#2C1B2C] outline outline-1 outline-offset-[-1px] outline-[#FF80EB] p-6">
+                      <div className="w-full bg-[#6343ce] outline outline-1 outline-offset-[-1px] outline-[#5C42B5] p-6">
                         <div className="text-[#F4F4F3] text-start text-xl font-normal font-unbounded pb-6">
                           Popular Tags
                         </div>
@@ -276,7 +276,7 @@ export function DispatchDetail() {
                 </div>
 
                 {/* Author Details */}
-                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(255,128,234,0.50)] py-9 px-4 sm:px-8 md:px-16 lg:px-24 mt-10">
+                <div className="bg-[#1A0E1E]/70 shadow-[0px_0px_30px_0px_rgba(92,66,181,0.50)] py-9 px-4 sm:px-8 md:px-16 lg:px-24 mt-10">
                   <div className="text-[#F4F4F3] text-lg font-bold font-['Unbounded'] leading-7 pb-3">
                     About the Author
                   </div>
@@ -284,7 +284,7 @@ export function DispatchDetail() {
                     <img
                       src={article?.author_image}
                       alt=""
-                      className="w-16 h-16 relative rounded-full shadow-[0px_0px_12px_0px_rgba(255,57,176,1.00)]"
+                      className="w-16 h-16 relative rounded-full shadow-[0px_0px_12px_0px_rgba(92,66,181,1.00)]"
                     />
                     <div className="flex flex-col justify-center gap-1">
                       <div className="text-[#F4F4F3] text-sm font-medium font-['Unbounded'] leading-normal">
@@ -313,7 +313,7 @@ export function DispatchDetail() {
                     {relatedData.data.results.map((article) => (
                       <div
                         key={article.id}
-                        className="border border-[#2C1B2C] flex flex-col"
+                        className="border border-[#5C42B5] flex flex-col"
                       >
                         <div className="relative h-[200px] overflow-hidden">
                           <img
@@ -326,7 +326,7 @@ export function DispatchDetail() {
                           />
                         </div>
 
-                        <div className="bg-[#2C1B2C] p-4 sm:p-6 flex flex-col flex-grow justify-between">
+                        <div className="bg-[#5C42B5] p-4 sm:p-6 flex flex-col flex-grow justify-between">
                           <div>
                             <h3 className="text-white text-base font-medium font-poppins leading-7 mb-2">
                               {article.title}
@@ -355,7 +355,7 @@ export function DispatchDetail() {
                           </div>
                           <button
                             onClick={() => handleReadMore(article.id)}
-                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] text-white text-sm font-unbounded"
+                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-white text-white text-sm font-unbounded"
                           >
                             Read More
                           </button>
