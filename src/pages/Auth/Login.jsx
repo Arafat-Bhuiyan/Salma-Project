@@ -13,7 +13,7 @@ export default function Login() {
       <ScrollRestoration />
 
       {/* Content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-4 my-32">
         <LoginForm />
       </div>
     </div>

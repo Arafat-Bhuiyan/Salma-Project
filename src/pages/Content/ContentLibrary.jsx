@@ -269,7 +269,7 @@ export default function ContentLibrary() {
                       data-aos-duration="2000"
                       data-aos-delay="200"
                       className="w-full border border-[#2C1B2C] flex flex-col h-[420px]"
-                    > 
+                    >
                       <div
                         className="relative h-48 overflow-hidden cursor-pointer"
                         onClick={() => handleGotoDetails(vault.id)}
@@ -280,21 +280,25 @@ export default function ContentLibrary() {
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                         />
                       </div>
-                       <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
+                      <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
                         <div>
                           <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
                             {vault.title}
                           </h3>
                           <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
                             {truncateText(vault.content, 10)}
-                            {vault.content && vault.content.split(" ").length > 10 && (
-                              <span onClick={() => handleGotoDetails(vault.id)} className="text-white underline cursor-pointer ml-1">
-                                ...more
-                              </span>
-                            )}
+                            {vault.content &&
+                              vault.content.split(" ").length > 10 && (
+                                <span
+                                  onClick={() => handleGotoDetails(vault.id)}
+                                  className="text-white underline cursor-pointer ml-1"
+                                >
+                                  ...more
+                                </span>
+                              )}
                           </p>
                           <div className="flex flex-wrap gap-2 mb-4">
-                            {vault.tags_names.slice(0, 4).map((tag) => (
+                            {vault.tags_names?.slice(0, 4).map((tag) => (
                               <span
                                 key={tag}
                                 className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-inter"
@@ -303,14 +307,15 @@ export default function ContentLibrary() {
                               </span>
                             ))}
 
-                            {vault.tags_names.length > 4 && (
-                              <button
-                                onClick={() => handleGotoDetails(vault.id)}
-                                className="text-white text-[10.20px] font-medium font-inter underline"
-                              >
-                                ...more
-                              </button>
-                            )}
+                            {vault.tags_names &&
+                              vault.tags_names.length > 4 && (
+                                <button
+                                  onClick={() => handleGotoDetails(vault.id)}
+                                  className="text-white text-[10.20px] font-medium font-inter underline"
+                                >
+                                  ...more
+                                </button>
+                              )}
                           </div>
                         </div>
                         <button
@@ -532,9 +537,9 @@ export default function ContentLibrary() {
                         data-aos="fade-up"
                         data-aos-duration="2000"
                         data-aos-delay="200"
-                        className="w-full border border-[#2C1B2C] flex flex-col h-[420px]"
-                      > 
-                        <div
+                        className="w-full border border-[#2C1B2C] flex flex-col"
+                      >
+                        {/* <div
                           className="relative h-52 overflow-hidden cursor-pointer"
                           onClick={() => handleGotoDetails(vault.id)}
                         >
@@ -543,47 +548,39 @@ export default function ContentLibrary() {
                             alt={vault.title}
                             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                           />
-                        </div>
- 
-                         <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
-                          <div>
+                        </div> */}
+
+                        <div className="bg-[#2C1B2C] px-4 py-7 flex flex-col flex-grow justify-between">
+                          <div className="flex-grow">
                             <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
                               {vault.title}
                             </h3>
+                            {vault.description && (
+                              <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                                Description: {truncateText(vault.description, 10)}
+                              </p>
+                            )}
                             <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
-                              {truncateText(vault.content, 10)}
-                              {vault.content && vault.content.split(" ").length > 10 && (
-                                <span onClick={() => handleGotoDetails(vault.id)} className="text-white underline cursor-pointer ml-1">
-                                  ...more
-                                </span>
-                              )}
+                              Author: {vault.author}
                             </p>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {vault.tags_names.slice(0, 4).map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="text-white text-[10.20px] font-medium leading-none rounded-full font-inter"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-
-                              {vault.tags_names.length > 4 && (
-                                <button
-                                  onClick={() => handleGotoDetails(vault.id)}
-                                  className="text-white text-[10.20px] font-medium font-inter underline"
-                                >
-                                  ...more
-                                </button>
-                              )}
-                            </div>
+                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                              Country: {vault.country_of_content_title}
+                            </p>
+                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-7">
+                              Language: {vault.language_title}
+                            </p>
                           </div>
-                          <button
-                            onClick={() => handleGotoDetails(vault.id)}
-                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
-                          >
-                            View
-                          </button>
+                          <div>
+                            <p className="text-[#FFFFFF] text-xs font-medium leading-tight font-unbounded mb-4">
+                              Genre: {vault.genre_title}
+                            </p>
+                            <button
+                              onClick={() => handleGotoDetails(vault.id)}
+                              className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
+                            >
+                              View
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}

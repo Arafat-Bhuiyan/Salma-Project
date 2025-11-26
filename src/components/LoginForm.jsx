@@ -50,7 +50,7 @@ export default function LoginForm() {
 
   return (
     <div
-      className="my-20 md:my-40 p-6 sm:p-12 md:p-16 lg:p-24 xl:p-32 bg-[#1A0E1E]/70 shadow-[0_0_30px_0_#FF80EA80] rounded-lg w-full max-w-xl mx-4"
+      className="p-6 sm:p-12 md:p-16 lg:p-24 xl:p-32 bg-[#1A0E1E]/70 shadow-[0_0_30px_0_#FF80EA80] rounded-lg"
     >
       <div className="relative z-10 w-full">
         {/* Header */}
@@ -105,7 +105,7 @@ export default function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#FF80EB] transition-colors"
+                className="absolute right-4 top-[68%] -translate-y-1/2 text-gray-400 hover:text-[#FF80EB] transition-colors"
               >
                 {showPassword ? (
                   <EyeOff color="#666666CC" />
@@ -114,13 +114,6 @@ export default function LoginForm() {
                 )}
               </button>
             </div>
-
-            {/* <Link
-              to="/forget-password"
-              className="text-[#FF80EB] text-base font-medium font-poppins underline hover:text-fuchsia-300 transition-colors"
-            >
-              Forget your password
-            </Link> */}
           </div>
 
           {/* Submit Button */}

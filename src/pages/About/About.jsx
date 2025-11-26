@@ -75,7 +75,7 @@ export default function About() {
                     data-aos="fade-left"
                     data-aos-duration="1200"
                     data-aos-delay="200"
-                    className="space-y-6 flex-1 md:-mt-10"
+                    className="space-y-6 flex-1 md:-mt-10 md:ml-10"
                   >
                     <h2 className="text-[#FF80EB] text-xl sm:text-2xl font-unbounded font-medium leading-loose">
                       Our Story
