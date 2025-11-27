@@ -39,6 +39,12 @@ export const authApi = api.injectEndpoints({
       providesTags: ["tags"],
     }),
 
+    // Filter by contribution list
+    getContributions: builder.query({
+      query: () => "/filters/contribution/",
+      providesTags: ["Contribution"],
+    }),
+    
     // === Week's highlights ===
     getHighlightedContents: builder.query({
       query: () => "/highlighted-contents/",
@@ -198,6 +204,7 @@ export const {
   useGetContentsQuery,
   useGetContentByIdQuery,
   useGetTagsQuery,
+  useGetContributionsQuery,
   useGetHighlightedContentsQuery,
   useSendContactMessageMutation,
   useLikeContentMutation,

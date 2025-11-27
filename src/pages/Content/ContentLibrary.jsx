@@ -11,13 +11,15 @@ import rightIcon from "@/assets/icons/right.svg";
 import leftIcon from "@/assets/icons/left.svg";
 import views from "@/assets/icons/views.svg";
 import noContentImg from "@/assets/images/no-content.png";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   useGetContentsQuery,
   useGetTagsQuery,
   useSubscribeEmailMutation,
   useGetHighlightedContentsQuery,
   useRecordContentViewMutation,
+  // Filter by contribution list
+  useGetContributionsQuery,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
 import { ChevronDown, Funnel } from "lucide-react";
@@ -33,6 +35,11 @@ export default function ContentLibrary() {
     isLoading: highlightsLoading,
     refetch: refetchHighlights,
   } = useGetHighlightedContentsQuery();
+  const {
+    data: contributionsData,
+    isLoading: contributionsLoading,
+    isError: contributionsError,
+  } = useGetContributionsQuery();
   const [selectedTags, setSelectedTags] = useState([]);
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
   const [filterMode, setFilterMode] = useState("tag"); // "tag" | "content"
@@ -167,9 +174,22 @@ export default function ContentLibrary() {
     return text;
   };
 
+  // Process contribution data from API
+  const contributionOptions = useMemo(() => {
+    if (!contributionsData) return [];
+    // Use a Set to store unique titles after splitting and trimming
+    const optionsSet = new Set();
+    contributionsData.forEach(item => {
+      item.title.split(';').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet); // Convert Set back to an array
+  }, [contributionsData]);
+
   // Define filter categories and their static options
   const filterCategories = [
-    { name: "Contribution", options: ["Contribution 1", "Contribution 2"] },
+    { name: "Contribution", options: contributionOptions, isLoading: contributionsLoading },
     { name: "Country", options: ["USA", "Canada", "UK"] },
     { name: "Function", options: ["Function A", "Function B"] },
     { name: "Genre", options: ["Sci-Fi", "Drama", "Action"] },
@@ -586,7 +606,7 @@ export default function ContentLibrary() {
                   {/* Tag List (STATIC) */}
                   <div className="flex flex-wrap gap-3">
                     {/* Static Filter Button */}
-                    <div className="cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] bg-transparent text-[#C6C6C6] text-xs font-unbounded flex items-center gap-2">
+                    <div className="w-48 h-9 cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] bg-transparent text-[#C6C6C6] text-xs font-unbounded flex items-center justify-between">
                       <div>Filter</div>
                       <Funnel size={14} />
                     </div>
@@ -596,18 +616,24 @@ export default function ContentLibrary() {
                       <div key={category.name} className="relative">
                         <div
                           onClick={() => handleDropdownToggle(category.name)}
-                          className="cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] bg-transparent text-[#C6C6C6] text-xs font-unbounded flex items-center justify-between gap-4"
+                          className="w-48 h-9 cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] bg-transparent text-[#C6C6C6] text-xs font-unbounded flex items-center justify-between"
                         >
                           <div>{category.name}</div>
                           <ChevronDown size={16} />
                         </div>
                         {openDropdown === category.name && (
-                          <div className="absolute top-full left-0 mt-2 w-48 bg-[#1C1523] shadow-lg z-20">
-                            {category.options.map((option) => (
-                              <div key={option} onClick={() => handleFilterSelect(category.name, option)} className="text-[#C6C6C6] bg-[#1C1523] border border-[#FF80EB] text-sm p-2.5 text-center font-normal hover:bg-[#FF80EB] hover:text-white hover:font-medium cursor-pointer">
-                                {option}
-                              </div>
-                            ))}
+                          <div className="absolute top-full left-0 mt-2 w-48 bg-[#1C1523] border border-[#FF80EB] rounded-md shadow-lg z-20 p-2">
+                            {category.isLoading ? (
+                              <div className="text-[#C6C6C6] text-sm text-center p-2">Loading...</div>
+                            ) : category.options.length > 0 ? (
+                              category.options.map((option) => (
+                                <div key={option} onClick={() => handleFilterSelect(category.name, option)} className="text-[#C6C6C6] text-sm font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded">
+                                  {option}
+                                </div>
+                              ))
+                            ) : (
+                              <div className="text-[#C6C6C6] text-sm text-center p-2">No options</div>
+                            )}
                           </div>
                         )}
                       </div>
