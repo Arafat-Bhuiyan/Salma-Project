@@ -14,7 +14,6 @@ import noContentImg from "@/assets/images/no-content.png";
 import { useState, useMemo } from "react";
 import {
   useGetContentsQuery,
-  useGetTagsQuery,
   useSubscribeEmailMutation,
   useGetHighlightedContentsQuery,
   useRecordContentViewMutation,
@@ -101,15 +100,14 @@ export default function ContentLibrary() {
     isLoading: typeOfContentsLoading,
     isError: typeOfContentsError,
   } = useGetTypeOfContentsQuery();
-  const [selectedTags, setSelectedTags] = useState([]);
 
   // Process contribution data from API
   const contributionOptions = useMemo(() => {
     if (!contributionsData) return [];
     // Use a Set to store unique titles after splitting and trimming
     const optionsSet = new Set();
-    contributionsData.forEach(item => {
-      item.title.split(';').forEach(part => {
+    contributionsData.forEach((item) => {
+      item.title.split(";").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -120,8 +118,8 @@ export default function ContentLibrary() {
   const countryOptions = useMemo(() => {
     if (!countriesData) return [];
     const optionsSet = new Set();
-    countriesData.forEach(item => {
-      item.title.split('/').forEach(part => {
+    countriesData.forEach((item) => {
+      item.title.split("/").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -132,8 +130,8 @@ export default function ContentLibrary() {
   const functionOptions = useMemo(() => {
     if (!functionsData) return [];
     const optionsSet = new Set();
-    functionsData.forEach(item => {
-      item.title.split(';').forEach(part => {
+    functionsData.forEach((item) => {
+      item.title.split(";").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -144,8 +142,8 @@ export default function ContentLibrary() {
   const genreOptions = useMemo(() => {
     if (!genresData) return [];
     const optionsSet = new Set();
-    genresData.forEach(item => {
-      item.title.split('/').forEach(part => {
+    genresData.forEach((item) => {
+      item.title.split("/").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -156,8 +154,8 @@ export default function ContentLibrary() {
   const languageOptions = useMemo(() => {
     if (!languagesData) return [];
     const optionsSet = new Set();
-    languagesData.forEach(item => {
-      item.title.split('/').forEach(part => {
+    languagesData.forEach((item) => {
+      item.title.split("/").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -168,8 +166,8 @@ export default function ContentLibrary() {
   const movementOptions = useMemo(() => {
     if (!movementsData) return [];
     const optionsSet = new Set();
-    movementsData.forEach(item => {
-      item.title.split(';').forEach(part => {
+    movementsData.forEach((item) => {
+      item.title.split(";").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -180,7 +178,7 @@ export default function ContentLibrary() {
   const periodOptions = useMemo(() => {
     if (!periodsData) return [];
     const optionsSet = new Set();
-    periodsData.forEach(item => {
+    periodsData.forEach((item) => {
       optionsSet.add(item.title.trim());
     });
     return Array.from(optionsSet);
@@ -190,7 +188,7 @@ export default function ContentLibrary() {
   const regionOptions = useMemo(() => {
     if (!regionsData) return [];
     const optionsSet = new Set();
-    regionsData.forEach(item => {
+    regionsData.forEach((item) => {
       optionsSet.add(item.title.trim());
     });
     return Array.from(optionsSet);
@@ -200,8 +198,8 @@ export default function ContentLibrary() {
   const themeOptions = useMemo(() => {
     if (!themesData) return [];
     const optionsSet = new Set();
-    themesData.forEach(item => {
-      item.title.split(';').forEach(part => {
+    themesData.forEach((item) => {
+      item.title.split(";").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -212,8 +210,8 @@ export default function ContentLibrary() {
   const theoreticalOptions = useMemo(() => {
     if (!theoreticalsData) return [];
     const optionsSet = new Set();
-    theoreticalsData.forEach(item => {
-      item.title.split(';').forEach(part => {
+    theoreticalsData.forEach((item) => {
+      item.title.split(";").forEach((part) => {
         optionsSet.add(part.trim());
       });
     });
@@ -224,13 +222,12 @@ export default function ContentLibrary() {
   const typeOfContentOptions = useMemo(() => {
     if (!typeOfContentsData) return [];
     const optionsSet = new Set();
-    typeOfContentsData.forEach(item => {
+    typeOfContentsData.forEach((item) => {
       optionsSet.add(item.title.trim());
     });
     return Array.from(optionsSet);
   }, [typeOfContentsData]);
 
-  const [visibleTagsCount, setVisibleTagsCount] = useState(15);
   const [filterMode, setFilterMode] = useState("tag"); // "tag" | "content"
   const [selectedContentType, setSelectedContentType] = useState("all");
   const navigate = useNavigate();
@@ -255,11 +252,6 @@ export default function ContentLibrary() {
   };
 
   const [visibleCount, setVisibleCount] = useState(6);
-  const {
-    data: tagsData,
-    isLoading: tagsLoading,
-    isError: tagsError,
-  } = useGetTagsQuery();
 
   const handleGotoDetails = async (id) => {
     try {
@@ -273,28 +265,38 @@ export default function ContentLibrary() {
     }
   };
 
-  const tags = tagsData?.data?.map((tag) => tag.name) || [];
-
-  // === TAG FILTER LOGIC ===
-  const handleTagClick = (tag) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
+  // Map filter category names to the corresponding property keys in the vault object
+  const categoryToVaultProperty = {
+    Contribution: "type_of_contribution_title",
+    Country: "country_of_content_title",
+    Function: "function_title",
+    Genre: "genre_title",
+    Language: "language_title",
+    Movement: "movement_title",
+    Period: "period_title",
+    Region: "region_title",
+    Theme: "theme_title",
+    Theoretical: "theoretical_title",
+    "Type of content": "type_of_content_title",
   };
 
-  const handleClearAll = () => setSelectedTags([]);
-  const handleRemoveTag = (tag) =>
-    setSelectedTags(selectedTags.filter((t) => t !== tag));
+  // Filter contents based on selected genericFilters
+  const filteredContents = useMemo(() => {
+    if (genericFilters.length === 0) {
+      return contents;
+    }
 
-  const filteredVaults =
-    selectedTags.length === 0
-      ? contents
-      : contents.filter((vault) =>
-          vault.tags_names?.some((t) => selectedTags.includes(t))
-        );
+    return contents.filter((vault) => {
+      // A vault must match AT LEAST ONE of the selected filters
+      return genericFilters.some((filter) => {
+        const vaultPropertyKey = categoryToVaultProperty[filter.category];
+        const vaultPropertyValue = vault[vaultPropertyKey];
 
+        // Check if the vault's property value includes the filter's value
+        return vaultPropertyValue?.includes(filter.value);
+      });
+    });
+  }, [contents, genericFilters]);
   const contentFilteredVaults =
     selectedContentType === "all"
       ? contents
@@ -315,7 +317,28 @@ export default function ContentLibrary() {
           }
         });
 
-  const noContentFound = contentFilteredVaults.length === 0;
+  // Further filter the `filteredContents` by the selected content type
+  const finalFilteredContents = useMemo(() => {
+    if (selectedContentType === "all") {
+      return filteredContents;
+    }
+    return filteredContents.filter((vault) => {
+      const type = vault.content_type?.toLowerCase();
+      if (!type) return false;
+
+      switch (selectedContentType) {
+        case "video":
+          return type === "video";
+        case "pdf":
+          return type === "pdf";
+        case "photo":
+          return type === "image";
+        default:
+          return true;
+      }
+    });
+  }, [filteredContents, selectedContentType]);
+  const noContentFound = finalFilteredContents.length === 0;
 
   const handleSubscribe = async () => {
     if (!email) return toast.error("Please enter an email");
@@ -338,22 +361,6 @@ export default function ContentLibrary() {
     );
   }
 
-  if (tagsLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen text-white text-2xl">
-        Loading tags...
-      </div>
-    );
-  }
-
-  if (tagsError) {
-    return (
-      <div className="flex justify-center items-center h-screen text-red-400 text-xl">
-        Failed to load tags
-      </div>
-    );
-  }
-
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -363,9 +370,13 @@ export default function ContentLibrary() {
     return text;
   };
 
-  // Define filter categories and their static options
+  // Define filter categories and their dynamic options
   const filterCategories = [
-    { name: "Contribution", options: contributionOptions, isLoading: contributionsLoading },
+    {
+      name: "Contribution",
+      options: contributionOptions,
+      isLoading: contributionsLoading,
+    },
     { name: "Country", options: countryOptions, isLoading: countriesLoading },
     { name: "Function", options: functionOptions, isLoading: functionsLoading },
     { name: "Genre", options: genreOptions, isLoading: genresLoading },
@@ -374,8 +385,16 @@ export default function ContentLibrary() {
     { name: "Period", options: periodOptions, isLoading: periodsLoading },
     { name: "Region", options: regionOptions, isLoading: regionsLoading },
     { name: "Theme", options: themeOptions, isLoading: themesLoading },
-    { name: "Theoretical", options: theoreticalOptions, isLoading: theoreticalsLoading },
-    { name: "Type of content", options: typeOfContentOptions, isLoading: typeOfContentsLoading },
+    {
+      name: "Theoretical",
+      options: theoreticalOptions,
+      isLoading: theoreticalsLoading,
+    },
+    {
+      name: "Type of content",
+      options: typeOfContentOptions,
+      isLoading: typeOfContentsLoading,
+    },
   ];
 
   // Handlers for the new filter system
@@ -385,7 +404,7 @@ export default function ContentLibrary() {
 
     // If opening a new dropdown, reset its pagination to the first page
     if (isOpening) {
-      setDropdownPagination(prev => ({
+      setDropdownPagination((prev) => ({
         ...prev,
         [dropdownName]: 0,
       }));
@@ -393,25 +412,33 @@ export default function ContentLibrary() {
   };
 
   const handleFilterSelect = (category, option) => {
-    if (!genericFilters.some(f => f.category === category && f.value === option)) {
+    if (
+      !genericFilters.some((f) => f.category === category && f.value === option)
+    ) {
       setGenericFilters([...genericFilters, { category, value: option }]);
     }
     setOpenDropdown(null); // Close dropdown after selection
   };
 
   const handleRemoveGenericFilter = (filterToRemove) => {
-    setGenericFilters(genericFilters.filter(f => f.value !== filterToRemove.value || f.category !== filterToRemove.category));
+    setGenericFilters(
+      genericFilters.filter(
+        (f) =>
+          f.value !== filterToRemove.value ||
+          f.category !== filterToRemove.category
+      )
+    );
   };
 
   const handleNextOptionsPage = (categoryName) => {
-    setDropdownPagination(prev => ({
+    setDropdownPagination((prev) => ({
       ...prev,
       [categoryName]: (prev[categoryName] || 0) + 1,
     }));
   };
 
   const handlePrevOptionsPage = (categoryName) => {
-    setDropdownPagination(prev => ({
+    setDropdownPagination((prev) => ({
       ...prev,
       [categoryName]: Math.max(0, (prev[categoryName] || 0) - 1),
     }));
@@ -514,15 +541,29 @@ export default function ContentLibrary() {
               {/* Cards */}
               {!noContentFound ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16 pt-16 max-w-6xl mx-auto">
-                  {contentFilteredVaults.slice(0, visibleCount).map((vault) => (
-                    <div
+                  {finalFilteredContents.slice(0, visibleCount).map((vault) => {
+                     const vaultTags = [
+                        vault.type_of_content_title,
+                        vault.genre_title,
+                        vault.period_title,
+                        vault.region_title,
+                        vault.movement_title,
+                        vault.theoretical_title,
+                        vault.theme_title,
+                        vault.type_of_contribution_title,
+                        vault.function_title,
+                        vault.language_title,
+                        vault.country_of_content_title,
+                      ].filter((tag) => tag && tag.trim() !== ""); // Filter out null, undefined, or empty/whitespace strings
+                    return (
+                      <div
                       key={vault.id}
                       data-aos="fade-up"
                       data-aos-duration="2000"
                       data-aos-delay="200"
                       className="w-full border border-[#2C1B2C] flex flex-col h-[420px]"
                     >
-                      <div
+                      {/* <div
                         className="relative h-48 overflow-hidden cursor-pointer"
                         onClick={() => handleGotoDetails(vault.id)}
                       >
@@ -531,54 +572,43 @@ export default function ContentLibrary() {
                           alt={vault.title}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                         />
-                      </div>
-                      <div className="bg-[#2C1B2C] p-5 flex flex-col flex-grow justify-between">
-                        <div>
+                      </div> */}
+                      <div className="bg-[#2C1B2C] px-4 py-7 flex flex-col flex-grow justify-between">
+                        <div className="flex-grow">
                           <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
                             {vault.title}
                           </h3>
+                          {vault.description && (
+                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                              Description: {truncateText(vault.description, 10)}
+                            </p>
+                          )}
                           <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
-                            {truncateText(vault.content, 10)}
-                            {vault.content &&
-                              vault.content.split(" ").length > 10 && (
-                                <span
-                                  onClick={() => handleGotoDetails(vault.id)}
-                                  className="text-white underline cursor-pointer ml-1"
-                                >
-                                  ...more
-                                </span>
-                              )}
+                            Author: {vault.author}
                           </p>
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {vault.tags_names?.slice(0, 4).map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-3 py-1 bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full font-inter"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-
-                            {vault.tags_names &&
-                              vault.tags_names.length > 4 && (
-                                <button
-                                  onClick={() => handleGotoDetails(vault.id)}
-                                  className="text-white text-[10.20px] font-medium font-inter underline"
-                                >
-                                  ...more
-                                </button>
-                              )}
-                          </div>
+                          <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                            Country: {vault.country_of_content_title}
+                          </p>
+                          <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-7">
+                            Language: {vault.language_title}
+                          </p>
                         </div>
-                        <button
-                          onClick={() => handleGotoDetails(vault.id)}
-                          className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
-                        >
-                          View
-                        </button>
+                        <div>
+                          <p className="text-[#FFFFFF] text-xs font-medium leading-tight font-unbounded mb-4">
+                            <span className="block mb-1">Tags:</span>
+                            {vaultTags.join(", ")}
+                          </p>
+                          <button
+                            onClick={() => handleGotoDetails(vault.id)}
+                            className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
+                          >
+                            View
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-32">
@@ -604,7 +634,7 @@ export default function ContentLibrary() {
 
               {/* Load More & Subscribe */}
               <div className="flex flex-col items-center justify-between gap-20 pt-20 pb-5">
-                {visibleCount < contentFilteredVaults.length && (
+                {visibleCount < finalFilteredContents.length && (
                   <div
                     onClick={() => setVisibleCount(visibleCount + 9)}
                     className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"
@@ -701,84 +731,6 @@ export default function ContentLibrary() {
           {/* === TAG FILTER MODE === */}
           {filterMode === "tag" && (
             <>
-              {/* Search & Filter Section */}
-              <div className="pt-12 md:pt-16 flex flex-col items-center justify-center">
-                {/* Filters */}
-                <div className="bg-[#1A0E1E]/70 px-4 sm:px-6 md:px-8 pb-10 pt-6 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-3 w-full">
-                    <div className="text-[#F4F4F3] text-lg font-normal font-unbounded">
-                      Filters
-                    </div>
-
-                    {selectedTags.length > 0 && (
-                      <div className="flex items-center gap-4">
-                        <button
-                          onClick={handleClearAll}
-                          className="bg-[#C12E83] text-white px-3 py-1 text-sm font-unbounded flex items-center gap-2"
-                        >
-                          ✕ Clear All
-                        </button>
-                        <span className="text-[#F6FF1F] text-sm font-unbounded outline outline-1 outline-offset-[-1px] outline-[#F6FF1F] px-[11px] py-1">
-                          {selectedTags.length} filter
-                          {selectedTags.length > 1 ? "s" : ""} active
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Tag List */}
-                  <div className="flex flex-wrap gap-3">
-                    {tagsData?.data
-                      ?.slice(0, visibleTagsCount) // শুধুমাত্র visible count পর্যন্ত দেখাবে
-                      .map((tag) => {
-                        const isSelected = selectedTags.includes(tag.name);
-                        return (
-                          <div
-                            key={tag.id}
-                            onClick={() => handleTagClick(tag.name)}
-                            className={`cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] ${
-                              isSelected
-                                ? "bg-yellow-300 text-black"
-                                : "bg-transparent text-[#C6C6C6]"
-                            } text-xs font-unbounded`}
-                          >
-                            {tag.name} ({tag.content_count})
-                          </div>
-                        );
-                      })}
-
-                    {/* যদি মোট ট্যাগ সংখ্যা visibleTagsCount থেকে বেশি হয় তাহলে "more" বাটন দেখাবে */}
-                    {visibleTagsCount < tagsData?.data?.length && (
-                      <button
-                        onClick={() =>
-                          setVisibleTagsCount(visibleTagsCount + 15)
-                        }
-                        className="px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] text-white text-xs font-unbounded"
-                      >
-                        ...more
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Selected Tags */}
-                  {selectedTags.length > 0 && (
-                    <div className="flex flex-wrap gap-3 pt-4">
-                      {selectedTags.map((tag) => (
-                        <div
-                          key={tag}
-                          className="bg-[#C12E83] text-white px-3 py-1 text-xs font-unbounded flex items-center gap-2"
-                        >
-                          {tag}
-                          <button onClick={() => handleRemoveTag(tag)}>
-                            ✕
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
               {/* New filter part */}
               <div className="pt-12 md:pt-16 flex flex-col items-center justify-center">
                 {/* Filters */}
@@ -802,9 +754,9 @@ export default function ContentLibrary() {
                       </div>
                     )}
                   </div>
-                  {/* Tag List (STATIC) */}
+                  {/* Tag List (Dynamic) */}
                   <div className="flex flex-wrap gap-3">
-                    {/* Static Filter Button */}
+                    {/* Filter Button */}
                     <div className="w-48 h-9 cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] bg-transparent text-[#C6C6C6] text-xs font-unbounded flex items-center justify-between">
                       <div>Filter</div>
                       <Funnel size={14} />
@@ -830,22 +782,48 @@ export default function ContentLibrary() {
                               <>
                                 {category.options
                                   .slice(
-                                    (dropdownPagination[category.name] || 0) * 10,
-                                    ((dropdownPagination[category.name] || 0) * 10) + 10
+                                    (dropdownPagination[category.name] || 0) *
+                                      10,
+                                    (dropdownPagination[category.name] || 0) *
+                                      10 +
+                                      10
                                   )
                                   .map((option) => (
-                                    <div key={option} onClick={() => handleFilterSelect(category.name, option)} className="text-[#C6C6C6] text-sm font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded">
+                                    <div
+                                      key={option}
+                                      onClick={() =>
+                                        handleFilterSelect(
+                                          category.name,
+                                          option
+                                        )
+                                      }
+                                      className="text-[#C6C6C6] text-sm font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded"
+                                    >
                                       {option}
                                     </div>
                                   ))}
                                 <div className="flex justify-between items-center mt-1">
-                                  {(dropdownPagination[category.name] || 0) > 0 && (
-                                    <div onClick={() => handlePrevOptionsPage(category.name)} className="text-[#FF80EB] text-xs font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded w-full">
+                                  {(dropdownPagination[category.name] || 0) >
+                                    0 && (
+                                    <div
+                                      onClick={() =>
+                                        handlePrevOptionsPage(category.name)
+                                      }
+                                      className="text-[#FF80EB] text-xs font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded w-full"
+                                    >
                                       previous
                                     </div>
                                   )}
-                                  {((dropdownPagination[category.name] || 0) * 10) + 10 < category.options.length && (
-                                    <div onClick={() => handleNextOptionsPage(category.name)} className="text-[#FF80EB] text-xs font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded w-full">
+                                  {(dropdownPagination[category.name] || 0) *
+                                    10 +
+                                    10 <
+                                    category.options.length && (
+                                    <div
+                                      onClick={() =>
+                                        handleNextOptionsPage(category.name)
+                                      }
+                                      className="text-[#FF80EB] text-xs font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded w-full"
+                                    >
                                       ...more
                                     </div>
                                   )}
@@ -866,9 +844,14 @@ export default function ContentLibrary() {
                   {genericFilters.length > 0 && (
                     <div className="flex flex-wrap gap-3 pt-4">
                       {genericFilters.map((filter) => (
-                        <div key={`${filter.category}-${filter.value}`} className="bg-[#C12E83] text-white px-3 py-1 text-xs font-unbounded flex items-center gap-2">
+                        <div
+                          key={`${filter.category}-${filter.value}`}
+                          className="bg-[#C12E83] text-white px-3 py-1 text-xs font-unbounded flex items-center gap-2"
+                        >
                           {filter.value}
-                          <button onClick={() => handleRemoveGenericFilter(filter)}>
+                          <button
+                            onClick={() => handleRemoveGenericFilter(filter)}
+                          >
                             ✕
                           </button>
                         </div>
@@ -882,15 +865,30 @@ export default function ContentLibrary() {
               <div className="flex items-start justify-center pt-16 md:pt-24 lg:pt-32">
                 <div className="pb-12 max-w-6xl mx-auto">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
-                    {filteredVaults.slice(0, visibleCount).map((vault) => (
-                      <div
-                        key={vault.id}
-                        data-aos="fade-up"
-                        data-aos-duration="2000"
-                        data-aos-delay="200"
-                        className="w-full border border-[#2C1B2C] flex flex-col"
-                      >
-                        {/* <div
+                    {filteredContents.slice(0, visibleCount).map((vault) => {
+                      // Create an array of all possible tags
+                      const vaultTags = [
+                        vault.type_of_content_title,
+                        vault.genre_title,
+                        vault.period_title,
+                        vault.region_title,
+                        vault.movement_title,
+                        vault.theoretical_title,
+                        vault.theme_title,
+                        vault.type_of_contribution_title,
+                        vault.function_title,
+                        vault.language_title,
+                        vault.country_of_content_title,
+                      ].filter((tag) => tag && tag.trim() !== ""); // Filter out null, undefined, or empty/whitespace strings
+                      return (
+                        <div
+                          key={vault.id}
+                          data-aos="fade-up"
+                          data-aos-duration="2000"
+                          data-aos-delay="200"
+                          className="w-full border border-[#2C1B2C] flex flex-col"
+                        >
+                          {/* <div
                           className="relative h-52 overflow-hidden cursor-pointer"
                           onClick={() => handleGotoDetails(vault.id)}
                         >
@@ -901,48 +899,50 @@ export default function ContentLibrary() {
                           />
                         </div> */}
 
-                        <div className="bg-[#2C1B2C] px-4 py-7 flex flex-col flex-grow justify-between">
-                          <div className="flex-grow">
-                            <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
-                              {vault.title}
-                            </h3>
-                            {vault.description && (
+                          <div className="bg-[#2C1B2C] px-4 py-7 flex flex-col flex-grow justify-between">
+                            <div className="flex-grow">
+                              <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
+                                {vault.title}
+                              </h3>
+                              {vault.description && (
+                                <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                                  Description:{" "}
+                                  {truncateText(vault.description, 10)}
+                                </p>
+                              )}
                               <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
-                                Description:{" "}
-                                {truncateText(vault.description, 10)}
+                                Author: {vault.author}
                               </p>
-                            )}
-                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
-                              Author: {vault.author}
-                            </p>
-                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
-                              Country: {vault.country_of_content_title}
-                            </p>
-                            <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-7">
-                              Language: {vault.language_title}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-[#FFFFFF] text-xs font-medium leading-tight font-unbounded mb-4">
-                              Genre: {vault.genre_title}
-                            </p>
-                            <button
-                              onClick={() => handleGotoDetails(vault.id)}
-                              className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
-                            >
-                              View
-                            </button>
+                              <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
+                                Country: {vault.country_of_content_title}
+                              </p>
+                              <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-7">
+                                Language: {vault.language_title}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-[#FFFFFF] text-xs font-medium leading-tight font-unbounded mb-4">
+                                <span className="block mb-1">Tags:</span>
+                                {vaultTags.join(", ")}
+                              </p>
+                              <button
+                                onClick={() => handleGotoDetails(vault.id)}
+                                className="w-32 h-8 text-center outline outline-1 outline-offset-[-1px] outline-[#EE87E5] hover:bg-[#FF80EB] hover:outline-none active:outline-none active:bg-[#C12E83] text-white text-sm font-unbounded"
+                              >
+                                View
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
 
               {/* Load More & Subscribe */}
               <div className="flex flex-col items-center justify-between gap-20 pt-8 pb-5">
-                {visibleCount < filteredVaults.length && (
+                {visibleCount < filteredContents.length && (
                   <div
                     onClick={() => setVisibleCount(visibleCount + 9)}
                     className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"
@@ -952,7 +952,7 @@ export default function ContentLibrary() {
                 )}
 
                 {/* Week's Highlights + Subscribe Section */}
-                {selectedTags.length === 0 && (
+                {genericFilters.length === 0 && (
                   <>
                     {highlightsLoading ? (
                       <div className="text-center text-white text-xl py-20">
