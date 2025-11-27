@@ -20,9 +20,12 @@ import {
   useRecordContentViewMutation,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
+import { ChevronDown, Funnel } from "lucide-react";
 
 export default function ContentLibrary() {
   const [email, setEmail] = useState("");
+  const [openDropdown, setOpenDropdown] = useState(null); // Tracks which dropdown is open
+  const [genericFilters, setGenericFilters] = useState([]); // Stores selected filters
   const [subscribeEmail, { isLoading: isSubscribeLoading }] =
     useSubscribeEmailMutation();
   const {
@@ -164,6 +167,36 @@ export default function ContentLibrary() {
     return text;
   };
 
+  // Define filter categories and their static options
+  const filterCategories = [
+    { name: "Contribution", options: ["Contribution 1", "Contribution 2"] },
+    { name: "Country", options: ["USA", "Canada", "UK"] },
+    { name: "Function", options: ["Function A", "Function B"] },
+    { name: "Genre", options: ["Sci-Fi", "Drama", "Action"] },
+    { name: "Language", options: ["English", "Spanish"] },
+    { name: "Movement", options: ["Movement X", "Movement Y"] },
+    { name: "Period", options: ["21st Century", "20th Century"] },
+    { name: "Region", options: ["North America", "Europe"] },
+    { name: "Theme", options: ["Technology", "History"] },
+    { name: "Theoretical", options: ["Theory 1", "Theory 2"] },
+    { name: "Type of content", options: ["Video", "Article", "Image"] },
+  ];
+
+  // Handlers for the new filter system
+  const handleDropdownToggle = (dropdownName) => {
+    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+  };
+
+  const handleFilterSelect = (category, option) => {
+    if (!genericFilters.some(f => f.category === category && f.value === option)) {
+      setGenericFilters([...genericFilters, { category, value: option }]);
+    }
+    setOpenDropdown(null); // Close dropdown after selection
+  };
+
+  const handleRemoveGenericFilter = (filterToRemove) => {
+    setGenericFilters(genericFilters.filter(f => f.value !== filterToRemove.value || f.category !== filterToRemove.category));
+  };
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
       <ScrollRestoration />
@@ -527,6 +560,76 @@ export default function ContentLibrary() {
                 </div>
               </div>
 
+              {/* New filter part */}
+              <div className="pt-12 md:pt-16 flex flex-col items-center justify-center">
+                {/* Filters */}
+                <div className="bg-[#1A0E1E]/70 px-4 sm:px-6 md:px-8 pb-10 pt-6 flex flex-col justify-center items-start gap-4 max-w-7xl w-full">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-3 w-full">
+                    <div className="text-[#F4F4F3] text-lg font-normal font-unbounded">
+                      Filters {/* This is the new filter section */}
+                    </div>
+                    {genericFilters.length > 0 && (
+                      <div className="flex items-center gap-4">
+                        <button
+                          onClick={() => setGenericFilters([])}
+                          className="bg-[#C12E83] text-white px-3 py-1 text-sm font-unbounded flex items-center gap-2"
+                        >
+                          ✕ Clear All
+                        </button>
+                        <span className="text-[#F6FF1F] text-sm font-unbounded outline outline-1 outline-offset-[-1px] outline-[#F6FF1F] px-[11px] py-1">
+                          {genericFilters.length} filter
+                          {genericFilters.length > 1 ? "s" : ""} active
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  {/* Tag List (STATIC) */}
+                  <div className="flex flex-wrap gap-3">
+                    {/* Static Filter Button */}
+                    <div className="cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] bg-transparent text-[#C6C6C6] text-xs font-unbounded flex items-center gap-2">
+                      <div>Filter</div>
+                      <Funnel size={14} />
+                    </div>
+
+                    {/* Dynamic Dropdown Filters */}
+                    {filterCategories.map((category) => (
+                      <div key={category.name} className="relative">
+                        <div
+                          onClick={() => handleDropdownToggle(category.name)}
+                          className="cursor-pointer px-3.5 py-1.5 outline outline-1 outline-[#E5E7EB] bg-transparent text-[#C6C6C6] text-xs font-unbounded flex items-center justify-between gap-4"
+                        >
+                          <div>{category.name}</div>
+                          <ChevronDown size={16} />
+                        </div>
+                        {openDropdown === category.name && (
+                          <div className="absolute top-full left-0 mt-2 w-48 bg-[#1C1523] shadow-lg z-20">
+                            {category.options.map((option) => (
+                              <div key={option} onClick={() => handleFilterSelect(category.name, option)} className="text-[#C6C6C6] bg-[#1C1523] border border-[#FF80EB] text-sm p-2.5 text-center font-normal hover:bg-[#FF80EB] hover:text-white hover:font-medium cursor-pointer">
+                                {option}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Selected Generic Filters */}
+                  {genericFilters.length > 0 && (
+                    <div className="flex flex-wrap gap-3 pt-4">
+                      {genericFilters.map((filter) => (
+                        <div key={`${filter.category}-${filter.value}`} className="bg-[#C12E83] text-white px-3 py-1 text-xs font-unbounded flex items-center gap-2">
+                          {filter.value}
+                          <button onClick={() => handleRemoveGenericFilter(filter)}>
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Vault Cards */}
               <div className="flex items-start justify-center pt-16 md:pt-24 lg:pt-32">
                 <div className="pb-12 max-w-6xl mx-auto">
@@ -557,7 +660,8 @@ export default function ContentLibrary() {
                             </h3>
                             {vault.description && (
                               <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
-                                Description: {truncateText(vault.description, 10)}
+                                Description:{" "}
+                                {truncateText(vault.description, 10)}
                               </p>
                             )}
                             <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
