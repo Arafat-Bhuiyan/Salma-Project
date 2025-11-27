@@ -18,8 +18,18 @@ import {
   useSubscribeEmailMutation,
   useGetHighlightedContentsQuery,
   useRecordContentViewMutation,
-  // Filter by contribution list
+  // Filter by items options list
   useGetContributionsQuery,
+  useGetCountriesQuery,
+  useGetFunctionsQuery,
+  useGetGenresQuery,
+  useGetLanguagesQuery,
+  useGetMovementsQuery,
+  useGetPeriodsQuery,
+  useGetRegionsQuery,
+  useGetThemesQuery,
+  useGetTheoreticalsQuery,
+  useGetTypeOfContentsQuery,
 } from "@/Redux/Api/authApi";
 import { toast } from "react-toastify";
 import { ChevronDown, Funnel } from "lucide-react";
@@ -28,6 +38,7 @@ export default function ContentLibrary() {
   const [email, setEmail] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null); // Tracks which dropdown is open
   const [genericFilters, setGenericFilters] = useState([]); // Stores selected filters
+  const [dropdownPagination, setDropdownPagination] = useState({}); // Tracks page for each dropdown
   const [subscribeEmail, { isLoading: isSubscribeLoading }] =
     useSubscribeEmailMutation();
   const {
@@ -40,7 +51,185 @@ export default function ContentLibrary() {
     isLoading: contributionsLoading,
     isError: contributionsError,
   } = useGetContributionsQuery();
+  const {
+    data: countriesData,
+    isLoading: countriesLoading,
+    isError: countriesError,
+  } = useGetCountriesQuery();
+  const {
+    data: functionsData,
+    isLoading: functionsLoading,
+    isError: functionsError,
+  } = useGetFunctionsQuery();
+  const {
+    data: genresData,
+    isLoading: genresLoading,
+    isError: genresError,
+  } = useGetGenresQuery();
+  const {
+    data: languagesData,
+    isLoading: languagesLoading,
+    isError: languagesError,
+  } = useGetLanguagesQuery();
+  const {
+    data: movementsData,
+    isLoading: movementsLoading,
+    isError: movementsError,
+  } = useGetMovementsQuery();
+  const {
+    data: periodsData,
+    isLoading: periodsLoading,
+    isError: periodsError,
+  } = useGetPeriodsQuery();
+  const {
+    data: regionsData,
+    isLoading: regionsLoading,
+    isError: regionsError,
+  } = useGetRegionsQuery();
+  const {
+    data: themesData,
+    isLoading: themesLoading,
+    isError: themesError,
+  } = useGetThemesQuery();
+  const {
+    data: theoreticalsData,
+    isLoading: theoreticalsLoading,
+    isError: theoreticalsError,
+  } = useGetTheoreticalsQuery();
+  const {
+    data: typeOfContentsData,
+    isLoading: typeOfContentsLoading,
+    isError: typeOfContentsError,
+  } = useGetTypeOfContentsQuery();
   const [selectedTags, setSelectedTags] = useState([]);
+
+  // Process contribution data from API
+  const contributionOptions = useMemo(() => {
+    if (!contributionsData) return [];
+    // Use a Set to store unique titles after splitting and trimming
+    const optionsSet = new Set();
+    contributionsData.forEach(item => {
+      item.title.split(';').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet); // Convert Set back to an array
+  }, [contributionsData]);
+
+  // Process country data from API
+  const countryOptions = useMemo(() => {
+    if (!countriesData) return [];
+    const optionsSet = new Set();
+    countriesData.forEach(item => {
+      item.title.split('/').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet);
+  }, [countriesData]);
+
+  // Process function data from API
+  const functionOptions = useMemo(() => {
+    if (!functionsData) return [];
+    const optionsSet = new Set();
+    functionsData.forEach(item => {
+      item.title.split(';').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet);
+  }, [functionsData]);
+
+  // Process genre data from API
+  const genreOptions = useMemo(() => {
+    if (!genresData) return [];
+    const optionsSet = new Set();
+    genresData.forEach(item => {
+      item.title.split('/').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet);
+  }, [genresData]);
+
+  // Process language data from API
+  const languageOptions = useMemo(() => {
+    if (!languagesData) return [];
+    const optionsSet = new Set();
+    languagesData.forEach(item => {
+      item.title.split('/').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet);
+  }, [languagesData]);
+
+  // Process movement data from API
+  const movementOptions = useMemo(() => {
+    if (!movementsData) return [];
+    const optionsSet = new Set();
+    movementsData.forEach(item => {
+      item.title.split(';').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet);
+  }, [movementsData]);
+
+  // Process period data from API
+  const periodOptions = useMemo(() => {
+    if (!periodsData) return [];
+    const optionsSet = new Set();
+    periodsData.forEach(item => {
+      optionsSet.add(item.title.trim());
+    });
+    return Array.from(optionsSet);
+  }, [periodsData]);
+
+  // Process region data from API
+  const regionOptions = useMemo(() => {
+    if (!regionsData) return [];
+    const optionsSet = new Set();
+    regionsData.forEach(item => {
+      optionsSet.add(item.title.trim());
+    });
+    return Array.from(optionsSet);
+  }, [regionsData]);
+
+  // Process theme data from API
+  const themeOptions = useMemo(() => {
+    if (!themesData) return [];
+    const optionsSet = new Set();
+    themesData.forEach(item => {
+      item.title.split(';').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet);
+  }, [themesData]);
+
+  // Process theoretical data from API
+  const theoreticalOptions = useMemo(() => {
+    if (!theoreticalsData) return [];
+    const optionsSet = new Set();
+    theoreticalsData.forEach(item => {
+      item.title.split(';').forEach(part => {
+        optionsSet.add(part.trim());
+      });
+    });
+    return Array.from(optionsSet);
+  }, [theoreticalsData]);
+
+  // Process type of content data from API
+  const typeOfContentOptions = useMemo(() => {
+    if (!typeOfContentsData) return [];
+    const optionsSet = new Set();
+    typeOfContentsData.forEach(item => {
+      optionsSet.add(item.title.trim());
+    });
+    return Array.from(optionsSet);
+  }, [typeOfContentsData]);
+
   const [visibleTagsCount, setVisibleTagsCount] = useState(15);
   const [filterMode, setFilterMode] = useState("tag"); // "tag" | "content"
   const [selectedContentType, setSelectedContentType] = useState("all");
@@ -174,37 +363,33 @@ export default function ContentLibrary() {
     return text;
   };
 
-  // Process contribution data from API
-  const contributionOptions = useMemo(() => {
-    if (!contributionsData) return [];
-    // Use a Set to store unique titles after splitting and trimming
-    const optionsSet = new Set();
-    contributionsData.forEach(item => {
-      item.title.split(';').forEach(part => {
-        optionsSet.add(part.trim());
-      });
-    });
-    return Array.from(optionsSet); // Convert Set back to an array
-  }, [contributionsData]);
-
   // Define filter categories and their static options
   const filterCategories = [
     { name: "Contribution", options: contributionOptions, isLoading: contributionsLoading },
-    { name: "Country", options: ["USA", "Canada", "UK"] },
-    { name: "Function", options: ["Function A", "Function B"] },
-    { name: "Genre", options: ["Sci-Fi", "Drama", "Action"] },
-    { name: "Language", options: ["English", "Spanish"] },
-    { name: "Movement", options: ["Movement X", "Movement Y"] },
-    { name: "Period", options: ["21st Century", "20th Century"] },
-    { name: "Region", options: ["North America", "Europe"] },
-    { name: "Theme", options: ["Technology", "History"] },
-    { name: "Theoretical", options: ["Theory 1", "Theory 2"] },
-    { name: "Type of content", options: ["Video", "Article", "Image"] },
+    { name: "Country", options: countryOptions, isLoading: countriesLoading },
+    { name: "Function", options: functionOptions, isLoading: functionsLoading },
+    { name: "Genre", options: genreOptions, isLoading: genresLoading },
+    { name: "Language", options: languageOptions, isLoading: languagesLoading },
+    { name: "Movement", options: movementOptions, isLoading: movementsLoading },
+    { name: "Period", options: periodOptions, isLoading: periodsLoading },
+    { name: "Region", options: regionOptions, isLoading: regionsLoading },
+    { name: "Theme", options: themeOptions, isLoading: themesLoading },
+    { name: "Theoretical", options: theoreticalOptions, isLoading: theoreticalsLoading },
+    { name: "Type of content", options: typeOfContentOptions, isLoading: typeOfContentsLoading },
   ];
 
   // Handlers for the new filter system
   const handleDropdownToggle = (dropdownName) => {
-    setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+    const isOpening = openDropdown !== dropdownName;
+    setOpenDropdown(isOpening ? dropdownName : null);
+
+    // If opening a new dropdown, reset its pagination to the first page
+    if (isOpening) {
+      setDropdownPagination(prev => ({
+        ...prev,
+        [dropdownName]: 0,
+      }));
+    }
   };
 
   const handleFilterSelect = (category, option) => {
@@ -216,6 +401,20 @@ export default function ContentLibrary() {
 
   const handleRemoveGenericFilter = (filterToRemove) => {
     setGenericFilters(genericFilters.filter(f => f.value !== filterToRemove.value || f.category !== filterToRemove.category));
+  };
+
+  const handleNextOptionsPage = (categoryName) => {
+    setDropdownPagination(prev => ({
+      ...prev,
+      [categoryName]: (prev[categoryName] || 0) + 1,
+    }));
+  };
+
+  const handlePrevOptionsPage = (categoryName) => {
+    setDropdownPagination(prev => ({
+      ...prev,
+      [categoryName]: Math.max(0, (prev[categoryName] || 0) - 1),
+    }));
   };
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
@@ -624,15 +823,38 @@ export default function ContentLibrary() {
                         {openDropdown === category.name && (
                           <div className="absolute top-full left-0 mt-2 w-48 bg-[#1C1523] border border-[#FF80EB] rounded-md shadow-lg z-20 p-2">
                             {category.isLoading ? (
-                              <div className="text-[#C6C6C6] text-sm text-center p-2">Loading...</div>
+                              <div className="text-[#C6C6C6] text-sm text-center p-2">
+                                Loading...
+                              </div>
                             ) : category.options.length > 0 ? (
-                              category.options.map((option) => (
-                                <div key={option} onClick={() => handleFilterSelect(category.name, option)} className="text-[#C6C6C6] text-sm font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded">
-                                  {option}
+                              <>
+                                {category.options
+                                  .slice(
+                                    (dropdownPagination[category.name] || 0) * 10,
+                                    ((dropdownPagination[category.name] || 0) * 10) + 10
+                                  )
+                                  .map((option) => (
+                                    <div key={option} onClick={() => handleFilterSelect(category.name, option)} className="text-[#C6C6C6] text-sm font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded">
+                                      {option}
+                                    </div>
+                                  ))}
+                                <div className="flex justify-between items-center mt-1">
+                                  {(dropdownPagination[category.name] || 0) > 0 && (
+                                    <div onClick={() => handlePrevOptionsPage(category.name)} className="text-[#FF80EB] text-xs font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded w-full">
+                                      previous
+                                    </div>
+                                  )}
+                                  {((dropdownPagination[category.name] || 0) * 10) + 10 < category.options.length && (
+                                    <div onClick={() => handleNextOptionsPage(category.name)} className="text-[#FF80EB] text-xs font-normal text-center p-2 hover:bg-[#C12E83] hover:text-white cursor-pointer rounded w-full">
+                                      ...more
+                                    </div>
+                                  )}
                                 </div>
-                              ))
+                              </>
                             ) : (
-                              <div className="text-[#C6C6C6] text-sm text-center p-2">No options</div>
+                              <div className="text-[#C6C6C6] text-sm text-center p-2">
+                                No options
+                              </div>
                             )}
                           </div>
                         )}

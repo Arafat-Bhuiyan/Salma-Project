@@ -1,3 +1,4 @@
+import { get } from "react-scroll/modules/mixins/scroller";
 import { api } from "./api";
 
 export const authApi = api.injectEndpoints({
@@ -43,6 +44,66 @@ export const authApi = api.injectEndpoints({
     getContributions: builder.query({
       query: () => "/filters/contribution/",
       providesTags: ["Contribution"],
+    }),
+
+    // Filter by country list
+    getCountries: builder.query({
+      query: () => "/filters/country/",
+      providesTags: ["Country"],
+    }),
+
+    // Filter by function list
+    getFunctions: builder.query({
+      query: () => "/filters/function/",
+      providesTags: ["Function"],
+    }),
+
+    // Filter by genre list
+    getGenres: builder.query({
+      query: () => "/filters/genre/",
+      providesTags: ["Genre"],
+    }),
+
+    // Filter by language list
+    getLanguages: builder.query({
+      query: () => "/filters/language/",
+      providesTags: ["Language"],
+    }),
+
+    // Filter by movement list
+    getMovements: builder.query({
+      query: () => "/filters/movement/",
+      providesTags: ["Movement"],
+    }),
+
+    // Filter by period list
+    getPeriods: builder.query({
+      query: () => "/filters/period/",
+      providesTags: ["Period"],
+    }),
+
+    // Filter by region list
+    getRegions: builder.query({
+      query: () => "/filters/region/",
+      providesTags: ["Region"],
+    }),
+
+    // Filter by theme list
+    getThemes: builder.query({
+      query: () => "/filters/theme/",
+      providesTags: ["Theme"],
+    }),
+
+    // Filter by theoretical list
+    getTheoreticals: builder.query({
+      query: () => "/filters/theoretical/",
+      providesTags: ["Theoretical"],
+    }),
+
+    // Filter by type-of-content list
+    getTypeOfContents: builder.query({
+      query: () => "/filters/type-of-content/",
+      providesTags: ["TypeOfContent"],
     }),
     
     // === Week's highlights ===
@@ -205,6 +266,16 @@ export const {
   useGetContentByIdQuery,
   useGetTagsQuery,
   useGetContributionsQuery,
+  useGetCountriesQuery,
+  useGetFunctionsQuery,
+  useGetGenresQuery,
+  useGetLanguagesQuery,
+  useGetMovementsQuery,
+  useGetPeriodsQuery,
+  useGetRegionsQuery,
+  useGetThemesQuery,
+  useGetTheoreticalsQuery,
+  useGetTypeOfContentsQuery,
   useGetHighlightedContentsQuery,
   useSendContactMessageMutation,
   useLikeContentMutation,
