@@ -258,10 +258,10 @@ export default function ContentLibrary() {
       const res = await recordBlogView({ content_id: id }).unwrap();
 
       await refetchHighlights(); // ✅ refresh view count in highlights
-      navigate(`/content-details/${id}`);
+      navigate(`/database/contents/${id}`);
     } catch (error) {
       console.error("View record failed:", error);
-      navigate(`/content-details/${id}`);
+      navigate(`/database/contents/${id}`);
     }
   };
 
@@ -297,25 +297,6 @@ export default function ContentLibrary() {
       });
     });
   }, [contents, genericFilters]);
-  const contentFilteredVaults =
-    selectedContentType === "all"
-      ? contents
-      : contents.filter((vault) => {
-          const type = vault.content_type?.toLowerCase();
-
-          if (!type) return false;
-
-          switch (selectedContentType) {
-            case "video":
-              return type === "video";
-            case "pdf":
-              return type === "pdf";
-            case "photo":
-              return type === "image";
-            default:
-              return true;
-          }
-        });
 
   // Further filter the `filteredContents` by the selected content type
   const finalFilteredContents = useMemo(() => {
@@ -865,7 +846,7 @@ export default function ContentLibrary() {
               <div className="flex items-start justify-center pt-16 md:pt-24 lg:pt-32">
                 <div className="pb-12 max-w-6xl mx-auto">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
-                    {filteredContents.slice(0, visibleCount).map((vault) => {
+                    {finalFilteredContents.slice(0, visibleCount).map((vault) => {
                       // Create an array of all possible tags
                       const vaultTags = [
                         vault.type_of_content_title,
@@ -942,7 +923,7 @@ export default function ContentLibrary() {
 
               {/* Load More & Subscribe */}
               <div className="flex flex-col items-center justify-between gap-20 pt-8 pb-5">
-                {visibleCount < filteredContents.length && (
+                {visibleCount < finalFilteredContents.length && (
                   <div
                     onClick={() => setVisibleCount(visibleCount + 9)}
                     className="px-8 py-3.5 text-center outline outline-2 outline-[#EB4DAC] text-white text-sm font-unbounded cursor-pointer"

@@ -154,20 +154,20 @@ export default function ContentDetails() {
                   All content
                 </div>
                 <div className="inline-block border border-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
-                  {content.content_type.toUpperCase()}
+                  {/* {content.content_type.toUpperCase()} */}
                 </div>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl text-[#F4F4F3] mb-4">
                   {content.title}
                 </h1>
                 <div>
-                  {content.tags_names.map((tag) => (
+                  {/* {content.tags_names.map((tag) => (
                     <span
                       key={tag}
                       className="inline-block text-[#C6C6C6] pr-3 py-1 rounded-full mr-2 mb-2"
                     >
                       #{tag}
                     </span>
-                  ))}
+                  ))} */}
                 </div>
                 {/* Like and Share Buttons */}
                 <div className="flex flex-wrap gap-2 items-center mt-4">
@@ -227,8 +227,8 @@ export default function ContentDetails() {
         <div className=" mx-auto w-full max-w-7xl">
           {/* Conditional Content Display */}
           <div className="mx-auto">
-            {content.content_type?.toLowerCase() === "pdf" ? (
-              /* PDF Content */
+            {/* {content.content_type?.toLowerCase() === "pdf" ? (
+             
               <div className="bg-[#1F1F1F] p-6 md:p-12 text-center shadow-2xl rounded-lg">
                 <div className="mb-10 md:mb-20">
                   <img src={pdf} className="mx-auto" alt="" />
@@ -267,7 +267,7 @@ export default function ContentDetails() {
                 </div>
               </div>
             ) : content.content_type?.toLowerCase() === "image" ? (
-              /* Image Content */
+              
               <div>
                 <img
                   src={content.upload_files?.[0]?.url}
@@ -277,7 +277,7 @@ export default function ContentDetails() {
               </div>
             ) : (
               <div className="overflow-hidden"></div>
-            )}
+            )} */}
           </div>
 
           {/* Related Content Section */}
@@ -317,7 +317,7 @@ export default function ContentDetails() {
                         ))}
                         {item.tags_name.length > 4 && (
                           <Link
-                            to={`/content-details/${item.id}`}
+                            to={`/database/contents/${item.id}`}
                             className="text-white text-[10.20px] font-medium font-poppins underline cursor-pointer"
                           >
                             ...more
@@ -325,7 +325,7 @@ export default function ContentDetails() {
                         )}
                       </div>
 
-                      <Link to={`/content-details/${item.id}`}>
+                      <Link to={`/database/contents/${item.id}`}>
                         <button className="border-2 border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none active:border-none active:bg-[#C12E83] px-12 py-1 mt-4 transition text-white">
                           View
                         </button>
