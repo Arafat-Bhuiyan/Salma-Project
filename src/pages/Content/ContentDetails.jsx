@@ -167,7 +167,7 @@ export default function ContentDetails() {
                   rel="noopener noreferrer"
                   className="btn w-full sm:w-auto text-white cursor-pointer inline-flex justify-center px-8 py-3 bg-[#FF80EB]"
                 >
-                  View this Document
+                  View Document
                 </a>
               )}
             </div>
