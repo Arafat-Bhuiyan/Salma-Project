@@ -1,8 +1,6 @@
 import bgImg from "../../assets/images/detailsbg.png";
-import pdf from "../../assets/icons/pdf-icon.png";
 import React, { useState } from "react";
-import { MdOutlineOpenInNew } from "react-icons/md";
-import { Download, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import like from "@/assets/icons/like.svg";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
 import {
@@ -54,51 +52,6 @@ export default function ContentDetails() {
         Failed to load content
       </div>
     );
-
-  const handleDownload = async (content) => {
-    const pdfUrl = content?.upload_files?.[0]?.url;
-    if (!pdfUrl) {
-      alert("PDF link not found!");
-      return;
-    }
-
-    try {
-      const response = await fetch(pdfUrl, {
-        mode: "cors",
-      });
-
-      if (!response.ok) {
-        throw new Error("File not found or server error");
-      }
-
-      const blob = await response.blob(); // get file data as blob
-      const blobUrl = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = content.title?.replace(/\s+/g, "_") + ".pdf" || "file.pdf"; // filename
-      document.body.appendChild(a);
-      a.click(); // force download
-      a.remove();
-
-      // Cleanup
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Download failed:", error);
-      alert("Failed to download the file.");
-    }
-  };
-
-  const handleOpenInBrowser = (content) => {
-    const pdfUrl = content?.upload_files?.[0]?.url;
-    if (!pdfUrl) {
-      alert("PDF link not found!");
-      return;
-    }
-
-    // Open the same Google Drive link in a new tab
-    window.open(pdfUrl, "_blank");
-  };
 
   // Helper to convert YouTube/Vimeo/etc. link to embed format
   const getEmbedUrl = (url) => {
@@ -153,9 +106,9 @@ export default function ContentDetails() {
                 <div className="inline-block mr-4 bg-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
                   All content
                 </div>
-                <div className="inline-block border border-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
-                  {/* {content.content_type.toUpperCase()} */}
-                </div>
+                {/* <div className="inline-block border border-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
+                  {content.content_type.toUpperCase()}
+                </div> */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl text-[#F4F4F3] mb-4">
                   {content.title}
                 </h1>
@@ -207,16 +160,18 @@ export default function ContentDetails() {
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <img
-              src={content.thumbnail_image}
-              alt={content.title || "Image"}
-              className="w-full max-w-5xl h-auto object-cover rounded-lg"
-            />
-          </div>
+          {content.thumbnail_image && (
+            <div className="flex justify-center">
+              <img
+                src={content.thumbnail_image}
+                alt={content.title || "Image"}
+                className="w-full max-w-5xl h-auto object-cover rounded-lg"
+              />
+            </div>
+          )}
           <div className="flex justify-center mt-8 md:mt-10">
             <p className="text-gray-300 text-base md:text-lg mb-8 md:mb-10 leading-relaxed max-w-4xl">
-              {content.content}
+              {content.description}
             </p>
           </div>
         </div>
