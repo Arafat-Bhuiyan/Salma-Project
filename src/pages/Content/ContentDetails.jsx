@@ -1,5 +1,5 @@
 import bgImg from "../../assets/images/detailsbg.png";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import like from "@/assets/icons/like.svg";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
@@ -53,28 +53,6 @@ export default function ContentDetails() {
       </div>
     );
 
-  // Helper to convert YouTube/Vimeo/etc. link to embed format
-  const getEmbedUrl = (url) => {
-    if (!url) return "";
-    // YouTube watch URL
-    if (url.includes("youtube.com/watch?v=")) {
-      const videoId = url.split("v=")[1].split("&")[0];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    // YouTube short URL
-    if (url.includes("youtu.be/")) {
-      const videoId = url.split("youtu.be/")[1].split("?")[0];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-    // Vimeo URL
-    if (url.includes("vimeo.com/")) {
-      const videoId = url.split("vimeo.com/")[1].split("?")[0].split("/")[0];
-      return `https://player.vimeo.com/video/${videoId}`;
-    }
-    // If already embed or other platform, return as is
-    return url;
-  };
-
   return (
     <div
       className="min-h-screen bg-gray-900 text-white font-unbounded"
@@ -106,9 +84,6 @@ export default function ContentDetails() {
                 <div className="inline-block mr-4 bg-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
                   All content
                 </div>
-                {/* <div className="inline-block border border-[#C12E83] px-4 py-1 mb-4 text-[#C6C6C6]">
-                  {content.content_type.toUpperCase()}
-                </div> */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl text-[#F4F4F3] mb-4">
                   {content.title}
                 </h1>
@@ -169,70 +144,33 @@ export default function ContentDetails() {
               />
             </div>
           )}
-          <div className="flex justify-center mt-8 md:mt-10">
-            <p className="text-gray-300 text-base md:text-lg mb-8 md:mb-10 leading-relaxed max-w-4xl">
-              {content.description}
-            </p>
-          </div>
+          {content.description && (
+            <div className="flex justify-center mt-8 md:mt-10">
+              <p className="text-gray-300 text-base md:text-lg mb-8 md:mb-10 leading-relaxed max-w-4xl">
+                {content.description}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Content Section with Different Background */}
       <div className="relative pb-20 bg-cover bg-center px-4 sm:px-6 md:px-8">
-        <div className=" mx-auto w-full max-w-7xl">
-          {/* Conditional Content Display */}
-          <div className="mx-auto">
-            {/* {content.content_type?.toLowerCase() === "pdf" ? (
-             
-              <div className="bg-[#1F1F1F] p-6 md:p-12 text-center shadow-2xl rounded-lg">
-                <div className="mb-10 md:mb-20">
-                  <img src={pdf} className="mx-auto" alt="" />
-                </div>
-                <h2 className="text-xl md:text-2xl mb-8 md:mb-10 text-white">
-                  This content is available as a downloadable PDF document.
-                </h2>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button
-                    onClick={() => handleDownload(content)}
-                    className="bg-[#FF3B9A] hover:bg-pink-600 px-8 py-3 rounded-md transition flex items-center gap-2 text-white"
-                  >
-                    <Download className="w-5 h-5" />
-                    Download PDF
-                  </button>
-                  <button
-                    onClick={() => handleOpenInBrowser(content)}
-                    className="bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-md transition flex items-center gap-2 text-white"
-                  >
-                    <MdOutlineOpenInNew className="text-xl" /> Open in Browser
-                  </button>
-                </div>
-              </div>
-            ) : content.content_type?.toLowerCase() === "video" ? (
-              <div className="bg-gray-800 overflow-hidden shadow-2xl border border-gray-700">
-                <div className="aspect-video bg-black relative">
-                  <iframe
-                    src={getEmbedUrl(content.vedio_url)}
-                    title="Video Preview"
-                    className="w-full h-full rounded-lg border border-zinc-700"
-                    allowFullScreen
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                  ></iframe>
-                </div>
-              </div>
-            ) : content.content_type?.toLowerCase() === "image" ? (
-              
-              <div>
-                <img
-                  src={content.upload_files?.[0]?.url}
-                  alt={content.title || "Uploaded Image"}
-                  className="max-w-full h-auto mx-auto rounded-lg object-contain shadow-lg"
-                />
-              </div>
-            ) : (
-              <div className="overflow-hidden"></div>
-            )} */}
+        <div className="mx-auto w-full max-w-7xl">
+          {/* Content Display */}
+          <div className="w-full mx-auto">
+            <div className="flex justify-center">
+              {content.media_embedded_url && (
+                <a
+                  href={content.media_embedded_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn w-full sm:w-auto text-white cursor-pointer inline-flex justify-center px-8 py-3 bg-[#FF80EB]"
+                >
+                  View this Document
+                </a>
+              )}
+            </div>
           </div>
 
           {/* Related Content Section */}
