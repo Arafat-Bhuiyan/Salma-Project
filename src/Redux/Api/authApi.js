@@ -165,7 +165,7 @@ export const authApi = api.injectEndpoints({
     }),
     // === GET RELATED CONTENTS ===
     getRelatedContents: builder.query({
-      query: (id) => `/database/related-contents/${id}`,
+      query: (id) => `/related-content/?content_id=${id}`,
     }),
     // GET RELATED ARTICLES
     getRelatedArticles: builder.query({

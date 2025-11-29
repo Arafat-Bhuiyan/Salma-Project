@@ -20,6 +20,17 @@ export default function ContentDetails() {
   const { data: relatedData, isLoading: relatedLoading } =
     useGetRelatedContentsQuery(id);
 
+  console.log("Related Content:", relatedData);
+
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    if (words.length <= wordLimit) {
+      return text;
+    }
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
   const handleLike = async () => {
     try {
       const response = await likeContent({
@@ -87,16 +98,6 @@ export default function ContentDetails() {
                 <h1 className="text-3xl sm:text-4xl md:text-5xl text-[#F4F4F3] mb-4">
                   {content.title}
                 </h1>
-                <div>
-                  {/* {content.tags_names.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-block text-[#C6C6C6] pr-3 py-1 rounded-full mr-2 mb-2"
-                    >
-                      #{tag}
-                    </span>
-                  ))} */}
-                </div>
                 {/* Like and Share Buttons */}
                 <div className="flex flex-wrap gap-2 items-center mt-4">
                   <div
@@ -145,8 +146,8 @@ export default function ContentDetails() {
             </div>
           )}
           {content.description && (
-            <div className="flex justify-center mt-8 md:mt-10">
-              <p className="text-gray-300 text-base md:text-lg mb-8 md:mb-10 leading-relaxed max-w-4xl">
+            <div className="flex justify-start mt-8 md:mt-10 w-full">
+              <p className="text-gray-300 text-base text-wrap md:text-lg mb-8 md:mb-10 leading-relaxed max-w-4xl">
                 {content.description}
               </p>
             </div>
@@ -179,44 +180,29 @@ export default function ContentDetails() {
 
             {relatedLoading ? (
               <p className="text-gray-400">Loading related contents...</p>
-            ) : relatedData?.data?.results?.length > 0 ? ( // Changed grid to be more responsive
+            ) : relatedData?.length > 0 ? ( // Changed grid to be more responsive
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {relatedData.data.results.map((item) => (
+                {relatedData.map((item) => (
                   <div
                     key={item.id}
                     className="bg-[#2C1B2C] rounded-lg overflow-hidden cursor-pointer border border-[#2C1B2C] hover:scale-[1.02] transition-transform"
                   >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-48 object-cover"
-                    />
                     <div className="p-6">
                       <h3 className="font-semibold mb-2 text-lg text-white">
                         {item.title}
                       </h3>
-                      <p className="text-[#C6C6C6] text-sm mb-4">
-                        {item.excerpt}
+                      {item.description && (
+                        <p className="text-[#C6C6C6] text-sm font-normal leading-tight font-unbounded mb-4">
+                          Description:{" "}
+                          {truncateText(item.description, 10)}
+                        </p>
+                      )}
+                      <p className="text-[#C6C6C6] text-sm font-normal leading-tight font-unbounded mb-4">
+                        Author: {item.author}
                       </p>
-
-                      <div className="flex flex-wrap items-center gap-2 mb-4">
-                        {item.tags_name.slice(0, 4).map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-block bg-white/10 text-white text-[10.20px] font-medium leading-none rounded-full px-3 py-1"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        {item.tags_name.length > 4 && (
-                          <Link
-                            to={`/database/contents/${item.id}`}
-                            className="text-white text-[10.20px] font-medium font-poppins underline cursor-pointer"
-                          >
-                            ...more
-                          </Link>
-                        )}
-                      </div>
+                      <p className="text-white text-sm font-normal leading-tight font-unbounded mb-4">
+                        Type of content: {item.type_of_content_title}
+                      </p>
 
                       <Link to={`/database/contents/${item.id}`}>
                         <button className="border-2 border-[#FF80EB] hover:bg-[#FF80EB] hover:border-none active:border-none active:bg-[#C12E83] px-12 py-1 mt-4 transition text-white">

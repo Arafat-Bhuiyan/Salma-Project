@@ -40,6 +40,8 @@ export default function ContentLibrary() {
     isLoading: highlightsLoading,
     refetch: refetchHighlights,
   } = useGetHighlightedContentsQuery();
+  console.log("highlightsData:", highlightsData);
+
   const {
     data: contributionsData,
     isLoading: contributionsLoading,
@@ -610,19 +612,8 @@ export default function ContentLibrary() {
                         data-aos="fade-up"
                         data-aos-duration="2000"
                         data-aos-delay="200"
-                        className="w-full border border-[#2C1B2C] flex flex-col"
+                        className="w-[340px] h-[232px] border border-[#2C1B2C] flex flex-col"
                       >
-                        {/* <div
-                          className="relative h-52 overflow-hidden cursor-pointer"
-                          onClick={() => handleGotoDetails(vault.id)}
-                        >
-                          <img
-                            src={vault.thumbnail_image || noContentImg}
-                            alt={vault.title}
-                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                          />
-                        </div> */}
-
                         <div className="bg-[#2C1B2C] px-4 py-7 flex flex-col flex-grow justify-between">
                           <div className="flex-grow">
                             <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
@@ -639,10 +630,6 @@ export default function ContentLibrary() {
                             </p>
                           </div>
                           <div>
-                            {/* <p className="text-[#FFFFFF] text-xs font-medium leading-tight font-unbounded mb-4">
-                                <span className="block mb-1">Tags:</span>
-                                {vaultTags.join(", ")}
-                              </p> */}
                             <p className="text-[#FFFFFF] text-xs font-normal leading-tight font-unbounded mb-4">
                               Type of content: {vault.type_of_content_title}
                             </p>
@@ -691,7 +678,7 @@ export default function ContentLibrary() {
                               "No Title"}
                           </p>
                           <p className="text-[#FF39B0] text-sm md:text-base font-normal font-unbounded leading-normal pt-2">
-                            {highlights[activeIndex]?.content?.content_type ||
+                            {highlights[activeIndex]?.content?.type_of_content_title ||
                               "No Type"}
                           </p>
                           <div className="flex gap-2.5 py-5">
