@@ -182,7 +182,7 @@ export default function ContentDetails() {
               <p className="text-gray-400">Loading related contents...</p>
             ) : relatedData?.length > 0 ? ( // Changed grid to be more responsive
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {relatedData.map((item) => (
+                {relatedData.slice(0, 3).map((item) => (
                   <div
                     key={item.id}
                     className="bg-[#2C1B2C] rounded-lg overflow-hidden cursor-pointer border border-[#2C1B2C] hover:scale-[1.02] transition-transform"
