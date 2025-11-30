@@ -5,7 +5,6 @@ import { ScrollRestoration, useNavigate } from "react-router-dom";
 import rightIcon from "@/assets/icons/right.svg";
 import leftIcon from "@/assets/icons/left.svg";
 import views from "@/assets/icons/views.svg";
-import noContentImg from "@/assets/images/no-content.png";
 import { useState, useMemo } from "react";
 import {
   useGetContentsQuery,
@@ -612,17 +611,17 @@ export default function ContentLibrary() {
                         data-aos="fade-up"
                         data-aos-duration="2000"
                         data-aos-delay="200"
-                        className="w-[340px] h-[232px] border border-[#2C1B2C] flex flex-col"
+                        className="w-[340px] h-[232px] border border-[#2C1B2C] flex flex-col "
                       >
                         <div className="bg-[#2C1B2C] px-4 py-7 flex flex-col flex-grow justify-between">
                           <div className="flex-grow">
-                            <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2">
+                            <h3 className="text-white text-base font-medium font-unbounded leading-7 mb-2 line-clamp-1">
                               {vault.title}
                             </h3>
                             {vault.description && (
                               <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
                                 Description:{" "}
-                                {truncateText(vault.description, 10)}
+                                {truncateText(vault.description, 7)}
                               </p>
                             )}
                             <p className="text-[#9CA3AF] text-xs font-normal leading-tight font-unbounded mb-4">
@@ -705,8 +704,7 @@ export default function ContentLibrary() {
                         <img
                           className="flex-1 w-full max-w-md lg:max-w-lg h-60 sm:h-72 object-cover relative shadow-[0px_0px_49.2px_0px_rgba(0,0,0,0.25)]"
                           src={
-                            highlights[activeIndex]?.content?.upload_files?.[0]
-                              ?.url || noContentImg
+                            highlights[activeIndex]?.content?.thumbnail_image || "No Image"
                           }
                           alt="Highlight"
                         />
