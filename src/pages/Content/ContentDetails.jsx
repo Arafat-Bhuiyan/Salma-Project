@@ -188,7 +188,7 @@ export default function ContentDetails() {
                     className="bg-[#2C1B2C] rounded-lg overflow-hidden cursor-pointer border border-[#2C1B2C] hover:scale-[1.02] transition-transform"
                   >
                     <div className="p-6">
-                      <h3 className="font-semibold mb-2 text-lg text-white">
+                      <h3 className="font-semibold mb-2 text-lg text-white line-clamp-1">
                         {item.title}
                       </h3>
                       {item.description && (
